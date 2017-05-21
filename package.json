@@ -3,7 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node ./bin/www",
+    "mongod": "start X:/MongoDB/bin/mongod --dbpath=X:\\MongoDB\\data\\db"
   },
   "dependencies": {
     "body-parser": "~1.16.0",
@@ -11,6 +12,7 @@
     "debug": "~2.6.0",
     "ejs": "~2.5.5",
     "express": "~4.14.1",
+    "mongoose": "^4.10.0",
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2"
   }
