@@ -2,10 +2,36 @@
 <html>
   <head>
     <title><%= title %></title>
-    <link rel='stylesheet' href='/stylesheets/style.css' />
+    <link rel='stylesheet' href='/css/index.css' />
   </head>
   <body>
-    <h1><%= title %></h1>
-    <p>Welcome to <%= title %></p>
+    <h1 style="text-align: center;"><%= title %></span></h1>
+    <div class="chat">
+      <div class="chat-list-wrap">
+        <p class="chat-list-name">Online List</p>
+        <ul class="chat-lists">
+          
+        </ul>
+      </div>
+      <div class="chat-ctx-wrap">
+        <div class="chat-ctx">
+          <ul class="chat-show-ctx"></ul>
+        </div>
+        <div class="chat-send">
+          <div class="chat-send-ctx" contenteditable>
+          </div>
+          <div class="chat-send-btn" onclick="sendMessage()">
+            发送
+          </div>
+        </div>
+      </div>
+    </div>
+    <div>
+      <input type="text" placeholder="Enter your name" id="newUser">
+      <a onclick="reg()">ok</a>
+      <p id="tip" style="color: red;"></p>
+    </div>
+    <script src="http://localhost:81/socket.io/socket.io.js"></script>
+    <script src="/js/index.js"></script>
   </body>
 </html>

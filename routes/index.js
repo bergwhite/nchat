@@ -4,13 +4,16 @@ var user = require('../database').user;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Express' });
+  res.render('index', { title: 'NodeJS Chat Room' });
+});
+router.get('/room/:id', function(req, res, next) {
+  res.render('index', { title: 'Room ' + req.params.id });
 });
 router.get('/user', function(req, res, next) {
-  res.render('user', { title: req.params.id });
+  res.render('userList', { title: req.params.id });
 });
 router.get('/user/:id', function(req, res, next) {
-  res.render('user', { title: req.params.id });
+  res.render('userCenter', { title: req.params.id });
 });
 router.get('/user/:id/register', function(req, res, next) {
   res.send({status: "success"});

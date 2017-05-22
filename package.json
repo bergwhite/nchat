@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
+    "socket-server": "node ./public/js/socket-server.js",
     "mongod": "start X:/MongoDB/bin/mongod --dbpath=X:\\MongoDB\\data\\db"
   },
   "dependencies": {
@@ -14,6 +15,7 @@
     "express": "~4.14.1",
     "mongoose": "^4.10.0",
     "morgan": "~1.7.0",
-    "serve-favicon": "~2.3.2"
+    "serve-favicon": "~2.3.2",
+    "socket.io": "^2.0.1"
   }
 }

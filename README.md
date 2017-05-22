@@ -9,27 +9,25 @@
 /  // 首页
 /user  // 用户列表
 /user/:id  // 用户中心
-/user/:id/register  // 注册
-/user/:id/login  // 登陆
-/user/:id/logout  // 注销
-/user/:id/info  // 用户资料
+/user/:id/register  // 注册（JSON）
+/user/:id/login  // 登陆（JSON）
+/user/:id/logout  // 注销（JSON）
+/user/:id/info  // 用户资料（JSON）
+/room/:id  // 指定聊天室
 
 ```
 
-> 启动MongoDB服务
+> 开始安装
 
-首先修改package.json中的MongoDB安装路径，`--dbpath=`后面的路径修改为自己的即可。
-
-```
-
-"mongod": "start X:/MongoDB/bin/mongod --dbpath=X:\\MongoDB\\data\\db"
+使用之前，请在package.json中修改MongoDB的安装路径（--dbpath）。
 
 ```
 
-接下来启动MongoDB服务
+git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目到本地
+cd nodejs-chat  // 进入项目目录
+npm install  // 安装依赖
+npm run mongod // 启动MongoDB服务
+npm run start // 启动聊天室服务并启动网站
 
 ```
 
-npm run mongod
-
-```
