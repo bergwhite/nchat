@@ -18,6 +18,23 @@ li {
   width: 603px;
   height: 300px;
   margin: auto;
+  position: relative;
+  padding-top: 30px;
+}
+.chat-info {
+  position: absolute;
+  right: 0px;
+  top: -20px;
+}
+#user-reg {
+  padding: 5px;
+}
+.chat-info-confirm {
+  border: 1px solid white;
+  padding: 5px;
+}
+#user-reg-tip {
+  margin: 0;
 }
 .user-list-wrap {
   width: 200px;

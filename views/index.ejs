@@ -7,6 +7,11 @@
   <body>
     <h1 style="text-align: center;"><%= title %></span></h1>
     <div class="chat">
+      <div class="chat-info">
+        <input type="text" placeholder="Enter your name" id="user-reg">
+        <a class="chat-info-confirm" onclick="nodejsChat.method.regUser()">ok</a>
+        <p  id="user-reg-tip" style="color: red;"></p>
+      </div>
       <div class="user-list-wrap">
         <p class="user-list-name">Online List</p>
         <ul class="user-lists">
@@ -25,11 +30,6 @@
           </div>
         </div>
       </div>
-    </div>
-    <div>
-      <input type="text" placeholder="Enter your name" id="user-reg">
-      <a onclick="nodejsChat.method.regUser()">ok</a>
-      <p id="user-reg-tip" style="color: red;"></p>
     </div>
     <script src="http://localhost:81/socket.io/socket.io.js"></script>
     <script src="/js/index.js"></script>
