@@ -40,6 +40,8 @@ nodejsChat.room = {
       socket.emit('response room id', nodejsChat.data.roomID)
       // 为当前房间发送欢迎消息
       nodejsChat.method.appendElement(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
+      // 初始化输入框内容为空
+      chatMsgSend.innerHTML = ''
     })
     socket.on('welcome the user', function (data) {
       nodejsChat.method.appendElement(chatMsgList, 'li', data)
@@ -110,8 +112,9 @@ nodejsChat.method = {
     if (chatMsgSend.inneHTML !== '') {
       socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
       nodejsChat.method.appendElement(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
+      chatMsgSend.innerHTML = ''
     } else {
-      chatMsgSend.innerHTML !== '内容不能为空'
+      chatMsgSend.innerHTML = '内容不能为空'
     }
   },
   // 注册用户
