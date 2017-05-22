@@ -17,8 +17,12 @@ chat.data = {
     // 用户
     user: []
   }],
+  // 为用户添加状态
+  // 在用户下线的时候可以进行判断
+  socketID: {},
   // 添加用户的状态
-  addUserStatus: null
+  addUserStatus: null,
+  currentRoom: null
 }
 
 // 方法
@@ -53,6 +57,8 @@ io.on('connection', function (socket) {
   socket.emit('request room id')
   // 监听到相应后，存储当前的房间号
   socket.on('response room id', function (roomID) {
+    chat.data.currentRoom = roomID
+    console.log('cccccccccccc: ' + chat.data.currentRoom)
     // 不存在则创建新房间
     if(!chat.method.isRoomExist(chat.data.room, roomID)) {
       chat.data.room.push({
@@ -74,6 +80,7 @@ io.on('connection', function (socket) {
       chat.data.addUserStatus = true
       socket.broadcast.to(id).emit('renderOnlineList', msg.name)
       chat.method.welcomeUser(id, '欢迎' + msg.name + '加入房间')
+      chat.data.socketID[socket.id] = msg.name
     }
     // 当前用户已添加则添加失败
     else {
@@ -90,6 +97,9 @@ io.on('connection', function (socket) {
   // 退出连接时的方法
   socket.on('disconnect', function () {
     // TODO: not work
+    if (chat.data.socketID[socket.id] !== 'undefined') {
+      console.log(chat.data.socketID[socket.id] + ' had gone.')
+    }
     socket.emit('request logout user')
     socket.on('response logout user', function (msg) {
       console.log(msg + ' is gone.')
