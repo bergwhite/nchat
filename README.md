@@ -8,7 +8,17 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 
 > 项目演示
 
-图片制作中...
+用户注册
+
+![nodejs-chat-user-reg](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-reg.gif)
+
+发送消息
+
+![nodejs-chat-msg-send](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-msg-send.gif)
+
+房间消息独立
+
+![nodejs-chat-multi-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-multi-room.gif)
 
 > 项目目录
 
