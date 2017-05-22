@@ -13,7 +13,7 @@ chat.data = {
     // 名字
     name: 'Chat Room',
     // 描述
-    desc: null
+    desc: null,
     // 用户
     user: []
   }],
@@ -86,6 +86,7 @@ io.on('connection', function (socket) {
   socket.emit('current status', chat.data)
   // 退出连接时的方法
   socket.on('disconnect', function () {
+    // TODO: not work
     socket.emit('request logout user')
     socket.on('response logout user', function (msg) {
       console.log(msg + ' is gone.')

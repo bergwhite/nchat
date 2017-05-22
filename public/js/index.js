@@ -18,6 +18,8 @@ var nodejsChat = {}
 // 数据（存放变量）
 nodejsChat.data = {
   isRoomInit: false,
+  onlineUserCount: 0,
+  onlineUserList: [],
   // 房间ID
   roomID: null,
   // 用户资料
@@ -44,9 +46,11 @@ nodejsChat.room = {
     // 进入页面打印当前聊天室状态
     socket.on('current status', function  (data) {
       nodejsChat.method.initDOMFragement(userList)
-      nodejsChat.method.renderUserList(nodejsChat.method.filterVal(data.room, nodejsChat.data.roomID))
+      nodejsChat.method.getOnlineList(data.room, nodejsChat.data.roomID)
+      nodejsChat.method.renderUserList(nodejsChat.data.onlineUserList)
       console.log(data)
-      console.log("当前在线：" + nodejsChat.method.filterVal(data.room, nodejsChat.data.roomID).length)
+      console.log("在线统计：" + nodejsChat.data.onlineUserCount)
+      console.log('在线用户：' + nodejsChat.data.onlineUserList)
     })
     // 渲染在线用户列表
     socket.on('renderOnlineList', function (data) {
@@ -64,7 +68,7 @@ nodejsChat.room = {
         nodejsChat.data.user.name = null
       } else {
         userRegTip.innerHTML = '注册成功'
-        nodejsChat.method.renderUserList([data.user[data.user.length -1 ]])
+        nodejsChat.method.renderUserList([data.user])
       }
       console.log(data)
       console.log("当前在线：" + data.user.length)
@@ -93,6 +97,7 @@ nodejsChat.method = {
   // 渲染用户列表
   renderUserList: function (arr) {
     for(var i = 0; i < arr.length; i++){
+      console.log('renderUserList：' + arr[i])
       this.appendElement(userList, 'li', arr[i])
     }
   },
@@ -122,15 +127,14 @@ nodejsChat.method = {
     childDOM.innerHTML = childCtx
     parentDOM.appendChild(childDOM)
   },
-  filterVal: function (arr, type) {
-    var result =  arr.filter(function (val) {
-      console.log(val.name)
-      console.log(val.user)
+  getOnlineList: function (arr, type) {
+    arr.filter(function (val) {
       if (val.name === type) {
-        console.log('xxxxxx')
+        var newArr = val.user.concat()
+        nodejsChat.data.onlineUserCount = val.user.length
+        nodejsChat.data.onlineUserList = newArr
       }
     })
-    return result
   }
 }
 
