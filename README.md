@@ -12,6 +12,8 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 
 > 项目目录
 
+```
+
 ├─bin
 │    www  // 启动express
 ├─database
@@ -32,6 +34,8 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 │    userList.ejs  // 用户列表（规划中）
 ├─app.js  // express
 ├─package.json  // npm包
+
+```
 
 > 路由
 
