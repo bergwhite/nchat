@@ -1,4 +1,4 @@
-# NodeJS & SocketIO & Express & & EJS MongoDB 打造多人在线聊天室
+# NodeJS & SocketIO & Express & EJS & MongoDB 打造多人在线聊天室
 
 > 项目背景
 
