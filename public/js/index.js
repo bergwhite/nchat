@@ -20,6 +20,7 @@ nodejsChat.data = {
   isRoomInit: false,
   onlineUserCount: 0,
   onlineUserList: [],
+  welcomeInfo: 'system: welcome to the ' + this.roomID,
   // 房间ID
   roomID: null,
   // 用户资料
@@ -35,10 +36,13 @@ nodejsChat.room = {
   // 初始化
   init: function () {
     socket.on('request room id', function () {
+      // 把当前房间id返回给后台
       socket.emit('response room id', nodejsChat.data.roomID)
+      // 为当前房间发送欢迎消息
+      nodejsChat.method.appendElement(chatMsgList, 'li', nodejsChat.data.welcomeInfo)
     })
-    socket.on('init the room', function (data) {
-      nodejsChat.method.appendElement(chatMsgList, 'li', data.user + ': ' + decodeURIComponent(data.msg))
+    socket.on('welcome the user', function (data) {
+      nodejsChat.method.appendElement(chatMsgList, 'li', data)
     })
   },
   // 渲染
@@ -68,7 +72,7 @@ nodejsChat.room = {
         nodejsChat.data.user.name = null
       } else {
         userRegTip.innerHTML = '注册成功'
-        nodejsChat.method.renderUserList([data.user])
+        nodejsChat.method.renderUserList([data.user[data.user.length - 1]])
       }
       console.log(data)
       console.log("当前在线：" + data.user.length)
@@ -103,8 +107,12 @@ nodejsChat.method = {
   },
   // 发送消息
   sendMessage: function () {
-    socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
-    nodejsChat.method.appendElement(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ':' + chatMsgSend.innerHTML)
+    if (chatMsgSend.inneHTML !== '') {
+      socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
+      nodejsChat.method.appendElement(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
+    } else {
+      chatMsgSend.innerHTML !== '内容不能为空'
+    }
   },
   // 注册用户
   regUser: function () {

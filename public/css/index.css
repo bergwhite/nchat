@@ -46,13 +46,17 @@ li {
   padding: 20px;
   height: 220px;
   border-bottom: 1px solid white;
+  overflow-y: scroll;
 }
 .chat-msg-list {
   height: 80px;
 }
+.chat-msg-list > li {
+  word-break:break-all;
+}
 .chat-msg-send {
-  overflow: hidden;
-  height: 100%;
+  overflow-y: scroll;
+  height: 80px;
   width: 80%;
   float: left;
   padding: 10px 20px;

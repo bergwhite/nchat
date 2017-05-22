@@ -40,6 +40,10 @@ chat.method = {
         chat.data.room[index].user.push(name)
       }
     })
+  },
+  welcomeUser: function (roomID, msg) {
+    // 为当前房间发送欢迎消息
+    io.to(roomID).emit('welcome the user', msg);
   }
 }
 
@@ -59,21 +63,20 @@ io.on('connection', function (socket) {
     }
     // 进入房间
     socket.join(roomID)
-    // 为当前房间发送欢迎消息
-    io.to(roomID).emit('init the room', {
-      user: 'system',
-      msg: 'welcome to the ' + roomID
-    });
   })
   // 添加用户
   socket.on('add user', function (id, msg) {
     chat.method.addUserToRoom(msg.name,id)
     console.log(msg)
+    // 当前用户未曾添加则添加成功
     if(chat.data.user.indexOf(msg.name) === -1) {
       chat.data.user.push(msg.name)
       chat.data.addUserStatus = true
       socket.broadcast.to(id).emit('renderOnlineList', msg.name)
-    } else {
+      chat.method.welcomeUser(id, '欢迎' + msg.name + '加入房间')
+    }
+    // 当前用户已添加则添加失败
+    else {
       chat.data.addUserStatus = false
     }
     socket.emit('showUser', chat.data)
