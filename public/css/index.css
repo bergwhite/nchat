@@ -19,7 +19,7 @@ li {
   height: 300px;
   margin: auto;
 }
-.chat-list-wrap {
+.user-list-wrap {
   width: 200px;
   height: 300px;
   border: 1px solid white;
@@ -27,13 +27,13 @@ li {
   border-right: 0;
   overflow-y: scroll;
 }
-.chat-list-name {
+.user-list-name {
   text-align: center;
   border-bottom: 1px solid white;
   margin: 0 20px;
   padding: 10px;
 }
-.chat-lists {
+.user-lists {
   padding: 20px;
 }
 .chat-ctx-wrap {
@@ -47,10 +47,10 @@ li {
   height: 220px;
   border-bottom: 1px solid white;
 }
-.chat-send {
+.chat-msg-list {
   height: 80px;
 }
-.chat-send-ctx {
+.chat-msg-send {
   overflow: hidden;
   height: 100%;
   width: 80%;
