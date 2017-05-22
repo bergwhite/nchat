@@ -20,7 +20,7 @@ nodejsChat.data = {
   isRoomInit: false,
   onlineUserCount: 0,
   onlineUserList: [],
-  welcomeInfo: 'system: welcome to the ' + this.roomID,
+  welcomeInfo: 'system: welcome to the ',
   // 房间ID
   roomID: null,
   // 用户资料
@@ -39,7 +39,7 @@ nodejsChat.room = {
       // 把当前房间id返回给后台
       socket.emit('response room id', nodejsChat.data.roomID)
       // 为当前房间发送欢迎消息
-      nodejsChat.method.appendElement(chatMsgList, 'li', nodejsChat.data.welcomeInfo)
+      nodejsChat.method.appendElement(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
     })
     socket.on('welcome the user', function (data) {
       nodejsChat.method.appendElement(chatMsgList, 'li', data)
