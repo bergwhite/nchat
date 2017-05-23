@@ -112,7 +112,10 @@ nodejsChat.method = {
     if (chatMsgSend.inneHTML !== '') {
       socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
       nodejsChat.method.appendElement(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
+      // 发送完消息清空内容
       chatMsgSend.innerHTML = ''
+      // 发送完消息重新把焦点放置在输入框
+      chatMsgSend.focus()
     } else {
       chatMsgSend.innerHTML = '内容不能为空'
     }
