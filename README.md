@@ -110,7 +110,7 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目到本地
 cd nodejs-chat  // 进入项目目录
 npm install  // 安装依赖
-npm run mongod // 启动MongoDB服务（可以不使用，项目暂时没有对接MongoDB）
+npm run mongod // 启动MongoDB服务
 npm run start // 启动聊天室服务并启动网站
 
 ```

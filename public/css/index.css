@@ -42,7 +42,10 @@ li {
   border: 1px solid white;
   float: left;
   border-right: 0;
-  overflow-y: scroll;
+  overflow-y: hidden;
+}
+.user-list-wrap:hover {
+  overflow-y: auto;
 }
 .user-list-name {
   text-align: center;
@@ -63,7 +66,10 @@ li {
   padding: 20px;
   height: 220px;
   border-bottom: 1px solid white;
-  overflow-y: scroll;
+  overflow-y: hidden;
+}
+.chat-ctx:hover {
+  overflow-y: auto;
 }
 .chat-msg-list {
   height: 80px;
