@@ -80,12 +80,6 @@ nodejsChat.room = {
       console.log("当前在线：" + data.user.length)
       console.log("注册状态：" + data.status)
     })
-  },
-  logout: function () {
-    socket.on('request logout user', function () {
-      console.log('request logout user')
-      socket.emit('response logout user', nodejsChat.data.user.name)
-    })
   }
 }
 // 方法（存放函数）
@@ -141,6 +135,7 @@ nodejsChat.method = {
     childDOM.innerHTML = childCtx
     parentDOM.appendChild(childDOM)
   },
+  // 获取在线列表
   getOnlineList: function (arr, type) {
     arr.filter(function (val) {
       if (val.name === type) {
@@ -160,4 +155,3 @@ nodejsChat.data.roomID = nodejsChat.method.getRoomID()
 nodejsChat.room.init()
 // 渲染
 nodejsChat.room.render()
-nodejsChat.room.logout()

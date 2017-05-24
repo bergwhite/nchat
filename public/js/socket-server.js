@@ -22,16 +22,30 @@ chat.data = {
   socketID: {},
   // 添加用户的状态
   addUserStatus: null,
-  currentRoom: null
+  currentRoomID: null,
+  currentRoomIndex: null
 }
 
 // 方法
 chat.method = {
+  // 初始化房间索引
+  getCurrentRoomIndex: function (roomID) {
+    return chat.data.room.findIndex(function(val,index){
+      console.log('name: ' + val.name)
+      console.log('roomID: ' + roomID)
+      return val.name === roomID
+    })
+  },
+  // 获取当前房间ID
+  getCurrentRoomID: function (socket) {
+    var URI = socket.request.headers.referer
+    var decodeURI = URI.match(/room\/(.*)?/)
+    return decodeURI === null ? 'Chat Room' : decodeURI[1].replace('/','')
+  },
   // 判断当前房间是否存在
   isRoomExist: function (arr, roomID) {
     var a = arr.filter(function(val){
       if(val.name === roomID) {
-        console.log(val.name)
         return true
       }
     })
@@ -42,6 +56,14 @@ chat.method = {
     chat.data.room.findIndex(function(val,index){
       if(val.name === roomID) {
         chat.data.room[index].user.push(name)
+      }
+    })
+  },
+  // 删除指定房间用户
+  delUserFromRoom: function (name, roomID) {
+    chat.data.room.findIndex(function(val,index){
+      if(val.name === roomID) {
+        chat.data.room[index].user.splice(roomID, 1)
       }
     })
   },
@@ -57,8 +79,8 @@ io.on('connection', function (socket) {
   socket.emit('request room id')
   // 监听到相应后，存储当前的房间号
   socket.on('response room id', function (roomID) {
-    chat.data.currentRoom = roomID
-    console.log('cccccccccccc: ' + chat.data.currentRoom)
+    chat.data.currentRoomID = roomID
+    console.log('connection / currentRoom: ' + chat.data.currentRoomID)
     // 不存在则创建新房间
     if(!chat.method.isRoomExist(chat.data.room, roomID)) {
       chat.data.room.push({
@@ -97,13 +119,18 @@ io.on('connection', function (socket) {
   // 退出连接时的方法
   socket.on('disconnect', function () {
     // TODO: not work
-    if (chat.data.socketID[socket.id] !== 'undefined') {
+    if (chat.data.socketID[socket.id] !== undefined) {
       console.log(chat.data.socketID[socket.id] + ' had gone.')
     }
+    // chat.method.getCurrentRoomID(socket)
+    chat.data.currentRoomID = chat.method.getCurrentRoomID(socket)
+    chat.data.currentRoomIndex = chat.method.getCurrentRoomIndex(chat.data.currentRoomID)
+    console.log('getCurrentRoomID / ' + chat.data.currentRoom)
+    console.log('getCurrentRoomIndex / ' + chat.data.currentRoomIndex)
+    console.log('disconnect / currentRoom: ' + chat.data.currentRoomID)
+    console.log('disconnect / currentRoomIndex: ' + chat.data.currentRoomIndex)
+    console.log('socket.id: ' + socket.id)
     socket.emit('request logout user')
-    socket.on('response logout user', function (msg) {
-      console.log(msg + ' is gone.')
-    })
   });
 })
 // 监听8089端口
