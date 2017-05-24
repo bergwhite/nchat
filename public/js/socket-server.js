@@ -106,6 +106,6 @@ io.on('connection', function (socket) {
     })
   });
 })
-// 监听81端口
-server.listen(81)
-console.log('socket-server on 81')
+// 监听8089端口
+server.listen(8089)
+console.log('socket-server on 8089')
