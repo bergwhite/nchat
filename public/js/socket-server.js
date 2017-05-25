@@ -40,7 +40,7 @@ chat.method = {
   getCurrentRoomID: function (socket) {
     var URI = socket.request.headers.referer
     var decodeURI = URI.match(/room\/(.*)?/)
-    return decodeURI === null ? 'Chat Room' : decodeURI[1].replace('/','')
+    return decodeURI === null ? 'Chat Room' : decodeURIComponent(decodeURI[1].replace('/',''))
   },
   // 判断当前房间是否存在
   isRoomExist: function (arr, roomID) {

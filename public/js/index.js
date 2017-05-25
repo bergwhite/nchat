@@ -4,6 +4,7 @@ var userRegTip = document.getElementById('user-reg-tip')
 var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 var chatMsgSend = document.getElementsByClassName('chat-msg-send')[0]
 var infoTab = document.getElementsByClassName('info-tab')[0]
+var roomList = document.getElementsByClassName('room-list')[0]
 
 // 文档加载完毕自动在输入框获得焦点
 document.body.onload = function () {
@@ -21,7 +22,7 @@ nodejsChat.data = {
   isRoomInit: false,
   onlineUserCount: 0,
   onlineUserList: [],
-  welcomeInfo: 'system: welcome to the ',
+  welcomeInfo: '系统: 欢迎来到 ',
   // 房间ID
   roomID: null,
   // 用户资料
@@ -55,6 +56,8 @@ nodejsChat.room = {
       nodejsChat.method.initDOMFragement(userList)
       nodejsChat.method.getOnlineList(data.room, nodejsChat.data.roomID)
       nodejsChat.method.renderUserList(nodejsChat.data.onlineUserList)
+      nodejsChat.method.renderRoomList(data.room)
+      console.log(data.room)
       console.log(data)
       console.log("在线统计：" + nodejsChat.data.onlineUserCount)
       console.log('在线用户：' + nodejsChat.data.onlineUserList)
@@ -93,13 +96,19 @@ nodejsChat.method = {
     if (!isHome && (pathName.indexOf('room') !== -1)) {
       roomId = pathName.replace(/\/.*?\//,'')
     }
-    return roomId === null ? roomId = 'Chat Room' : roomId
+    return roomId === null ? roomId = 'Chat Room' : decodeURIComponent(roomId)
   },
   // 渲染用户列表
   renderUserList: function (arr) {
     for(var i = 0; i < arr.length; i++){
       console.log('renderUserList：' + arr[i])
       this.appendElement(userList, 'li', arr[i])
+    }
+  },
+  renderRoomList: function (arr) {
+    for(var i = 0; i < arr.length; i++){
+      console.log('renderRoomList：' + arr[i].name)
+      this.appendElement(roomList, 'li', arr[i].name)
     }
   },
   // 发送消息
