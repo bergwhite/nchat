@@ -174,15 +174,16 @@ nodejsChat.method = {
   }
 }
 
-// 初始化房间ID
-nodejsChat.data.roomID = nodejsChat.method.getRoomID()
-
-// 初始化
-// 为当前房间分配ID
-nodejsChat.room.init()
-// 渲染
-nodejsChat.room.render()
-// 测试随机图片
-console.log(nodejsChat.method.getRandomImg('men'))
-// 测试随机昵称
-console.log(nodejsChat.method.getRandomNick('china','male'))
+document.body.onload = function () {
+  // 初始化房间ID
+  nodejsChat.data.roomID = nodejsChat.method.getRoomID()
+  // 初始化
+  // 为当前房间分配ID
+  nodejsChat.room.init()
+  // 渲染
+  nodejsChat.room.render()
+  // 测试随机图片
+  console.log(nodejsChat.method.getRandomImg('men'))
+  // 测试随机昵称
+  console.log(nodejsChat.method.getRandomNick('china','male'))
+}

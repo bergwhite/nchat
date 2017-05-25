@@ -56,10 +56,12 @@
       var socketScript = document.createElement('script')
       var tempSrc = 'http://' + document.location.hostname + ':8089/socket.io/socket.io.js'
       socketScript.src = tempSrc
-      var indexScript = document.createElement('script')
-      indexScript.src = '/js/index.js'
-      document.body.appendChild(socketScript)
-      document.body.appendChild(indexScript)
+      document.head.appendChild(socketScript)
+      socketScript.onload = function () {
+        var indexScript = document.createElement('script')
+        indexScript.src = '/js/index.js'
+        document.body.appendChild(indexScript)
+      }
     </script>
   </body>
 </html>
