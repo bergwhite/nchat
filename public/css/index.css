@@ -56,12 +56,37 @@ li {
 }
 .chat-ctx {
   padding: 20px;
-  height: 220px;
-  border-bottom: 1px solid white;
+  height: 180px;
   overflow-y: hidden;
 }
 .chat-ctx:hover {
   overflow-y: auto;
+}
+.chat-more-wrap {
+  height: 40px;
+  line-height: 40px;
+  border-bottom: 1px solid white;
+}
+.chat-more > li {
+  float: left;
+  width: 40px;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+.chat-more-box {
+  position: absolute;
+  left: 0;
+  top: -80px;
+  width: 280px;
+  height: 80px;
+  text-align: left;
+  visibility: hidden;
+}
+.chat-more-box > li {
+  width: 20px;
+  text-align: center;
+  float: left;
 }
 .chat-msg-list {
   height: 80px;

@@ -5,6 +5,7 @@ var infoTab = document.getElementsByClassName('info-tab')[0]
 var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 var userList = document.getElementsByClassName('user-lists')[0]
 var roomList = document.getElementsByClassName('room-list')[0]
+var chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
 
 // 文档加载完毕自动在输入框获得焦点
 document.body.onload = function () {
@@ -46,6 +47,8 @@ nodejsChat.room = {
       nodejsChat.method.insertToList(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
       // 初始化输入框内容为空
       chatMsgSend.innerHTML = ''
+      // 初始化标签框为不可见
+      chatMoreBox.style.visibility = 'hidden'
     })
     socket.on('welcome the user', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data)
@@ -170,6 +173,10 @@ nodejsChat.method = {
   // 通过选项标签改变显示的内容
   setInfoTabMargin: function (type) {
     infoTab.style.marginLeft = - (type - 1 ) * 181 + 'px'
+  },
+  changeBoxVisibility: function (node) {
+    var nodeName = node || chatMoreBox
+    nodeName.style.visibility === 'hidden' ? chatMoreBox.style.visibility = 'visible' : chatMoreBox.style.visibility = 'hidden'
   }
 }
 
