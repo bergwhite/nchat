@@ -13,7 +13,7 @@ document.body.onload = function () {
 
 // 为socket.io设置别名
 var socketHostName = document.location.hostname
-var socketURI = socketHostName + ':8089/'
+var socketURI = 'http://' +  socketHostName + ':8089/'
 var socket = io(socketURI)
 
 // 把聊天室所有的操作封装在命名空间内
@@ -79,6 +79,7 @@ nodejsChat.room = {
         nodejsChat.data.user.name = null
       } else {
         userRegTip.innerHTML = '注册成功'
+        setTimeout(nodejsChat.method.initList(userRegTip), 2000)
         nodejsChat.method.renderList('user', [data.user[data.user.length - 1]])
       }
       console.log(data)
