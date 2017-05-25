@@ -32,12 +32,9 @@ li {
   padding: 5px;
   cursor: pointer;
 }
-#user-reg, .chat-info-confirm {
+#user-reg, .chat-info-confirm, #user-reg-tip {
   width: 80%;
   margin: 20px auto 0 auto;
-}
-#user-reg-tip {
-  margin: 0;
 }
 .user-list-wrap {
   width: 181px;

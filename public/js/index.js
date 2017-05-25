@@ -79,7 +79,6 @@ nodejsChat.room = {
         nodejsChat.data.user.name = null
       } else {
         userRegTip.innerHTML = '注册成功'
-        setTimeout(nodejsChat.method.initList(userRegTip), 2000)
         nodejsChat.method.renderList('user', [data.user[data.user.length - 1]])
       }
       console.log(data)
@@ -125,7 +124,7 @@ nodejsChat.method = {
   },
   // 发送消息
   sendMessage: function () {
-    if (chatMsgSend.inneHTML !== '') {
+    if (chatMsgSend.innerHTML !== '') {
       socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
       nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
       // 发送完消息清空内容
@@ -133,7 +132,7 @@ nodejsChat.method = {
       // 发送完消息重新把焦点放置在输入框
       chatMsgSend.focus()
     } else {
-      chatMsgSend.innerHTML = '内容不能为空'
+      userRegTip.innerHTML = '内容不能为空'
     }
   },
   // 注册用户
