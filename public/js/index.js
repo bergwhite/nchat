@@ -1,9 +1,9 @@
-var userList = document.getElementsByClassName('user-lists')[0]
 var userReg = document.getElementById('user-reg')
 var userRegTip = document.getElementById('user-reg-tip')
-var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 var chatMsgSend = document.getElementsByClassName('chat-msg-send')[0]
 var infoTab = document.getElementsByClassName('info-tab')[0]
+var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
+var userList = document.getElementsByClassName('user-lists')[0]
 var roomList = document.getElementsByClassName('room-list')[0]
 
 // 文档加载完毕自动在输入框获得焦点
@@ -41,34 +41,33 @@ nodejsChat.room = {
       // 把当前房间id返回给后台
       socket.emit('response room id', nodejsChat.data.roomID)
       // 为当前房间发送欢迎消息
-      nodejsChat.method.appendElement(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
+      nodejsChat.method.insertToList(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
       // 初始化输入框内容为空
       chatMsgSend.innerHTML = ''
     })
     socket.on('welcome the user', function (data) {
-      nodejsChat.method.appendElement(chatMsgList, 'li', data)
+      nodejsChat.method.insertToList(chatMsgList, 'li', data)
     })
   },
   // 渲染
   render: function () {
     // 进入页面打印当前聊天室状态
     socket.on('current status', function  (data) {
-      nodejsChat.method.initDOMFragement(userList)
+      nodejsChat.method.initList(userList)
       nodejsChat.method.getOnlineList(data.room, nodejsChat.data.roomID)
-      nodejsChat.method.renderUserList(nodejsChat.data.onlineUserList)
-      nodejsChat.method.renderRoomList(data.room)
-      console.log(data.room)
+      nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
+      nodejsChat.method.renderList('room', data.roomList)
       console.log(data)
       console.log("在线统计：" + nodejsChat.data.onlineUserCount)
       console.log('在线用户：' + nodejsChat.data.onlineUserList)
     })
     // 渲染在线用户列表
     socket.on('renderOnlineList', function (data) {
-      nodejsChat.method.appendElement(userList, 'li', data)
+      nodejsChat.method.insertToList(userList, 'li', data)
     })
     // 把最新的消息添加进DOM
     socket.on('latestTalk', function (data) {
-      nodejsChat.method.appendElement(chatMsgList, 'li', data.user + ': ' + data.msg)
+      nodejsChat.method.insertToList(chatMsgList, 'li', data.user + ': ' + data.msg)
       console.log(data)
     })
     //
@@ -78,7 +77,7 @@ nodejsChat.room = {
         nodejsChat.data.user.name = null
       } else {
         userRegTip.innerHTML = '注册成功'
-        nodejsChat.method.renderUserList([data.user[data.user.length - 1]])
+        nodejsChat.method.renderList('user', [data.user[data.user.length - 1]])
       }
       console.log(data)
       console.log("当前在线：" + data.user.length)
@@ -98,24 +97,34 @@ nodejsChat.method = {
     }
     return roomId === null ? roomId = 'Chat Room' : decodeURIComponent(roomId)
   },
-  // 渲染用户列表
-  renderUserList: function (arr) {
-    for(var i = 0; i < arr.length; i++){
-      console.log('renderUserList：' + arr[i])
-      this.appendElement(userList, 'li', arr[i])
+  // 清空节点内容
+  initList: function (node) {
+    node['innerHTML'] = ''
+  },
+  // 渲染列表
+  renderList: function (parentNode, childArr, template) {
+    // 设置父节点别名
+    var type = {
+      room: roomList,
+      user: userList,
+      chat: chatMsgList
+    }
+    // 逐个渲染
+    for(var i = 0; i < childArr.length; i++){
+      this.insertToList(type[parentNode], 'li', childArr[i])
     }
   },
-  renderRoomList: function (arr) {
-    for(var i = 0; i < arr.length; i++){
-      console.log('renderRoomList：' + arr[i].name)
-      this.appendElement(roomList, 'li', arr[i].name)
-    }
+  // 插入值到节点
+  insertToList: function (parentDOM, childType, childCtx) {
+    var childDOM = document.createElement(childType)
+    childDOM.innerHTML = childCtx
+    parentDOM.appendChild(childDOM)
   },
   // 发送消息
   sendMessage: function () {
     if (chatMsgSend.inneHTML !== '') {
       socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
-      nodejsChat.method.appendElement(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
+      nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
       // 发送完消息清空内容
       chatMsgSend.innerHTML = ''
       // 发送完消息重新把焦点放置在输入框
@@ -135,16 +144,6 @@ nodejsChat.method = {
       userRegTip.innerHTML = '请输入用户名'
     }
   },
-  // 清空节点内容
-  initDOMFragement: function (type) {
-    type['innerHTML'] = ''
-  },
-  // 在节点下添加子节点
-  appendElement: function (parentDOM, childType, childCtx) {
-    var childDOM = document.createElement(childType)
-    childDOM.innerHTML = childCtx
-    parentDOM.appendChild(childDOM)
-  },
   // 获取在线列表
   getOnlineList: function (arr, type) {
     arr.filter(function (val) {
@@ -155,15 +154,18 @@ nodejsChat.method = {
       }
     })
   },
+  // 获取随机图片
   getRandomImg: function (gender) {
     // example / https://randomuser.me/api/portraits/men/100.jpg
     var randomNumber = parseInt(Math.random() * 100)
     return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
   },
+  // 获取随机昵称
   getRandomNick: function (region,gender) {
     // example / https://uinames.com/api/?region=china&gender=female&amount=1
     return 'https://uinames.com/api/?region=' + region + '&gender=' + gender + '&amount=1'
   },
+  // 通过选项标签改变显示的内容
   setInfoTabMargin: function (type) {
     infoTab.style.marginLeft = - (type - 1 ) * 181 + 'px'
   }
@@ -177,5 +179,7 @@ nodejsChat.data.roomID = nodejsChat.method.getRoomID()
 nodejsChat.room.init()
 // 渲染
 nodejsChat.room.render()
+// 测试随机图片
 console.log(nodejsChat.method.getRandomImg('men'))
+// 测试随机昵称
 console.log(nodejsChat.method.getRandomNick('china','male'))

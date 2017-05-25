@@ -21,12 +21,19 @@ li {
   position: relative;
   padding-top: 30px;
 }
+.info-user {
+  text-align: center;
+}
 #user-reg {
-  padding: 5px;
+  padding: 10px 20px;
 }
 .chat-info-confirm {
   border: 1px solid white;
   padding: 5px;
+}
+#user-reg, .chat-info-confirm {
+  width: 80%;
+  margin: 20px auto 0 auto;
 }
 #user-reg-tip {
   margin: 0;
@@ -39,14 +46,8 @@ li {
   border-left: 0;
   overflow: hidden;
 }
-.user-list-name {
-  text-align: center;
-  border-bottom: 1px solid white;
-  margin: 0 20px;
-  padding: 10px;
-}
-.user-lists {
-  padding: 20px;
+.user-lists,.room-list {
+  padding: 0 20px;
 }
 .chat-ctx-wrap {
   float: left;
@@ -102,12 +103,12 @@ li {
 }
 .info-tab {
   transition: all .7s;
-  width: 543px;
+  width: 540px;
   height: 250px;
   overflow: hidden;
 }
 .info-tab-cut,.info-user,.info-menber,.info-room {
-  width: 181px;
+  width: 180px;
   height: 250px;
 }
 .info-tab > li {

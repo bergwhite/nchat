@@ -17,6 +17,7 @@ chat.data = {
     // 用户
     user: []
   }],
+  roomList: ['Chat Room'],
   // 为用户添加状态
   // 在用户下线的时候可以进行判断
   socketID: {},
@@ -83,6 +84,7 @@ io.on('connection', function (socket) {
     console.log('connection / currentRoom: ' + chat.data.currentRoomID)
     // 不存在则创建新房间
     if(!chat.method.isRoomExist(chat.data.room, roomID)) {
+      chat.data.roomList.push(roomID)
       chat.data.room.push({
         name: roomID,
         desc: null,
