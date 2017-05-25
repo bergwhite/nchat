@@ -1,22 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %></title>
+    <title><%= title %> - NodeJS Chat</title>
     <link rel='stylesheet' href='/css/index.css' />
   </head>
   <body>
     <h1 style="text-align: center;"><%= title %></span></h1>
     <div class="chat">
       <div class="chat-info">
-        <input type="text" placeholder="Enter your name" id="user-reg">
-        <a class="chat-info-confirm" onclick="nodejsChat.method.regUser()">ok</a>
-        <p  id="user-reg-tip" style="color: red;"></p>
-      </div>
-      <div class="user-list-wrap">
-        <p class="user-list-name">Online List</p>
-        <ul class="user-lists">
-          
-        </ul>
       </div>
       <div class="chat-ctx-wrap">
         <div class="chat-ctx">
@@ -28,6 +19,35 @@
           <div class="chat-send-btn" onclick="nodejsChat.method.sendMessage()">
             发送
           </div>
+        </div>
+      </div>
+      <div class="user-list-wrap">
+        <ul class="info-tab-list">
+          <li onclick="nodejsChat.method.setInfoTabMargin(1)">个人</li>
+          <li onclick="nodejsChat.method.setInfoTabMargin(2)">成员</li>
+          <li onclick="nodejsChat.method.setInfoTabMargin(3)">房间</li>
+        </ul>
+        <div class="info-tab-cut">
+          <ul class="info-tab">
+            <li>
+              <div class="info-user">
+                <input type="text" placeholder="Enter your name" id="user-reg">
+                <a class="chat-info-confirm" onclick="nodejsChat.method.regUser()">ok</a>
+                <p  id="user-reg-tip" style="color: red;"></p>
+              </div>
+            </li>
+            <li>
+              <div class="info-menber">
+                <p class="user-list-name">Online List</p>
+                <ul class="user-lists"></ul>
+              </div>
+            </li>
+            <li>
+              <div class="info-room">
+                Room List
+              </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>

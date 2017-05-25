@@ -3,6 +3,7 @@ var userReg = document.getElementById('user-reg')
 var userRegTip = document.getElementById('user-reg-tip')
 var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 var chatMsgSend = document.getElementsByClassName('chat-msg-send')[0]
+var infoTab = document.getElementsByClassName('info-tab')[0]
 
 // 文档加载完毕自动在输入框获得焦点
 document.body.onload = function () {
@@ -144,6 +145,18 @@ nodejsChat.method = {
         nodejsChat.data.onlineUserList = newArr
       }
     })
+  },
+  getRandomImg: function (gender) {
+    // example / https://randomuser.me/api/portraits/men/100.jpg
+    var randomNumber = parseInt(Math.random() * 100)
+    return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
+  },
+  getRandomNick: function (region,gender) {
+    // example / https://uinames.com/api/?region=china&gender=female&amount=1
+    return 'https://uinames.com/api/?region=' + region + '&gender=' + gender + '&amount=1'
+  },
+  setInfoTabMargin: function (type) {
+    infoTab.style.marginLeft = - (type - 1 ) * 181 + 'px'
   }
 }
 
@@ -155,3 +168,5 @@ nodejsChat.data.roomID = nodejsChat.method.getRoomID()
 nodejsChat.room.init()
 // 渲染
 nodejsChat.room.render()
+console.log(nodejsChat.method.getRandomImg('men'))
+console.log(nodejsChat.method.getRandomNick('china','male'))

@@ -21,11 +21,6 @@ li {
   position: relative;
   padding-top: 30px;
 }
-.chat-info {
-  position: absolute;
-  right: 0px;
-  top: -20px;
-}
 #user-reg {
   padding: 5px;
 }
@@ -37,15 +32,12 @@ li {
   margin: 0;
 }
 .user-list-wrap {
-  width: 200px;
+  width: 181px;
   height: 300px;
   border: 1px solid white;
   float: left;
-  border-right: 0;
-  overflow-y: hidden;
-}
-.user-list-wrap:hover {
-  overflow-y: auto;
+  border-left: 0;
+  overflow: hidden;
 }
 .user-list-name {
   text-align: center;
@@ -57,6 +49,7 @@ li {
   padding: 20px;
 }
 .chat-ctx-wrap {
+  float: left;
   width: 400px;
   height: 300px;
   border: 1px solid white;
@@ -92,4 +85,31 @@ li {
   cursor: pointer;
   background-color: white;
   color: black;
+}
+.info-tab-list {
+  height: 50px;
+  line-height: 50px;
+  overflow: hidden;
+}
+.info-tab-list > li {
+  float: left;
+  width: 60px;
+  text-align: center;
+  cursor: pointer;
+}
+.info-tab-cut {
+  overflow: hidden;
+}
+.info-tab {
+  transition: all .7s;
+  width: 543px;
+  height: 250px;
+  overflow: hidden;
+}
+.info-tab-cut,.info-user,.info-menber,.info-room {
+  width: 181px;
+  height: 250px;
+}
+.info-tab > li {
+  float: left;
 }
