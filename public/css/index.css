@@ -30,6 +30,7 @@ li {
 .chat-info-confirm {
   border: 1px solid white;
   padding: 5px;
+  cursor: pointer;
 }
 #user-reg, .chat-info-confirm {
   width: 80%;

@@ -12,7 +12,9 @@ document.body.onload = function () {
 }
 
 // 为socket.io设置别名
-var socket = io('http://localhost:8089/')
+var socketHostName = document.location.hostname
+var socketURI = socketHostName + ':8089/'
+var socket = io(socketURI)
 
 // 把聊天室所有的操作封装在命名空间内
 var nodejsChat = {}
