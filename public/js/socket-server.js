@@ -61,12 +61,10 @@ chat.method = {
     })
   },
   // 删除指定房间用户
-  delUserFromRoom: function (name, roomID) {
-    chat.data.room.findIndex(function(val,index){
-      if(val.name === roomID) {
-        chat.data.room[index].user.splice(roomID, 1)
-      }
-    })
+  delUserFromRoom: function (user, roomIndex) {
+    var userIndex = chat.data.room[roomIndex].user.indexOf(user)
+    // 从房间中移除
+    chat.data.room[roomIndex].user.splice(userIndex, 1)
   },
   welcomeUser: function (roomID, msg) {
     // 为当前房间发送欢迎消息
@@ -120,17 +118,19 @@ io.on('connection', function (socket) {
   socket.emit('current status', chat.data)
   // 退出连接时的方法
   socket.on('disconnect', function () {
-    // TODO: not work
-    if (chat.data.socketID[socket.id] !== undefined) {
-      console.log(chat.data.socketID[socket.id] + ' had gone.')
-    }
     // chat.method.getCurrentRoomID(socket)
     chat.data.currentRoomID = chat.method.getCurrentRoomID(socket)
     chat.data.currentRoomIndex = chat.method.getCurrentRoomIndex(chat.data.currentRoomID)
+    if (chat.data.socketID[socket.id] !== undefined) {
+      chat.method.delUserFromRoom(chat.data.socketID[socket.id],chat.data.currentRoomIndex)
+      socket.broadcast.to(chat.data.currentRoomID).emit('request user logout', {
+        currentUser: chat.data.socketID[socket.id],
+        currentUserList: chat.data.room[chat.data.currentRoomIndex].user
+      })
+    }
     console.log('disconnect / getCurrentRoomID / ' + chat.data.currentRoomID)
     console.log('disconnect / getCurrentRoomIndex / ' + chat.data.currentRoomIndex)
     console.log('disconnect / getCurrentUser  / ' + chat.data.socketID[socket.id])
-    socket.emit('request logout user')
   });
 })
 // 监听8089端口

@@ -53,6 +53,15 @@ nodejsChat.room = {
     socket.on('welcome the user', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data)
     })
+    socket.on('request user logout', function (data) {
+      console.log(data)
+      // 发送用户离开通知
+      nodejsChat.method.insertToList(chatMsgList, 'li', data.currentUser + ' 离开了房间')
+      // 清空在线列表
+      nodejsChat.method.initList(userList)
+      // 重新渲染在线列表
+      nodejsChat.method.renderList('user', data.currentUserList)
+    })
   },
   // 渲染
   render: function () {
@@ -112,7 +121,8 @@ nodejsChat.method = {
     var type = {
       room: roomList,
       user: userList,
-      chat: chatMsgList
+      chat: chatMsgList,
+      emoji: chatMoreBox
     }
     // 逐个渲染
     for(var i = 0; i < childArr.length; i++){
@@ -174,9 +184,12 @@ nodejsChat.method = {
   setInfoTabMargin: function (type) {
     infoTab.style.marginLeft = - (type - 1 ) * 181 + 'px'
   },
-  changeBoxVisibility: function (node) {
+  getEmoji: function (node) {
+    var emojiList = ['😅', '😂', '🙂', '🙃', '😉', '😘', '😗', '😜', '😎', '😏', '😔', '🙁', '😶', '😢', '🤔', '👏', '🤝', '👍', '👎', '✌', '❤', '🐶', '🐱', '🐰', '🐭', '🐷', '🐸', '🙈',]
     var nodeName = node || chatMoreBox
+    this.initList(nodeName)
     nodeName.style.visibility === 'hidden' ? chatMoreBox.style.visibility = 'visible' : chatMoreBox.style.visibility = 'hidden'
+    this.renderList('emoji', emojiList)
   }
 }
 
