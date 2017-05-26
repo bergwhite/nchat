@@ -30,7 +30,7 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 更多房间
 
-![nodejs-chat-more-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-more-room.gif)
+![nodejs-chat-more-rooms](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-more-rooms.gif)
 
 房间独立
 
