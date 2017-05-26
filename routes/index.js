@@ -4,10 +4,10 @@ var user = require('../database').user;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('index', { title: 'NodeJS Chat Room' });
+  res.render('index', { title: '大众聊天室' });
 });
 router.get('/room/:id', function(req, res, next) {
-  res.render('index', { title: 'Room ' + req.params.id });
+  res.render('index', { title: '房间 /  ' + req.params.id });
 });
 router.get('/user', function(req, res, next) {
   res.render('userList', { title: req.params.id });
