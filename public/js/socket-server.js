@@ -56,7 +56,13 @@ chat.method = {
   addUserToRoom: function (name, roomID) {
     chat.data.room.findIndex(function(val,index){
       if(val.name === roomID) {
-        chat.data.room[index].user.push(name)
+        if(chat.data.room[index].user.indexOf('name') === -1) {
+          chat.data.room[index].user.push(name)
+          chat.data.addUserStatus = true
+        }
+        else {
+          chat.data.addUserStatus = false
+        }
       }
     })
   },
@@ -74,6 +80,8 @@ chat.method = {
 
 // socket链接时执行
 io.on('connection', function (socket) {
+  // 初始化房间ID
+  chat.data.currentRoomID = chat.method.getCurrentRoomID(socket)
   // 发送请求当前房间号事件
   socket.emit('request room id')
   // 监听到相应后，存储当前的房间号
@@ -96,19 +104,15 @@ io.on('connection', function (socket) {
   socket.on('add user', function (id, msg) {
     chat.method.addUserToRoom(msg.name,id)
     console.log(msg)
-    // 当前用户未曾添加则添加成功
-    if(chat.data.user.indexOf(msg.name) === -1) {
-      chat.data.user.push(msg.name)
-      chat.data.addUserStatus = true
-      socket.broadcast.to(id).emit('renderOnlineList', msg.name)
+    if (chat.data.addUserStatus) {
       chat.method.welcomeUser(id, '欢迎' + msg.name + '加入房间')
+      socket.broadcast.to(id).emit('renderOnlineList', msg.name)
       chat.data.socketID[socket.id] = msg.name
     }
-    // 当前用户已添加则添加失败
-    else {
-      chat.data.addUserStatus = false
-    }
-    socket.emit('showUser', chat.data)
+    socket.emit('showUser', {
+      status: chat.data.addUserStatus,
+      user: msg.name
+    })
   })
   // 给指定房间发送消息
   socket.on('send message', function (id, msg) {

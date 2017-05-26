@@ -86,12 +86,12 @@ nodejsChat.room = {
     })
     //
     socket.on('showUser', function  (data) {
-      if (!data.addUserStatus) {
+      if (!data.status) {
         userRegTip.innerHTML = '用户名已存在'
         nodejsChat.data.user.name = null
       } else {
         userRegTip.innerHTML = '注册成功'
-        nodejsChat.method.renderList('user', [data.user[data.user.length - 1]])
+        nodejsChat.method.renderList('user', [data.user])
       }
       console.log(data)
       console.log("当前在线：" + data.user.length)
