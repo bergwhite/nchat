@@ -51,7 +51,6 @@ nodejsChat.room = {
       chatMoreBox.style.visibility = 'hidden'
     })
     socket.on('showRoom', function  (data) {
-      console.log(data)
       nodejsChat.method.insertToList(roomList, 'li', data)
     })
     socket.on('welcome the user', function (data) {
