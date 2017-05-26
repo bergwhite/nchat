@@ -2,25 +2,39 @@
 
 > 项目背景
 
-这个项目是为了玩玩NodeJS，越玩越觉着有趣了。主要是，有挑战性。如果你对这个项目有更有趣的玩法，欢迎联系我或提交issue。 [在线演示](http://47.93.252.247:8088/)
+这个项目主要是为了玩玩NodeJS，项目的方向大概是做出类似QQ的在线聊天系统。想要在线体验可以点击[在线演示](http://47.93.252.247:8088/)。
 
-项目使用PM2进行部署和管理（这个npm包很给力）。
+项目使用PM2进行部署和管理，功能在不断的迭代开发中。如果你觉得这个项目比较有趣，或者能对你有所帮助，欢迎给个Star。
 
-PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
+PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue全家桶二次开发的V2EX社区](https://github.com/bergwhite/v2ex-vue)。
 
 > 项目演示
 
-用户注册
+目前项目存在一个已知的bug，表情包无法在div模拟的输入框中插入。
 
-![nodejs-chat-user-reg](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-reg.gif)
+匿名聊天
 
-发送消息
+![nodejs-chat-nick-chat](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-nick-chat.gif)
 
-![nodejs-chat-msg-send](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-msg-send.gif)
+用户聊天
 
-房间消息独立
+![nodejs-chat-user-chat](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-chat.gif)
 
-![nodejs-chat-multi-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-multi-room.gif)
+成员&房间
+
+![nodejs-chat-memb-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-memb-room.gif)
+
+离线通知
+
+![nodejs-chat-user-gone](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-gone.gif)
+
+更多房间
+
+![nodejs-chat-more-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-more-room.gif)
+
+房间独立
+
+![nodejs-chat-room-diff](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-room-diff.gif)
 
 > 项目目录
 
@@ -51,6 +65,8 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 
 > 路由
 
+目前只有/目录和/room/:id正式使用了，其他路由的页面还在迭代开发中。
+
 ```
 
 /  // 首页
@@ -68,11 +84,14 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 
 * 跨浏览器，跨地域聊天（SocketIO自带技能）
 * 首次进入会显示欢迎信息
+* 发送空消息会进行提示
 * 直接发送消息默认昵称为“神秘人”
-* 发送后会清空当前输入框内容
-* 添加用户名后会成为新用户，此时会告知全房间人有新用户加入
-* 创建不同的房间，不同的房间的聊天是相互独立的
+* 发送消息后会清空当前输入框内容，然后焦点回到消息输入框
+* 添加用户名后会成为新用户，然后告知全房间人有新用户加入
+* 可以创建不同的房间，不同的房间的聊天是相互独立的
 * 显示当前房间的在线用户（设置了用户名的）
+* 显示目前所有打开的房间
+* 用户（设置了用户名的）离线会通知所有房间内的成员
 * ...
 
 > 待上线功能
@@ -101,6 +120,7 @@ PS: 喜欢的欢迎给个Star。最近找工作，北京的欢迎联系。
 > 项目缺陷
 
 * 界面丑（等功能完善了再考虑）
+* 表情包无法在div模拟的输入框中插入
 * ...
 
 > 开始安装
