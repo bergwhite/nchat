@@ -50,6 +50,10 @@ nodejsChat.room = {
       // 初始化标签框为不可见
       chatMoreBox.style.visibility = 'hidden'
     })
+    socket.on('showRoom', function  (data) {
+      console.log(data)
+      nodejsChat.method.insertToList(roomList, 'li', data)
+    })
     socket.on('welcome the user', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data)
     })
