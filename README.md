@@ -8,49 +8,6 @@
 
 PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue全家桶二次开发的V2EX社区](https://github.com/bergwhite/v2ex-vue)。
 
-> 开始安装
-
-使用之前，请在package.json中修改MongoDB的安装路径（--dbpath）。
-
-```
-
-git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目到本地
-cd nodejs-chat  // 进入项目目录
-npm install  // 安装依赖
-npm run build  // 构建线上代码
-npm run mongod // 启动MongoDB服务
-npm run start // 启动聊天室服务并启动网站
-
-```
-
-> 项目演示
-
-目前项目存在一个已知的bug，表情包无法在div模拟的输入框中插入（修复中）。
-
-匿名聊天
-
-![nodejs-chat-nick-chat](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-nick-chat.gif)
-
-用户聊天
-
-![nodejs-chat-user-chat](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-chat.gif)
-
-成员&房间
-
-![nodejs-chat-memb-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-memb-room.gif)
-
-离线通知
-
-![nodejs-chat-user-gone](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-gone.gif)
-
-更多房间
-
-![nodejs-chat-more-rooms](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-more-rooms.gif)
-
-房间独立
-
-![nodejs-chat-room-diff](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-room-diff.gif)
-
 > 项目目录
 
 ```
@@ -94,6 +51,49 @@ npm run start // 启动聊天室服务并启动网站
 /room/:id  // 指定聊天室
 
 ```
+
+> 开始安装
+
+使用之前，请在package.json中修改MongoDB的安装路径（--dbpath）。
+
+```
+
+git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目到本地
+cd nodejs-chat  // 进入项目目录
+npm install  // 安装依赖
+npm run build  // 构建线上代码
+npm run mongod // 启动MongoDB服务
+npm run start // 启动聊天室服务并启动网站
+
+```
+
+> 项目演示
+
+目前项目存在一个已知的bug，表情包无法在div模拟的输入框中插入（修复中）。
+
+匿名聊天
+
+![nodejs-chat-nick-chat](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-nick-chat.gif)
+
+用户聊天
+
+![nodejs-chat-user-chat](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-chat.gif)
+
+成员&房间
+
+![nodejs-chat-memb-room](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-memb-room.gif)
+
+离线通知
+
+![nodejs-chat-user-gone](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-user-gone.gif)
+
+更多房间
+
+![nodejs-chat-more-rooms](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-more-rooms.gif)
+
+房间独立
+
+![nodejs-chat-room-diff](http://atmp.oss-cn-qingdao.aliyuncs.com/img/nodejs-chat-room-diff.gif)
 
 > 已上线功能
 
