@@ -86,6 +86,8 @@ nodejsChat.room = {
     socket.on('latestTalk', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data.user + ': ' + data.msg)
       console.log(data)
+      // 滚动到最新消息
+      nodejsChat.method.toBottom()
     })
     //
     socket.on('showUser', function  (data) {
@@ -147,6 +149,8 @@ nodejsChat.method = {
       chatMsgSend.innerHTML = ''
       // 发送完消息重新把焦点放置在输入框
       chatMsgSend.focus()
+      // 滚动到最新消息
+      nodejsChat.method.toBottom()
     } else {
       userRegTip.innerHTML = '内容不能为空'
     }
@@ -187,12 +191,18 @@ nodejsChat.method = {
   setInfoTabMargin: function (type) {
     infoTab.style.marginLeft = - (type - 1 ) * 181 + 'px'
   },
+  // 渲染表情包
   getEmoji: function (node) {
     var emojiList = ['😅', '😂', '🙂', '🙃', '😉', '😘', '😗', '😜', '😎', '😏', '😔', '🙁', '😶', '😢', '🤔', '👏', '🤝', '👍', '👎', '✌', '❤', '🐶', '🐱', '🐰', '🐭', '🐷', '🐸', '🙈',]
     var nodeName = node || chatMoreBox
     this.initList(nodeName)
     nodeName.style.visibility === 'hidden' ? chatMoreBox.style.visibility = 'visible' : chatMoreBox.style.visibility = 'hidden'
     this.renderList('emoji', emojiList)
+  },
+  // 滚动到最新消息
+  toBottom: function () {
+    var div = document.getElementsByClassName("chat-ctx")[0];
+    div.scrollTop = div.scrollHeight;
   }
 }
 

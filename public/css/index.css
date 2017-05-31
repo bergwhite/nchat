@@ -14,7 +14,7 @@ ul,li {
 li {
   list-style-type: none;
 }
-fork-me-wrap {
+.fork-me-wrap {
   display: block;
   position: absolute;
   right: 0;
