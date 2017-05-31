@@ -1,4 +1,4 @@
-# NodeJS & SocketIO & Express & EJS & MongoDB 打造多人在线聊天室
+# NodeJS & SocketIO & Express & EJS & MongoDB & Gulp 打造多人在线聊天室
 
 > 项目背景
 
@@ -7,6 +7,21 @@
 项目使用PM2进行部署和管理，功能在不断的迭代开发中。如果你觉得这个项目比较有趣，或者能对你有所帮助，欢迎给个Star。
 
 PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue全家桶二次开发的V2EX社区](https://github.com/bergwhite/v2ex-vue)。
+
+> 开始安装
+
+使用之前，请在package.json中修改MongoDB的安装路径（--dbpath）。
+
+```
+
+git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目到本地
+cd nodejs-chat  // 进入项目目录
+npm install  // 安装依赖
+npm run build  // 构建线上代码
+npm run mongod // 启动MongoDB服务
+npm run start // 启动聊天室服务并启动网站
+
+```
 
 > 项目演示
 
@@ -92,6 +107,7 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 * 显示当前房间的在线用户（设置了用户名的）
 * 显示目前所有打开的房间
 * 用户（设置了用户名的）离线会通知所有房间内的成员
+* 压缩线上代码，加快访问速度
 * ...
 
 > 待上线功能
@@ -122,17 +138,3 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 * 界面丑（等功能完善了再考虑）
 * 表情包无法在div模拟的输入框中插入（修复中）
 * ...
-
-> 开始安装
-
-使用之前，请在package.json中修改MongoDB的安装路径（--dbpath）。
-
-```
-
-git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目到本地
-cd nodejs-chat  // 进入项目目录
-npm install  // 安装依赖
-npm run mongod // 启动MongoDB服务
-npm run start // 启动聊天室服务并启动网站
-
-```

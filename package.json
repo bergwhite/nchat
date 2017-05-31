@@ -3,8 +3,8 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
+    "build": "gulp build",
     "start": "node ./bin/www",
-    "socket-server": "node ./public/js/socket-server.js",
     "mongod": "start X:/MongoDB/bin/mongod --dbpath=X:\\MongoDB\\data\\db"
   },
   "dependencies": {
@@ -17,5 +17,11 @@
     "morgan": "~1.7.0",
     "serve-favicon": "~2.3.2",
     "socket.io": "^2.0.1"
+  },
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-clean-css": "^3.4.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglifyjs": "^0.6.2"
   }
 }

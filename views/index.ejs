@@ -2,7 +2,7 @@
 <html>
   <head>
     <title><%= title %> - NodeJS Chat</title>
-    <link rel='stylesheet' href='/css/index.css' />
+    <link rel='stylesheet' href='/css/index.min.css' />
   </head>
   <body>
     <h1 style="text-align: center;"><%= title %></span></h1>
@@ -68,7 +68,7 @@
       document.head.appendChild(socketScript)
       socketScript.onload = function () {
         var indexScript = document.createElement('script')
-        indexScript.src = '/js/index.js'
+        indexScript.src = '/js/index.min.js'
         document.body.appendChild(indexScript)
       }
     </script>
