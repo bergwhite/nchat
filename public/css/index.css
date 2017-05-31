@@ -14,6 +14,12 @@ ul,li {
 li {
   list-style-type: none;
 }
+fork-me-wrap {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
 .chat {
   width: 603px;
   height: 300px;
