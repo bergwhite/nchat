@@ -60,6 +60,8 @@ nodejsChat.room = {
       console.log(data)
       // 发送用户离开通知
       nodejsChat.method.insertToList(chatMsgList, 'li', data.currentUser + ' 离开了房间')
+      // 滚动到最新消息
+      nodejsChat.method.toBottom()
       // 清空在线列表
       nodejsChat.method.initList(userList)
       // 重新渲染在线列表
