@@ -88,6 +88,7 @@ li {
   height: 80px;
   text-align: left;
   visibility: hidden;
+  background-color: black;
 }
 .chat-more-box > li {
   width: 20px;
@@ -101,12 +102,16 @@ li {
   word-break:break-all;
 }
 .chat-msg-send {
-  overflow-y: scroll;
+  overflow-y: auto;
   height: 80px;
   width: 80%;
   float: left;
   padding: 10px 20px;
   outline: none;
+  background-color: black;
+  color: white;
+  resize: none;
+  font-size: 16px;
 }
 .chat-send-btn {
   overflow: hidden;

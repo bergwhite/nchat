@@ -23,6 +23,9 @@ var nodejsChat = {}
 // 数据（存放变量）
 nodejsChat.data = {
   isRoomInit: false,
+  messIsFirst: true,
+  messIsFoucs: false,
+  isInitInsertEmoji: false,
   onlineUserCount: 0,
   onlineUserList: [],
   welcomeInfo: '系统: 欢迎来到 ',
@@ -46,9 +49,13 @@ nodejsChat.room = {
       // 为当前房间发送欢迎消息
       nodejsChat.method.insertToList(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
       // 初始化输入框内容为空
-      chatMsgSend.innerHTML = ''
+      chatMsgSend.value = ''
       // 初始化标签框为不可见
       chatMoreBox.style.visibility = 'hidden'
+      // 监听输入框点击事件
+      chatMsgSend.onclick = function () {
+        nodejsChat.data.messIsFoucs = true
+      }
     })
     socket.on('showRoom', function  (data) {
       nodejsChat.method.insertToList(roomList, 'li', data)
@@ -144,11 +151,11 @@ nodejsChat.method = {
   },
   // 发送消息
   sendMessage: function () {
-    if (chatMsgSend.innerHTML !== '') {
-      socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.innerHTML})
-      nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.innerHTML)
+    if (chatMsgSend.value !== '') {
+      socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.value})
+      nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.value)
       // 发送完消息清空内容
-      chatMsgSend.innerHTML = ''
+      chatMsgSend.value = ''
       // 发送完消息重新把焦点放置在输入框
       chatMsgSend.focus()
       // 滚动到最新消息
@@ -200,6 +207,45 @@ nodejsChat.method = {
     this.initList(nodeName)
     nodeName.style.visibility === 'hidden' ? chatMoreBox.style.visibility = 'visible' : chatMoreBox.style.visibility = 'hidden'
     this.renderList('emoji', emojiList)
+    // 只初始化一次事件监听
+    nodejsChat.data.isInitInsertEmoji === false ? this.initInsertEmoji() : ''
+  },
+  // 用事件代理监听所有的标签添加事件
+  initInsertEmoji: function () {
+    chatMoreBox.addEventListener('click', function (e) {
+      // 如果当前值的目标标签的小写字母是select
+      if (e.target.tagName.toLowerCase() === 'li') {
+        // 则显示监听到的值
+        nodejsChat.method.insertEmoji(e.target.innerText)
+      }
+    },false)
+    // 设置事件监听初始化状态为真
+    nodejsChat.data.isInitInsertEmoji = true
+  },
+  // 插入表情包
+  insertEmoji: function (type) {
+    var messVal = chatMsgSend.value  // 表单值
+    var index = chatMsgSend.selectionStart  // 光标位置
+    // 如果当前为第一次并且没有点击过输入框
+    // 则把索引改为最后
+    nodejsChat.data.messIsFirst && (!nodejsChat.data.messIsFoucs) ? index = messVal.length : ''
+    // 执行完第一次则把是否是第一次的状态改为false
+    nodejsChat.data.messIsFirst = false
+    // 首部插入
+    if (messVal === '') {
+      chatMsgSend.value = type
+    }
+    // 尾部插入
+    else if (messVal.length === index) {
+      chatMsgSend.value = chatMsgSend.value + type
+    }
+    // 中间插入
+    else {
+      chatMsgSend.value = messVal.slice(0,index) + type + messVal.slice(index,messVal.length)
+    }
+    chatMsgSend.focus()
+    console.log('currentFoucsIndex: ' + index)
+    console.log(messVal.length)
   },
   // 滚动到最新消息
   toBottom: function () {
