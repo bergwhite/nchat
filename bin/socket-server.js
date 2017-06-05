@@ -1,6 +1,7 @@
 const app = require('express')();
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
+var mess = require('../database').mess;
 
 var chat = {}
 
@@ -119,8 +120,15 @@ io.on('connection', function (socket) {
     })
   })
   // 给指定房间发送消息
-  socket.on('send message', function (id, msg) {
+  socket.on('send message', function (time, id, msg) {
     socket.broadcast.to(id).emit('latestTalk', msg)
+    var newMess = new mess({
+      room: id,
+      user: msg.user,
+      mess: msg.msg,
+      time: time
+    })
+    newMess.save()
   })
   // 显示当前状态
   socket.emit('current status', chat.data)

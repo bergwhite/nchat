@@ -25,4 +25,4 @@ var messSche = new Schema({
 exports.user = db.model('users', userSche);
 exports.info = db.model('infos', messSche);
 exports.room = db.model('rooms', roomSche);
-exports.mess = db.model('messs', messSche);
+exports.mess = db.model('messes', messSche);

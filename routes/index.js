@@ -1,7 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var user = require('../database').user;
-console.log(user.find())
+var info = require('../database').info;
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
@@ -28,7 +27,7 @@ router.get('/api/user/:id/logout', function(req, res, next) {
 // 用户资料路由
 router.get('/api/user/:id', function(req, res, next) {
   // 获取用户资料
-  user.findOne({name: req.params.id},function(err,val){
+  info.findOne({user: req.params.id},function(err,val){
     // 如果当前用户不存在
     // 返回错误信息
     if (val === null) {
