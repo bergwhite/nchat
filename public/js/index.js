@@ -44,6 +44,8 @@ nodejsChat.room = {
   // 初始化
   init: function () {
     socket.on('request room id', function () {
+      // 每次进来，先清空房间列表
+      roomList.innerHTML = ''
       // 把当前房间id返回给后台
       socket.emit('response room id', nodejsChat.data.roomID)
       // 为当前房间发送欢迎消息
@@ -95,7 +97,9 @@ nodejsChat.room = {
     })
     // 把最新的消息添加进DOM
     socket.on('latestTalk', function (data) {
-      nodejsChat.method.insertToList(chatMsgList, 'li', data.user + ': ' + data.msg)
+      var time = Date.parse(new Date()) / 1000
+      var leftBubble = nodejsChat.method.renderBubbleMsg('left', data.user, time, nodejsChat.method.parseMsgVal(data.msg))
+      nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
       console.log(data)
       // 滚动到最新消息
       nodejsChat.method.toBottom()
@@ -154,8 +158,23 @@ nodejsChat.method = {
     childDOM.innerHTML = childCtx
     parentDOM.appendChild(childDOM)
   },
+  renderBubbleMsg: function (type, user, time,  msg) {
+    var ctx = `<div class="bubble bubble-${type}">
+      <div class="bubble-head">
+        head
+      </div>
+      <div class="bubble-ctx">
+        <ul class="bubble-info">
+          <li class="bubble-info-user">${user}</li>
+          <li class="bubble-info-time">${time}</li>
+        </ul>
+        <p>${msg}</p>
+      </div>
+    </div>`
+    return ctx
+  },
   parseMsgVal: function (v) {
-    val = v.replace(/</g,'&lt;')
+    var val = v.replace(/</g,'&lt;')
     val = val.replace(/>/g,'&gt;')
     return val
   },
@@ -166,8 +185,10 @@ nodejsChat.method = {
       chatMoreBox.style.visibility = 'hidden'
       // 获取当前时间戳
       var time = Date.parse(new Date()) / 1000
-      socket.emit('send message', time, nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: this.parseMsgVal(chatMsgSend.value)})
-      nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + this.parseMsgVal(chatMsgSend.value))
+      var name = nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人'
+      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, time,  nodejsChat.method.parseMsgVal(chatMsgSend.value))
+      socket.emit('send message', time, nodejsChat.data.roomID , {user: name, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value)})
+      nodejsChat.method.insertToList(chatMsgList, 'li', rightBubble)
       // 发送完消息清空内容
       chatMsgSend.value = ''
       // 发送完消息重新把焦点放置在输入框
@@ -183,8 +204,8 @@ nodejsChat.method = {
     if (nodejsChat.data.user.name) {
       userRegTip.innerHTML = '已登陆，用户名为：' + nodejsChat.data.user.name
     }else if (userReg.value !== "" && userReg.value !== " ") { 
-      nodejsChat.data.user.name = this.parseMsgVal(userReg.value)
-      socket.emit('add user', nodejsChat.data.roomID, {name: this.parseMsgVal(userReg.value)})
+      nodejsChat.data.user.name = nodejsChat.method.parseMsgVal(userReg.value)
+      socket.emit('add user', nodejsChat.data.roomID, {name: nodejsChat.method.parseMsgVal(userReg.value)})
     } else {
       userRegTip.innerHTML = '请输入用户名'
     }

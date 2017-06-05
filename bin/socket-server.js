@@ -122,6 +122,7 @@ io.on('connection', function (socket) {
   // 给指定房间发送消息
   socket.on('send message', function (time, id, msg) {
     socket.broadcast.to(id).emit('latestTalk', msg)
+    // 存储信息到数据库
     var newMess = new mess({
       room: id,
       user: msg.user,
