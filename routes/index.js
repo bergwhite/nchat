@@ -16,17 +16,17 @@ router.get('/user', function(req, res, next) {
 router.get('/user/:id', function(req, res, next) {
   res.render('userCenter', { title: req.params.id });
 });
-router.get('/user/:id/register', function(req, res, next) {
+router.get('/api/user/:id/register', function(req, res, next) {
   res.send({status: "success"});
 });
-router.get('/user/:id/login', function(req, res, next) {
+router.get('/api/user/:id/login', function(req, res, next) {
   res.send({status: "success"});
 });
-router.get('/user/:id/logout', function(req, res, next) {
+router.get('/api/user/:id/logout', function(req, res, next) {
   res.send({status: "success"});
 });
 // 用户资料路由
-router.get('/user/:id/info', function(req, res, next) {
+router.get('/api/user/:id', function(req, res, next) {
   // 获取用户资料
   user.findOne({name: req.params.id},function(err,val){
     // 如果当前用户不存在
