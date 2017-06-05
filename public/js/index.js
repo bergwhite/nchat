@@ -174,8 +174,8 @@ nodejsChat.method = {
     if (nodejsChat.data.user.name) {
       userRegTip.innerHTML = '已登陆，用户名为：' + nodejsChat.data.user.name
     }else if (userReg.value !== "" && userReg.value !== " ") { 
-      nodejsChat.data.user.name = userReg.value
-      socket.emit('add user', nodejsChat.data.roomID, {name: userReg.value})
+      nodejsChat.data.user.name = this.parseMsgVal(userReg.value)
+      socket.emit('add user', nodejsChat.data.roomID, {name: this.parseMsgVal(userReg.value)})
     } else {
       userRegTip.innerHTML = '请输入用户名'
     }
