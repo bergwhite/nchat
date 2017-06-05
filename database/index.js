@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var db = mongoose.connect('mongodb://localhost/ndoejsChat');
+var db = mongoose.connect('mongodb://localhost/nodejsChat');
 var Schema = mongoose.Schema;
 var userSche = new Schema({
   name: String,
@@ -15,7 +15,6 @@ var messSche = new Schema({
   mess: String,
   time: String
 });
-exports.user = db.model('user', userSche);
-exports.room = db.model('room', roomSche);
-exports.mess = db.model('mess', messSche);
-console.log(userSche);
+exports.user = db.model('users', userSche);
+exports.room = db.model('rooms', roomSche);
+exports.mess = db.model('messs', messSche);
