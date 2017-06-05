@@ -9,7 +9,7 @@ var chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
 
 // 文档加载完毕自动在输入框获得焦点
 document.body.onload = function () {
-  chatMsgSend.focus()
+  userReg.focus()
 }
 
 // 为socket.io设置别名
@@ -106,8 +106,10 @@ nodejsChat.room = {
         userRegTip.innerHTML = '用户名已存在'
         nodejsChat.data.user.name = null
       } else {
-        userReg.value = '输入密码可以完成注册'
+        // userReg.value = '输入密码可以完成注册'
         userRegTip.innerHTML = '注册成功'
+        // 聚焦到输入框
+        chatMsgSend.focus()
         nodejsChat.method.renderList('user', [data.user])
       }
       console.log(data)
@@ -162,7 +164,8 @@ nodejsChat.method = {
     if (chatMsgSend.value !== '') {
       // 隐藏表情框
       chatMoreBox.style.visibility = 'hidden'
-      var time = new Date().getTime()
+      // 获取当前时间戳
+      var time = Date.parse(new Date()) / 1000
       socket.emit('send message', time, nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: this.parseMsgVal(chatMsgSend.value)})
       nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + this.parseMsgVal(chatMsgSend.value))
       // 发送完消息清空内容

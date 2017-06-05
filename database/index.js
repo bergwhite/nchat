@@ -20,7 +20,7 @@ var messSche = new Schema({
   room: String,
   user: String,
   mess: String,
-  time: String
+  time: Number
 });
 exports.user = db.model('users', userSche);
 exports.info = db.model('infos', messSche);
