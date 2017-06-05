@@ -50,10 +50,12 @@ nodejsChat.room = {
       nodejsChat.method.insertToList(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
       // 初始化输入框内容为空
       chatMsgSend.value = ''
-      // 初始化标签框为不可见
+      // 初始化表情框为不可见
       chatMoreBox.style.visibility = 'hidden'
       // 监听输入框点击事件
       chatMsgSend.onclick = function () {
+        // 隐藏表情框
+        chatMoreBox.style.visibility = 'hidden'
         nodejsChat.data.messIsFoucs = true
       }
     })
@@ -157,6 +159,8 @@ nodejsChat.method = {
   // 发送消息
   sendMessage: function () {
     if (chatMsgSend.value !== '') {
+      // 隐藏表情框
+      chatMoreBox.style.visibility = 'hidden'
       socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: this.parseMsgVal(chatMsgSend.value)})
       nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + this.parseMsgVal(chatMsgSend.value))
       // 发送完消息清空内容
