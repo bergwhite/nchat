@@ -97,7 +97,7 @@ nodejsChat.room = {
     })
     // 把最新的消息添加进DOM
     socket.on('latestTalk', function (data) {
-      var time = Date.parse(new Date()) / 1000
+      var time = nodejsChat.method.parseTime(data.time)
       var leftBubble = nodejsChat.method.renderBubbleMsg('left', data.user, time, nodejsChat.method.parseMsgVal(data.msg))
       nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
       console.log(data)
@@ -158,6 +158,7 @@ nodejsChat.method = {
     childDOM.innerHTML = childCtx
     parentDOM.appendChild(childDOM)
   },
+  // 左右泡泡组件模板
   renderBubbleMsg: function (type, user, time,  msg) {
     var ctx = `<div class="bubble bubble-${type}">
       <div class="bubble-head">
@@ -178,16 +179,27 @@ nodejsChat.method = {
     val = val.replace(/>/g,'&gt;')
     return val
   },
+  // 获取时间戳
+  getTime: function (t) {
+    return Date.parse(t) / 1000
+  },
+  // 解析时间戳
+  parseTime: function (t) {
+    var tm = new Date()
+    tm.setTime(t * 1000)
+    return tm.toLocaleString()
+  },
   // 发送消息
   sendMessage: function () {
     if (chatMsgSend.value !== '') {
       // 隐藏表情框
       chatMoreBox.style.visibility = 'hidden'
       // 获取当前时间戳
-      var time = Date.parse(new Date()) / 1000
+      var time = nodejsChat.method.getTime(new Date())
+      var timeShow = nodejsChat.method.parseTime(time)
       var name = nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人'
-      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, time,  nodejsChat.method.parseMsgVal(chatMsgSend.value))
-      socket.emit('send message', time, nodejsChat.data.roomID , {user: name, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value)})
+      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, timeShow,  nodejsChat.method.parseMsgVal(chatMsgSend.value))
+      socket.emit('send message', time, nodejsChat.data.roomID , {user: name,time: time, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value)})
       nodejsChat.method.insertToList(chatMsgList, 'li', rightBubble)
       // 发送完消息清空内容
       chatMsgSend.value = ''
