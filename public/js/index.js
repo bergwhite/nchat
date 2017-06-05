@@ -161,7 +161,7 @@ nodejsChat.method = {
   renderBubbleMsg: function (type, user, time,  msg) {
     var ctx = `<div class="bubble bubble-${type}">
       <div class="bubble-head">
-        head
+        头像
       </div>
       <div class="bubble-ctx">
         <ul class="bubble-info">
