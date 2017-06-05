@@ -149,11 +149,16 @@ nodejsChat.method = {
     childDOM.innerHTML = childCtx
     parentDOM.appendChild(childDOM)
   },
+  parseMsgVal: function (v) {
+    val = v.replace(/</g,'&lt;')
+    val = val.replace(/>/g,'&gt;')
+    return val
+  },
   // 发送消息
   sendMessage: function () {
     if (chatMsgSend.value !== '') {
-      socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: chatMsgSend.value})
-      nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + chatMsgSend.value)
+      socket.emit('send message', nodejsChat.data.roomID , {user: nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人', msg: this.parseMsgVal(chatMsgSend.value)})
+      nodejsChat.method.insertToList(chatMsgList, 'li', (nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人') + ': ' + this.parseMsgVal(chatMsgSend.value))
       // 发送完消息清空内容
       chatMsgSend.value = ''
       // 发送完消息重新把焦点放置在输入框
