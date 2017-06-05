@@ -5,6 +5,13 @@ var userSche = new Schema({
   name: String,
   pass: String
 });
+var infoSche = new Schema({
+  user: String,
+  gender: String,
+  img: String,
+  city: String,
+  hobbies: Array
+});
 var roomSche = new Schema({
   name: String,
   desc: String
@@ -16,5 +23,6 @@ var messSche = new Schema({
   time: String
 });
 exports.user = db.model('users', userSche);
+exports.info = db.model('infos', messSche);
 exports.room = db.model('rooms', roomSche);
 exports.mess = db.model('messs', messSche);
