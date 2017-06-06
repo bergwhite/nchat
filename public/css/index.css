@@ -255,7 +255,11 @@ li {
   float: left;
   margin-right: 20px;
 }
+.bubble-left .bubble-info-user {
+  color: #00bcd4;
+}
 .bubble-right .bubble-info-user {
+  color: #ffc107;
   float: right;
   margin-right: 0;
 }
