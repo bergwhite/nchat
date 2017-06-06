@@ -7,11 +7,6 @@ var userList = document.getElementsByClassName('user-lists')[0]
 var roomList = document.getElementsByClassName('room-list')[0]
 var chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
 
-// 文档加载完毕自动在输入框获得焦点
-document.body.onload = function () {
-  userReg.focus()
-}
-
 // 为socket.io设置别名
 var socketHostName = document.location.hostname
 var socketURI = 'http://' +  socketHostName + ':8089/'
@@ -77,6 +72,15 @@ nodejsChat.room = {
       nodejsChat.method.initList(userList)
       // 重新渲染在线列表
       nodejsChat.method.renderList('user', data.currentUserList)
+    })
+    socket.on('show latest talk', function (data) {
+      console.log(data)
+      var len = data.length
+      for(var i = 0; i < len; i++){
+        var leftBubble = nodejsChat.method.renderBubbleMsg('left', data[i].user, data[i].time, nodejsChat.method.parseMsgVal(data[i].mess))
+        nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
+      }
+      nodejsChat.method.toBottom()
     })
   },
   // 渲染
@@ -302,6 +306,8 @@ nodejsChat.method = {
 }
 
 document.body.onload = function () {
+  // 文档加载完毕自动在输入框获得焦点
+  userReg.focus()
   // 初始化房间ID
   nodejsChat.data.roomID = nodejsChat.method.getRoomID()
   // 初始化

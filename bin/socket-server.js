@@ -87,6 +87,12 @@ io.on('connection', function (socket) {
   socket.emit('request room id')
   // 监听到相应后，存储当前的房间号
   socket.on('response room id', function (roomID) {
+    // 读取当前房间的聊天信息
+    var messShow = mess.find({'room': roomID}, function (err, data) {
+      console.log(data)
+      socket.emit('show latest talk', data)
+    })
+    // 存储房间ID
     chat.data.currentRoomID = roomID
     console.log('connection / currentRoom: ' + chat.data.currentRoomID)
     // 不存在则创建新房间
