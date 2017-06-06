@@ -63,7 +63,7 @@ li {
   overflow: hidden;
 }
 .chat-ctx {
-  padding: 20px;
+  padding: 20px 0;
   height: 280px;
   overflow-y: hidden;
 }
@@ -177,17 +177,32 @@ li {
   float: left;
   margin-left: 20px;
 }
-/* 左边泡泡 三角形 */
-.bubble-left > .bubble-ctx::before {
+.bubble-ctx-show::before {
   content: '';
   width: 0;
   height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-right: 20px solid white;
   position: absolute;
-  left: -21px;
-  top: 20px;
+}
+.bubble-ctx-show::after {
+  content: '';
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.bubble-left .bubble-ctx-show::before {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 10px solid white;
+  left: -10px;
+  top: 10px;
+}
+/* 左边泡泡 三角形 */
+.bubble-left .bubble-ctx-show::after {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-right: 10px solid black;
+  left: -9px;
+  top: 10px;
 }
 /* 左边泡泡 内容 */
 .bubble-right > .bubble-ctx {
@@ -195,16 +210,19 @@ li {
   float: right;
 }
 /* 右边泡泡 三角形 */
-.bubble-right > .bubble-ctx::before {
-  content: '';
-  width: 0;
-  height: 0;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
-  border-left: 20px solid white;
-  position: absolute;
-  right: -21px;
-  top: 20px;
+.bubble-right .bubble-ctx-show::before {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid white;
+  right: -10px;
+  top: 10px;
+}
+.bubble-right .bubble-ctx-show::after {
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+  border-left: 10px solid black;
+  right: -9px;
+  top: 10px;
 }
 /* 全局泡泡 头部 */
 .bubble-head {
@@ -215,17 +233,29 @@ li {
 .bubble-ctx {
   word-break: break-all;
   width: 60%;
+}
+.bubble-ctx-border {
   border: 1px solid white;
-  padding: 10px;
   border-radius: 10px;
+  margin: 0;
+  padding: 5px;
   position: relative;
+}
+.bubble-ctx-show {
+  margin: 0;
+  padding: 5px 10px;
 }
 /* 全局泡泡 信息 */
 .bubble-info {
   overflow: hidden;
+  padding-bottom: 5px;
 }
 /* 全局泡泡 信息列表 */
 .bubble-info > li {
   float: left;
   margin-right: 20px;
+}
+.bubble-right .bubble-info-user {
+  float: right;
+  margin-right: 0;
 }

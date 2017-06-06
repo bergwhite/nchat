@@ -173,7 +173,9 @@ nodejsChat.method = {
           <li class="bubble-info-user">${user}</li>
           <li class="bubble-info-time">${time}</li>
         </ul>
-        <p>${msg}</p>
+        <div class="bubble-ctx-border">
+          <p class="bubble-ctx-show">${msg}</p>
+        </div>
       </div>
     </div>`
     return ctx
