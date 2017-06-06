@@ -63,7 +63,7 @@ li {
   overflow: hidden;
 }
 .chat-ctx {
-  padding: 20px 0;
+  padding: 20px;
   height: 280px;
   overflow-y: hidden;
 }
@@ -192,7 +192,7 @@ li {
 .bubble-left .bubble-ctx-show::before {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-right: 10px solid white;
+  border-right: 10px solid #00bcd4;
   left: -10px;
   top: 10px;
 }
@@ -213,7 +213,7 @@ li {
 .bubble-right .bubble-ctx-show::before {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 10px solid white;
+  border-left: 10px solid #00bcd4;
   right: -10px;
   top: 10px;
 }
@@ -235,7 +235,7 @@ li {
   width: 60%;
 }
 .bubble-ctx-border {
-  border: 1px solid white;
+  border: 1px solid #00bcd4;
   border-radius: 10px;
   margin: 0;
   padding: 5px;
