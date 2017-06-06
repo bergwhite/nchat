@@ -77,7 +77,7 @@ nodejsChat.room = {
       console.log(data)
       var len = data.length
       for(var i = 0; i < len; i++){
-        var leftBubble = nodejsChat.method.renderBubbleMsg('left', data[i].user, data[i].time, nodejsChat.method.parseMsgVal(data[i].mess))
+        var leftBubble = nodejsChat.method.renderBubbleMsg('left', data[i].user, nodejsChat.method.parseTime(data[i].time), nodejsChat.method.parseMsgVal(data[i].mess))
         nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
       }
       nodejsChat.method.toBottom()
