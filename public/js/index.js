@@ -164,6 +164,13 @@ nodejsChat.method = {
   },
   // 左右泡泡组件模板
   renderBubbleMsg: function (type, user, time,  msg) {
+    var timeEl
+    if (time !== '') {
+      timeEl = `<li class="bubble-info-time">${time}</li>`
+    }
+    else {
+      timeEl = ''
+    }
     var ctx = `<div class="bubble bubble-${type}">
       <div class="bubble-head">
         头像
@@ -171,7 +178,7 @@ nodejsChat.method = {
       <div class="bubble-ctx">
         <ul class="bubble-info">
           <li class="bubble-info-user">${user}</li>
-          <li class="bubble-info-time">${time}</li>
+          ${timeEl}
         </ul>
         <div class="bubble-ctx-border">
           <p class="bubble-ctx-show">${msg}</p>
@@ -202,9 +209,9 @@ nodejsChat.method = {
       chatMoreBox.style.visibility = 'hidden'
       // 获取当前时间戳
       var time = nodejsChat.method.getTime(new Date())
-      var timeShow = nodejsChat.method.parseTime(time)
+      // var timeShow = nodejsChat.method.parseTime(time)
       var name = nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人'
-      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, timeShow,  nodejsChat.method.parseMsgVal(chatMsgSend.value))
+      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, '',  nodejsChat.method.parseMsgVal(chatMsgSend.value))
       socket.emit('send message', time, nodejsChat.data.roomID , {user: name,time: time, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value)})
       nodejsChat.method.insertToList(chatMsgList, 'li', rightBubble)
       // 发送完消息清空内容

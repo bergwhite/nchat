@@ -251,15 +251,20 @@ li {
   padding-bottom: 5px;
 }
 /* 全局泡泡 信息列表 */
-.bubble-info > li {
-  float: left;
-  margin-right: 20px;
-}
 .bubble-left .bubble-info-user {
+  float: left;
   color: #00bcd4;
+}
+.bubble-left .bubble-info-time {
+  float: right;
+  padding-right: 16px;
 }
 .bubble-right .bubble-info-user {
   color: #ffc107;
   float: right;
   margin-right: 0;
+}
+.bubble-right .bubble-info-time {
+  float: left;
+  padding-left: 16px;
 }
