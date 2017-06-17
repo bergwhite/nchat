@@ -257,10 +257,6 @@ nodejsChat.method = {
     // example / https://uinames.com/api/?region=china&gender=female&amount=1
     return 'https://uinames.com/api/?region=' + region + '&gender=' + gender + '&amount=1'
   },
-  // 通过选项标签改变显示的内容
-  setInfoTabMargin: function (type) {
-    infoTab.style.marginLeft = - (type - 1 ) * 181 + 'px'
-  },
   // 渲染表情包
   getEmoji: function (node) {
     var emojiList = ['😅', '😂', '🙂', '🙃', '😉', '😘', '😗', '😜', '😎', '😏', '😔', '🙁', '😶', '😢', '🤔', '👏', '🤝', '👍', '👎', '✌', '❤', '🐶', '🐱', '🐰', '🐭', '🐷', '🐸', '🙈',]

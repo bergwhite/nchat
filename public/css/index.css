@@ -4,16 +4,19 @@
 }
 body {
   margin: 0;
-  background-color: black;
-  color: white;
+  background-color: #EFEFEF;
+  color: black;
   overflow: hidden;
 }
-ul,li {
+ul,li,p,h1 {
   padding: 0;
   margin: 0;
 }
 li {
   list-style-type: none;
+}
+.text-center {
+  text-align: center;
 }
 /* fork按钮 */
 .fork-me-wrap {
@@ -22,9 +25,14 @@ li {
   right: 0;
   top: 0;
 }
+/* 聊天室的名称 */
+.chat-name {
+  background-color: rgb(33,150,243);
+  padding: 20px;
+}
 .chat {
   width: 803px;
-  height: 400px;
+  height: 600px;
   margin: auto;
   position: relative;
   padding-top: 30px;
@@ -36,7 +44,7 @@ li {
   padding: 10px 20px;
 }
 .chat-info-confirm {
-  border: 1px solid white;
+  background-color: rgb(68,138,255);
   padding: 5px;
   cursor: pointer;
 }
@@ -52,8 +60,12 @@ li {
   border-left: 0;
   overflow: hidden;
 }
-.user-lists,.room-list {
+.user-lists {
   padding: 0 20px;
+  height: 220px;
+}
+.room-list {
+  padding: 5px 10px;
 }
 .chat-ctx-wrap {
   float: left;
@@ -90,7 +102,7 @@ li {
   height: 80px;
   text-align: left;
   visibility: hidden;
-  background-color: black;
+  background-color: #EFEFEF;
 }
 .chat-more-box > li {
   width: 20px;
@@ -110,29 +122,18 @@ li {
   float: left;
   padding: 10px 20px;
   outline: none;
-  background-color: black;
-  color: white;
+  color: black;
   resize: none;
   font-size: 16px;
+  border: 0;
 }
 .chat-send-btn {
   overflow: hidden;
   text-align: center;
   line-height: 80px;
   cursor: pointer;
-  background-color: white;
+  background-color: #EFEFEF;
   color: black;
-}
-.info-tab-list {
-  height: 50px;
-  line-height: 50px;
-  overflow: hidden;
-}
-.info-tab-list > li {
-  float: left;
-  width: 60px;
-  text-align: center;
-  cursor: pointer;
 }
 .info-tab-cut {
   overflow: hidden;
@@ -145,6 +146,20 @@ li {
 }
 .info-tab-cut,.info-user,.info-menber,.info-room {
   width: 180px;
+}
+.info-room {
+  position: absolute;
+  left: -180px;
+  top: 30px;
+  border: 1px solid white;
+  border-right: 0;
+  height: 400px;
+  padding: 10px;
+}
+.info-user {
+  height: 150px;
+}
+.info-menber {
   height: 250px;
 }
 .info-tab > li {
@@ -152,7 +167,7 @@ li {
 }
 /* 泡泡组件 */
 .bubble {
-  color: white;
+  color: black;
   overflow: hidden;
   padding: 10px;
 }
@@ -200,7 +215,7 @@ li {
 .bubble-left .bubble-ctx-show::after {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-right: 10px solid black;
+  border-right: 10px solid #EFEFEF;
   left: -9px;
   top: 10px;
 }
@@ -220,7 +235,7 @@ li {
 .bubble-right .bubble-ctx-show::after {
   border-top: 5px solid transparent;
   border-bottom: 5px solid transparent;
-  border-left: 10px solid black;
+  border-left: 10px solid #EFEFEF;
   right: -9px;
   top: 10px;
 }

@@ -8,9 +8,14 @@
     <a class="fork-me-wrap" href="https://github.com/bergwhite/nodejs-chat" target="_blank">
       <img class="fork-me" src="http://images.cnitblog.com/i/214648/201403/181013198028385.png">
     </a>
-    <h1 style="text-align: center;"><%= title %></span></h1>
+    <h1 class="chat-name text-center"><%= title %></span></h1>
     <div class="chat">
       <div class="chat-info">
+      </div>
+      <div class="info-room">
+        <p class="text-center">房间列表</p>
+        <ul class="room-list">
+        </ul>
       </div>
       <div class="chat-ctx-wrap">
         <div class="chat-ctx">
@@ -33,32 +38,17 @@
         </div>
       </div>
       <div class="user-list-wrap">
-        <ul class="info-tab-list">
-          <li onclick="nodejsChat.method.setInfoTabMargin(1)">个人</li>
-          <li onclick="nodejsChat.method.setInfoTabMargin(2)">成员</li>
-          <li onclick="nodejsChat.method.setInfoTabMargin(3)">房间</li>
-        </ul>
         <div class="info-tab-cut">
           <ul class="info-tab">
-            <li>
-              <div class="info-user">
-                <input type="text" placeholder="取个名字吧" id="user-reg">
-                <div class="chat-info-confirm" onclick="nodejsChat.method.regUser()">保存</div>
-                <p  id="user-reg-tip" style="color: red;"></p>
-              </div>
-            </li>
-            <li>
-              <div class="info-menber">
-                <ul class="user-lists"></ul>
-              </div>
-            </li>
-            <li>
-              <div class="info-room">
-                <ul class="room-list">
-                  
-                </ul>
-              </div>
-            </li>
+            <div class="info-user">
+              <input type="text" placeholder="取个名字吧" id="user-reg">
+              <div class="chat-info-confirm" onclick="nodejsChat.method.regUser()">保存</div>
+              <p  id="user-reg-tip" style="color: red;"></p>
+            </div>
+            <div class="info-menber">
+              <p class="text-center">在线成员</p>
+              <ul class="user-lists"></ul>
+            </div>
           </ul>
         </div>
       </div>
