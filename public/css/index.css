@@ -25,6 +25,24 @@ li {
   right: 0;
   top: 0;
 }
+/* 用户列表 */
+.user-img {
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  float: left;
+}
+.user-name {
+  padding-left: 10px;
+  display: inline-block;
+  height: 40px;
+  line-height: 40px;
+  overflow: hidden;
+}
+.info-title {
+  height: 30px;
+  line-height: 30px;
+}
 /* 聊天室的名称 */
 .chat-name {
   background-color: rgb(33,150,243);
@@ -63,9 +81,12 @@ li {
 .user-lists {
   padding: 0 20px;
   height: 220px;
+  overflow-y: scroll;
 }
 .room-list {
   padding: 5px 10px;
+  height: 348px;
+  overflow-y: scroll;
 }
 .chat-ctx-wrap {
   float: left;
@@ -140,8 +161,8 @@ li {
 }
 .info-tab {
   transition: all .7s;
-  width: 540px;
-  height: 250px;
+  width: 180px;
+  height: 400px;
   overflow: hidden;
 }
 .info-tab-cut,.info-user,.info-menber,.info-room {

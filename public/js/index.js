@@ -59,10 +59,10 @@ nodejsChat.room = {
     socket.on('showRoom', function  (data) {
       nodejsChat.method.insertToList(roomList, 'li', data)
     })
-    socket.on('welcome the user', function (data) {
+    socket.on('user login req', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data)
     })
-    socket.on('request user logout', function (data) {
+    socket.on('user logout req', function (data) {
       console.log(data)
       // 发送用户离开通知
       nodejsChat.method.insertToList(chatMsgList, 'li', data.currentUser + ' 离开了房间')
@@ -71,7 +71,12 @@ nodejsChat.room = {
       // 清空在线列表
       nodejsChat.method.initList(userList)
       // 重新渲染在线列表
-      nodejsChat.method.renderList('user', data.currentUserList)
+      var len = data.currentUserList.length
+      // nodejsChat.method.insertToList(userList, 'li', ctx)
+      for(var i = 0; i < len; i++){
+        var ctx = nodejsChat.method.renderUserList('a.jpg', data.currentUserList[i])
+        nodejsChat.method.insertToList(userList, 'li' , ctx)
+      }
     })
     socket.on('show latest talk', function (data) {
       console.log(data)
@@ -89,7 +94,15 @@ nodejsChat.room = {
     socket.on('current status', function  (data) {
       nodejsChat.method.initList(userList)
       nodejsChat.method.getOnlineList(data.room, nodejsChat.data.roomID)
-      nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
+      // 首次进入页面时，渲染用户列表
+      var len = nodejsChat.data.onlineUserList.length
+      if (len !== 0) {
+        for(var i = 0; i < len; i++){
+          var ctx = nodejsChat.method.renderUserList('a.jpg', nodejsChat.data.onlineUserList[i])
+          nodejsChat.method.insertToList(userList, 'li', ctx)
+        }
+      }
+      // nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
       nodejsChat.method.renderList('room', data.roomList)
       console.log(data)
       console.log("在线统计：" + nodejsChat.data.onlineUserCount)
@@ -97,7 +110,8 @@ nodejsChat.room = {
     })
     // 渲染在线用户列表
     socket.on('renderOnlineList', function (data) {
-      nodejsChat.method.insertToList(userList, 'li', data)
+      var ctx = nodejsChat.method.renderUserList('a.jpg', data)
+      nodejsChat.method.insertToList(userList, 'li', ctx)
     })
     // 把最新的消息添加进DOM
     socket.on('latestTalk', function (data) {
@@ -109,7 +123,7 @@ nodejsChat.room = {
       nodejsChat.method.toBottom()
     })
     //
-    socket.on('showUser', function  (data) {
+    socket.on('user add res', function  (data) {
       if (!data.status) {
         userRegTip.innerHTML = '用户名已存在'
         nodejsChat.data.user.name = null
@@ -118,7 +132,8 @@ nodejsChat.room = {
         userRegTip.innerHTML = '注册成功'
         // 聚焦到输入框
         chatMsgSend.focus()
-        nodejsChat.method.renderList('user', [data.user])
+        var ctx = nodejsChat.method.renderUserList('a.jpg', data.user)
+        nodejsChat.method.insertToList(userList, 'li', ctx)
       }
       console.log(data)
       console.log("当前在线：" + data.user.length)
@@ -161,6 +176,11 @@ nodejsChat.method = {
     var childDOM = document.createElement(childType)
     childDOM.innerHTML = childCtx
     parentDOM.appendChild(childDOM)
+  },
+  renderUserList: function (userImg, userName) {
+    var ctx = `<img src="${userImg}" class="user-img">
+      <span class="user-name">${userName}</span>`
+    return ctx
   },
   // 左右泡泡组件模板
   renderBubbleMsg: function (type, user, time,  msg) {
@@ -231,7 +251,7 @@ nodejsChat.method = {
     }else if (userReg.value !== "" && userReg.value !== " ") { 
       userRegTip.innerHTML = '注册中...'
       nodejsChat.data.user.name = nodejsChat.method.parseMsgVal(userReg.value)
-      socket.emit('add user', nodejsChat.data.roomID, {name: nodejsChat.method.parseMsgVal(userReg.value)})
+      socket.emit('user add req', nodejsChat.data.roomID, {name: nodejsChat.method.parseMsgVal(userReg.value)})
     } else {
       userRegTip.innerHTML = '请输入用户名'
     }

@@ -75,7 +75,7 @@ chat.method = {
   },
   welcomeUser: function (roomID, msg) {
     // 为当前房间发送欢迎消息
-    io.to(roomID).emit('welcome the user', msg);
+    io.to(roomID).emit('user login req', msg);
   }
 }
 
@@ -112,7 +112,7 @@ io.on('connection', function (socket) {
     socket.join(roomID)
   })
   // 添加用户
-  socket.on('add user', function (id, msg) {
+  socket.on('user add req', function (id, msg) {
     chat.method.addUserToRoom(msg.name,id)
     console.log(msg)
     if (chat.data.addUserStatus) {
@@ -120,7 +120,7 @@ io.on('connection', function (socket) {
       socket.broadcast.to(id).emit('renderOnlineList', msg.name)
       chat.data.socketID[socket.id] = msg.name
     }
-    socket.emit('showUser', {
+    socket.emit('user add res', {
       status: chat.data.addUserStatus,
       user: msg.name
     })
@@ -146,7 +146,7 @@ io.on('connection', function (socket) {
     chat.data.currentRoomIndex = chat.method.getCurrentRoomIndex(chat.data.currentRoomID)
     if (chat.data.socketID[socket.id] !== undefined) {
       chat.method.delUserFromRoom(chat.data.socketID[socket.id],chat.data.currentRoomIndex)
-      socket.broadcast.to(chat.data.currentRoomID).emit('request user logout', {
+      socket.broadcast.to(chat.data.currentRoomID).emit('user logout req', {
         currentUser: chat.data.socketID[socket.id],
         currentUserList: chat.data.room[chat.data.currentRoomIndex].user
       })
