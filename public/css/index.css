@@ -26,11 +26,17 @@ li {
   top: 0;
 }
 /* 用户列表 */
+/* 用户列表的用户头像 && 保存用户名界面的用户头像 */
 .user-img {
   width: 40px;
   height: 40px;
   border-radius: 20px;
   float: left;
+}
+.user-img-choose {
+  width: 80px;
+  height: 80px;
+  border-radius: 40px;
 }
 .user-name {
   padding-left: 10px;
@@ -68,7 +74,7 @@ li {
 }
 #user-reg, .chat-info-confirm, #user-reg-tip {
   width: 80%;
-  margin: 20px auto 0 auto;
+  margin: 5px auto 0 auto;
 }
 .user-list-wrap {
   width: 181px;
@@ -80,7 +86,7 @@ li {
 }
 .user-lists {
   padding: 0 20px;
-  height: 220px;
+  height: 180px;
   overflow-y: scroll;
 }
 .room-list {
@@ -178,10 +184,10 @@ li {
   padding: 10px;
 }
 .info-user {
-  height: 150px;
+  height: 190px;
 }
 .info-menber {
-  height: 250px;
+  height: 210px;
 }
 .info-tab > li {
   float: left;

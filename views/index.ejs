@@ -41,6 +41,13 @@
         <div class="info-tab-cut">
           <ul class="info-tab">
             <div class="info-user">
+              <img src="https://randomuser.me/api/portraits/men/1.jpg" class="user-img-choose">
+              <div>
+                <input type="radio" name="sex" value="men" checked class="input-radio-sex">
+                <label for="sex">男</label>
+                <input type="radio" name="sex" value="women" class="input-radio-sex">
+                <label for="sex">女</label>
+              </div>
               <input type="text" placeholder="取个名字吧" id="user-reg">
               <div class="chat-info-confirm" onclick="nodejsChat.method.regUser()">保存</div>
               <p  id="user-reg-tip" style="color: red;"></p>

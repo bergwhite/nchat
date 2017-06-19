@@ -6,6 +6,8 @@ var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 var userList = document.getElementsByClassName('user-lists')[0]
 var roomList = document.getElementsByClassName('room-list')[0]
 var chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
+var inputRadioSex = document.getElementsByClassName('input-radio-sex')
+var userImgChoose = document.getElementsByClassName('user-img-choose')[0]
 
 // 为socket.io设置别名
 var socketHostName = document.location.hostname
@@ -31,7 +33,8 @@ nodejsChat.data = {
     name: null,
     pass: null,
     desc: null,
-    img: null
+    img: null,
+    sex: 'men'
   }
 }
 // 房间（socket通讯）
@@ -328,6 +331,14 @@ nodejsChat.method = {
   toBottom: function () {
     var div = document.getElementsByClassName("chat-ctx")[0];
     div.scrollTop = div.scrollHeight;
+  },
+  checkInputRadioSex: function () {
+    var len = inputRadioSex.length
+    for(var i = 0; i < len; i++){
+      if (inputRadioSex[i].checked) {
+        return inputRadioSex[i].value
+      }
+    }
   }
 }
 
@@ -345,4 +356,29 @@ document.body.onload = function () {
   console.log(nodejsChat.method.getRandomImg('men'))
   // 测试随机昵称
   console.log(nodejsChat.method.getRandomNick('china','male'))
+  inputRadioSex[0].addEventListener('click', function () {
+    // if (!inputRadioSex[0].checked) {
+      var sex = nodejsChat.method.checkInputRadioSex()
+      nodejsChat.data.user.sex = sex
+      var src = nodejsChat.method.getRandomImg(sex)
+      nodejsChat.data.user.img = src
+      userImgChoose.src = src
+    // }
+  }, false)
+  inputRadioSex[1].addEventListener('click', function () {
+    // if (!inputRadioSex[1].checked) {
+      var sex = nodejsChat.method.checkInputRadioSex()
+      nodejsChat.data.user.sex = sex
+      var src = nodejsChat.method.getRandomImg(sex)
+      nodejsChat.data.user.img = src
+      userImgChoose.src = src
+    // }
+  }, false)
+  userImgChoose.addEventListener('click', function () {
+    var sex = nodejsChat.data.user.sex
+    var src = nodejsChat.method.getRandomImg(sex)
+    nodejsChat.data.user.img = src
+    userImgChoose.src = src
+  }, false)
+  console.log(nodejsChat.method.checkInputRadioSex())
 }
