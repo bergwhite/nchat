@@ -74,6 +74,7 @@ chat.method = {
     var userIndex = chat.data.room[roomIndex].user.indexOf(user)
     // 从房间中移除
     chat.data.room[roomIndex].user.splice(userIndex, 1)
+    chat.data.room[roomIndex].img.splice(userIndex, 1)
   },
   welcomeUser: function (roomID, msg) {
     // 为当前房间发送欢迎消息
@@ -120,7 +121,7 @@ io.on('connection', function (socket) {
     console.log(msg)
     if (chat.data.addUserStatus) {
       chat.method.welcomeUser(id, '欢迎' + msg.name + '加入房间')
-      socket.broadcast.to(id).emit('renderOnlineList', msg.name)
+      socket.broadcast.to(id).emit('user add to list req', {name: msg.name, img: msg.img})
       chat.data.socketID[socket.id] = msg.name
     }
     socket.emit('user add res', {
@@ -152,7 +153,8 @@ io.on('connection', function (socket) {
       chat.method.delUserFromRoom(chat.data.socketID[socket.id],chat.data.currentRoomIndex)
       socket.broadcast.to(chat.data.currentRoomID).emit('user logout req', {
         currentUser: chat.data.socketID[socket.id],
-        currentUserList: chat.data.room[chat.data.currentRoomIndex].user
+        currentUserList: chat.data.room[chat.data.currentRoomIndex].user,
+        currentUserListImg: chat.data.room[chat.data.currentRoomIndex].img
       })
     }
     console.log('disconnect / getCurrentRoomID / ' + chat.data.currentRoomID)

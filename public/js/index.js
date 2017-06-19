@@ -27,6 +27,7 @@ nodejsChat.data = {
   onlineUserCount: 0,
   onlineUserList: [],
   onlineUserListImg: [],
+  defaultUserImg: 'https://randomuser.me/api/portraits/women/50.jpg',
   welcomeInfo: '系统: 欢迎来到 ',
   // 房间ID
   roomID: null,
@@ -35,7 +36,7 @@ nodejsChat.data = {
     name: null,
     pass: null,
     desc: null,
-    img: 'https://randomuser.me/api/portraits/women/50.jpg',
+    img: 'https://randomuser.me/api/portraits/men/1.jpg',
     sex: 'men'
   }
 }
@@ -79,10 +80,11 @@ nodejsChat.room = {
       var len = data.currentUserList.length
       // nodejsChat.method.insertToList(userList, 'li', ctx)
       for(var i = 0; i < len; i++){
-        var ctx = nodejsChat.method.renderUserList('https://randomuser.me/api/portraits/women/50.jpg', data.currentUserList[i])
+        var ctx = nodejsChat.method.renderUserList(data.currentUserListImg, data.currentUserList[i])
         nodejsChat.method.insertToList(userList, 'li' , ctx)
       }
     })
+    // 读取当前房间的聊天信息
     socket.on('show latest talk', function (data) {
       console.log(data)
       var len = data.length
@@ -114,9 +116,16 @@ nodejsChat.room = {
       console.log('在线用户：' + nodejsChat.data.onlineUserList)
     })
     // 渲染在线用户列表
-    socket.on('renderOnlineList', function (data) {
+    socket.on('user add to list req', function (data) {
       // TODO: img change
-      var ctx = nodejsChat.method.renderUserList('a.jpg', data)
+      var img
+      if (typeof data.name !== undefined && data.name || null) {
+        img = data.name
+      }
+      else {
+        img = nodejsChat.data.defaultUserImg
+      }
+      var ctx = nodejsChat.method.renderUserList(data.img, data.name)
       nodejsChat.method.insertToList(userList, 'li', ctx)
     })
     // 把最新的消息添加进DOM
@@ -197,8 +206,8 @@ nodejsChat.method = {
     else {
       timeEl = ''
     }
-    if (typeof img === 'undefined' || img === null) {
-       img = 'https://randomuser.me/api/portraits/women/50.jpg'
+    if (typeof img === undefined && img === null) {
+       img = nodejsChat.data.defaultUserImg
     }
     var ctx = `<div class="bubble bubble-${type}">
       <div class="bubble-head">
