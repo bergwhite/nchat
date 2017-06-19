@@ -19,12 +19,14 @@ var nodejsChat = {}
 
 // 数据（存放变量）
 nodejsChat.data = {
+  // TODO: set a default img
   isRoomInit: false,
   messIsFirst: true,
   messIsFoucs: false,
   isInitInsertEmoji: false,
   onlineUserCount: 0,
   onlineUserList: [],
+  onlineUserListImg: [],
   welcomeInfo: '系统: 欢迎来到 ',
   // 房间ID
   roomID: null,
@@ -33,7 +35,7 @@ nodejsChat.data = {
     name: null,
     pass: null,
     desc: null,
-    img: null,
+    img: 'https://randomuser.me/api/portraits/women/50.jpg',
     sex: 'men'
   }
 }
@@ -77,7 +79,7 @@ nodejsChat.room = {
       var len = data.currentUserList.length
       // nodejsChat.method.insertToList(userList, 'li', ctx)
       for(var i = 0; i < len; i++){
-        var ctx = nodejsChat.method.renderUserList('a.jpg', data.currentUserList[i])
+        var ctx = nodejsChat.method.renderUserList('https://randomuser.me/api/portraits/women/50.jpg', data.currentUserList[i])
         nodejsChat.method.insertToList(userList, 'li' , ctx)
       }
     })
@@ -85,7 +87,7 @@ nodejsChat.room = {
       console.log(data)
       var len = data.length
       for(var i = 0; i < len; i++){
-        var leftBubble = nodejsChat.method.renderBubbleMsg('left', data[i].user, nodejsChat.method.parseTime(data[i].time), nodejsChat.method.parseMsgVal(data[i].mess))
+        var leftBubble = nodejsChat.method.renderBubbleMsg('left', data[i].user, nodejsChat.method.parseTime(data[i].time), nodejsChat.method.parseMsgVal(data[i].mess), data[i].img)
         nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
       }
       nodejsChat.method.toBottom()
@@ -101,7 +103,7 @@ nodejsChat.room = {
       var len = nodejsChat.data.onlineUserList.length
       if (len !== 0) {
         for(var i = 0; i < len; i++){
-          var ctx = nodejsChat.method.renderUserList('a.jpg', nodejsChat.data.onlineUserList[i])
+          var ctx = nodejsChat.method.renderUserList(nodejsChat.data.onlineUserListImg[i], nodejsChat.data.onlineUserList[i])
           nodejsChat.method.insertToList(userList, 'li', ctx)
         }
       }
@@ -113,13 +115,14 @@ nodejsChat.room = {
     })
     // 渲染在线用户列表
     socket.on('renderOnlineList', function (data) {
+      // TODO: img change
       var ctx = nodejsChat.method.renderUserList('a.jpg', data)
       nodejsChat.method.insertToList(userList, 'li', ctx)
     })
     // 把最新的消息添加进DOM
-    socket.on('latestTalk', function (data) {
+    socket.on('send message res', function (data) {
       var time = nodejsChat.method.parseTime(data.time)
-      var leftBubble = nodejsChat.method.renderBubbleMsg('left', data.user, time, nodejsChat.method.parseMsgVal(data.msg))
+      var leftBubble = nodejsChat.method.renderBubbleMsg('left', data.user, time, nodejsChat.method.parseMsgVal(data.msg), data.img)
       nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
       console.log(data)
       // 滚动到最新消息
@@ -135,7 +138,7 @@ nodejsChat.room = {
         userRegTip.innerHTML = '注册成功'
         // 聚焦到输入框
         chatMsgSend.focus()
-        var ctx = nodejsChat.method.renderUserList('a.jpg', data.user)
+        var ctx = nodejsChat.method.renderUserList(nodejsChat.data.user.img, data.user)
         nodejsChat.method.insertToList(userList, 'li', ctx)
       }
       console.log(data)
@@ -186,7 +189,7 @@ nodejsChat.method = {
     return ctx
   },
   // 左右泡泡组件模板
-  renderBubbleMsg: function (type, user, time,  msg) {
+  renderBubbleMsg: function (type, user, time, msg, img) {
     var timeEl
     if (time !== '') {
       timeEl = `<li class="bubble-info-time">${time}</li>`
@@ -194,9 +197,12 @@ nodejsChat.method = {
     else {
       timeEl = ''
     }
+    if (typeof img === 'undefined' || img === null) {
+       img = 'https://randomuser.me/api/portraits/women/50.jpg'
+    }
     var ctx = `<div class="bubble bubble-${type}">
       <div class="bubble-head">
-        头像
+        <img src=${img} class="user-img">
       </div>
       <div class="bubble-ctx">
         <ul class="bubble-info">
@@ -234,8 +240,8 @@ nodejsChat.method = {
       var time = nodejsChat.method.getTime(new Date())
       // var timeShow = nodejsChat.method.parseTime(time)
       var name = nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人'
-      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, '',  nodejsChat.method.parseMsgVal(chatMsgSend.value))
-      socket.emit('send message', time, nodejsChat.data.roomID , {user: name,time: time, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value)})
+      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, '',  nodejsChat.method.parseMsgVal(chatMsgSend.value), nodejsChat.data.user.img)
+      socket.emit('send message req', time, nodejsChat.data.roomID , {user: name,time: time, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value), img: nodejsChat.data.user.img})
       nodejsChat.method.insertToList(chatMsgList, 'li', rightBubble)
       // 发送完消息清空内容
       chatMsgSend.value = ''
@@ -254,7 +260,7 @@ nodejsChat.method = {
     }else if (userReg.value !== "" && userReg.value !== " ") { 
       userRegTip.innerHTML = '注册中...'
       nodejsChat.data.user.name = nodejsChat.method.parseMsgVal(userReg.value)
-      socket.emit('user add req', nodejsChat.data.roomID, {name: nodejsChat.method.parseMsgVal(userReg.value)})
+      socket.emit('user add req', nodejsChat.data.roomID, {name: nodejsChat.method.parseMsgVal(userReg.value), img: nodejsChat.data.user.img})
     } else {
       userRegTip.innerHTML = '请输入用户名'
     }
@@ -264,8 +270,10 @@ nodejsChat.method = {
     arr.filter(function (val) {
       if (val.name === type) {
         var newArr = val.user.concat()
+        var newImg = val.img.concat()
         nodejsChat.data.onlineUserCount = val.user.length
         nodejsChat.data.onlineUserList = newArr
+        nodejsChat.data.onlineUserListImg = newImg
       }
     })
   },

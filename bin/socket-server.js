@@ -16,7 +16,8 @@ chat.data = {
     // 描述
     desc: null,
     // 用户
-    user: []
+    user: [],
+    img: []
   }],
   roomList: ['Chat Room'],
   // 为用户添加状态
@@ -54,11 +55,12 @@ chat.method = {
     return a.length !== 0
   },
   // 添加用户到指定房间
-  addUserToRoom: function (name, roomID) {
+  addUserToRoom: function (name, roomID, userImg) {
     chat.data.room.findIndex(function(val,index){
       if(val.name === roomID) {
         if(chat.data.room[index].user.indexOf('name') === -1) {
           chat.data.room[index].user.push(name)
+          chat.data.room[index].img.push(userImg)
           chat.data.addUserStatus = true
         }
         else {
@@ -105,7 +107,8 @@ io.on('connection', function (socket) {
       chat.data.room.push({
         name: roomID,
         desc: null,
-        user: []
+        user: [],
+        img: []
       })
     }
     // 进入房间
@@ -113,7 +116,7 @@ io.on('connection', function (socket) {
   })
   // 添加用户
   socket.on('user add req', function (id, msg) {
-    chat.method.addUserToRoom(msg.name,id)
+    chat.method.addUserToRoom(msg.name,id, msg.img)
     console.log(msg)
     if (chat.data.addUserStatus) {
       chat.method.welcomeUser(id, '欢迎' + msg.name + '加入房间')
@@ -126,14 +129,15 @@ io.on('connection', function (socket) {
     })
   })
   // 给指定房间发送消息
-  socket.on('send message', function (time, id, msg) {
-    socket.broadcast.to(id).emit('latestTalk', msg)
+  socket.on('send message req', function (time, id, msg) {
+    socket.broadcast.to(id).emit('send message res', msg)
     // 存储信息到数据库
     var newMess = new mess({
       room: id,
       user: msg.user,
       mess: msg.msg,
-      time: time
+      time: time,
+      img: msg.img
     })
     newMess.save()
   })
