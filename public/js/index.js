@@ -64,7 +64,7 @@ nodejsChat.room = {
     })
     socket.on('add room', function  (data) {
       var url = document.location.origin
-      var link = `<a href="${url}/room/${data} class="room-link">${data}</a>`
+      var link = `<a href="${url}/room/${data}" class="room-link">${data}</a>`
       nodejsChat.method.insertToList(roomList, 'li', link)
     })
     socket.on('user login req', function (data) {
