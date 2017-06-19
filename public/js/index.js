@@ -135,11 +135,11 @@ nodejsChat.room = {
     socket.on('user add to list req', function (data) {
       // TODO: img change
       var img
-      if (typeof data.name !== undefined && data.name || null) {
-        img = data.name
+      if (typeof data.name === 'undefined' || data.name === null) {
+        img = nodejsChat.data.defaultUserImg
       }
       else {
-        img = nodejsChat.data.defaultUserImg
+        img = data.name
       }
       var ctx = nodejsChat.method.renderUserList(data.img, data.name)
       nodejsChat.method.insertToList(userList, 'li', ctx)
@@ -222,7 +222,7 @@ nodejsChat.method = {
     else {
       timeEl = ''
     }
-    if (typeof img === undefined && img === null) {
+    if (typeof img === 'undefined' || img === null) {
        img = nodejsChat.data.defaultUserImg
     }
     var ctx = `<div class="bubble bubble-${type}">
