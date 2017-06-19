@@ -62,8 +62,10 @@ nodejsChat.room = {
         nodejsChat.data.messIsFoucs = true
       }
     })
-    socket.on('showRoom', function  (data) {
-      nodejsChat.method.insertToList(roomList, 'li', data)
+    socket.on('add room', function  (data) {
+      var url = document.location.origin
+      var link = `<a href="${url}/room/${data} class="room-link">${data}</a>`
+      nodejsChat.method.insertToList(roomList, 'li', link)
     })
     socket.on('user login req', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data)
@@ -110,7 +112,21 @@ nodejsChat.room = {
         }
       }
       // nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
-      nodejsChat.method.renderList('room', data.roomList)
+      var roomLen = data.roomList.length
+      if (roomLen !== 0) {
+        for(var i = 0; i < roomLen; i++){
+          var url = document.location.origin
+          var name = data.roomList[i]
+          if (i === 0) {
+            var link = `<a href="${url}" class="room-link" target="_black">${name}</a>`
+          }
+          else {
+            var link = `<a href="${url}/room/${name}" class="room-link" target="_black">${name}</a>`
+          }
+          nodejsChat.method.insertToList(roomList, 'li', link)
+        }
+      }
+      // nodejsChat.method.renderList('room', data.roomList)
       console.log(data)
       console.log("在线统计：" + nodejsChat.data.onlineUserCount)
       console.log('在线用户：' + nodejsChat.data.onlineUserList)

@@ -15,6 +15,17 @@ ul,li,p,h1 {
 li {
   list-style-type: none;
 }
+a {
+  text-decoration: none;
+}
+.room-link {
+  display: block;
+  padding: 5px;
+  color: black;
+}
+.room-link:hover {
+  background-color: rgb(33,150,243);
+}
 .text-center {
   text-align: center;
 }

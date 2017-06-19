@@ -101,9 +101,9 @@ io.on('connection', function (socket) {
     // 不存在则创建新房间
     if(!chat.method.isRoomExist(chat.data.room, roomID)) {
       // 向当前接受请求的页面发送更新房间列表请求
-      socket.emit('showRoom', roomID)
+      socket.emit('add room', roomID)
       // 向其他房间发送更新列表请求
-      socket.broadcast.emit('showRoom', roomID)
+      socket.broadcast.emit('add room', roomID)
       chat.data.roomList.push(roomID)
       chat.data.room.push({
         name: roomID,
