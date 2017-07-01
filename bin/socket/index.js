@@ -1,7 +1,7 @@
 const app = require('express')();
 const server = require('http').Server(app)
 const io = require('socket.io')(server)
-var mess = require('../database').mess;
+const mess = require('../database').mess;
 
 var chat = {}
 
