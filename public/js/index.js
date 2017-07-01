@@ -41,7 +41,9 @@ nodejsChat.data = {
   },
   robot: {
     api: 'api/robot/openapi/api',
-    key: '57a5b6849e2b4d47ae0badadf849c261'
+    key: '57a5b6849e2b4d47ae0badadf849c261',
+    nick: '小美',
+    img: 'https://randomuser.me/api/portraits/women/22.jpg'
   }
 }
 // 房间（socket通讯）
@@ -283,23 +285,20 @@ nodejsChat.method = {
       // 滚动到最新消息
       nodejsChat.method.toBottom()
       // 调用图灵机器人
-      // axios.post(nodejsChat.data.robot.api, {
-      //   key: nodejsChat.data.robot.key,
-      //   info: parsedMessage
-      // }).then(function(req) {
-      //   console.log('req')
-      // }).catch(function(res) {
-      //   console.log('res')
-      // })
+      // TODO: post not work
       axios.get(nodejsChat.data.robot.api, {
         params: {
           key: nodejsChat.data.robot.key,
           info: parsedMessage
         }
-      }).then(function(req) {
-        console.log(req)
-      }).catch(function(res) {
-        console.log(res)
+      }).then(function(res) {
+        var tm = nodejsChat.method.getTime(new Date())
+        var leftBubble = nodejsChat.method.renderBubbleMsg('left', nodejsChat.data.robot.nick, tm,  res.data.text, nodejsChat.data.robot.img)
+        nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
+        socket.emit('send message req', time, nodejsChat.data.roomID , {user: nodejsChat.data.robot.nick,tm: time, msg: res.data.text, img: nodejsChat.data.robot.img})
+        nodejsChat.method.toBottom()
+      }).catch(function(err) {
+        console.log(err)
       })
     } else {
       userRegTip.innerHTML = '内容不能为空'
