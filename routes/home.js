@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+var basic = require('./basic');
+var express = basic.express;
+var router = basic.router;
 
 router.get('/', function(req, res, next) {
   res.render('index', { title: '大众聊天室' });

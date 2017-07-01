@@ -1,5 +1,6 @@
-var express = require('express');
-var router = express.Router();
+var basic = require('./basic');
+var express = basic.express;
+var router = basic.router;
 var info = require('../bin/database').info;
 
 router.get('/api/user/:id/register', function(req, res, next) {
@@ -14,6 +15,7 @@ router.get('/api/user/:id/logout', function(req, res, next) {
 // 用户资料路由
 router.get('/api/user/:id', function(req, res, next) {
   // 获取用户资料
+  console.log(req)
   info.findOne({user: req.params.id},function(err,val){
     // 如果当前用户不存在
     // 返回错误信息
