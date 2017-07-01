@@ -7,7 +7,7 @@ var messSche = require('./mess.js')
 
 var dbModel = {
   user: db.model('users', userSche),
-  info: db.model('infos', messSche),
+  info: db.model('infos', infoSche),
   room: db.model('rooms', roomSche),
   mess: db.model('messes', messSche)
 }
