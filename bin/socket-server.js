@@ -92,7 +92,7 @@ io.on('connection', function (socket) {
   socket.on('response room id', function (roomID) {
     // 读取当前房间的聊天信息
     var messShow = mess.find({'room': roomID}, function (err, data) {
-      console.log(data)
+      console.log('room data ready / ' + (data.lenth !== 0))
       socket.emit('show latest talk', data)
     })
     // 存储房间ID

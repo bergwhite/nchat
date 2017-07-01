@@ -24,6 +24,7 @@
     "gulp-babel": "^6.1.2",
     "gulp-clean-css": "^3.4.0",
     "gulp-rename": "^1.2.2",
-    "gulp-uglifyjs": "^0.6.2"
+    "gulp-uglifyjs": "^0.6.2",
+    "http-proxy-middleware": "^0.17.4"
   }
 }

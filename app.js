@@ -4,8 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
+var proxy = require('http-proxy-middleware');
 
-var index = require('./routes/index');
+var router = require('./routes/index');
 
 var app = express();
 
@@ -21,7 +22,14 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', index);
+app.use('/', router.home);
+app.use('/room', router.room);
+app.use('/api/user', router.user);
+// TODO: pathRewrite not work
+app.use('/api/robot', proxy({
+  target: 'http://www.tuling123.com',
+  changeOrigin: true
+}));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

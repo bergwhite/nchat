@@ -38,6 +38,10 @@ nodejsChat.data = {
     desc: null,
     img: 'https://randomuser.me/api/portraits/men/1.jpg',
     sex: 'men'
+  },
+  robot: {
+    api: 'api/robot/openapi/api',
+    key: '57a5b6849e2b4d47ae0badadf849c261'
   }
 }
 // 房间（socket通讯）
@@ -149,7 +153,8 @@ nodejsChat.room = {
       var time = nodejsChat.method.parseTime(data.time)
       var leftBubble = nodejsChat.method.renderBubbleMsg('left', data.user, time, nodejsChat.method.parseMsgVal(data.msg), data.img)
       nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
-      console.log(data)
+      var len = data.length
+      console.log('total message / ' + len)
       // 滚动到最新消息
       nodejsChat.method.toBottom()
     })
@@ -265,8 +270,11 @@ nodejsChat.method = {
       var time = nodejsChat.method.getTime(new Date())
       // var timeShow = nodejsChat.method.parseTime(time)
       var name = nodejsChat.data.user.name !== null ? nodejsChat.data.user.name : '神秘人'
-      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, '',  nodejsChat.method.parseMsgVal(chatMsgSend.value), nodejsChat.data.user.img)
-      socket.emit('send message req', time, nodejsChat.data.roomID , {user: name,time: time, msg: nodejsChat.method.parseMsgVal(chatMsgSend.value), img: nodejsChat.data.user.img})
+      var parsedMessage = nodejsChat.method.parseMsgVal(chatMsgSend.value)
+      // 添加内容到当前界面
+      var rightBubble = nodejsChat.method.renderBubbleMsg('right', name, '',  parsedMessage, nodejsChat.data.user.img)
+      // 添加内容到当前房间的其他用户界面
+      socket.emit('send message req', time, nodejsChat.data.roomID , {user: name,time: time, msg: parsedMessage, img: nodejsChat.data.user.img})
       nodejsChat.method.insertToList(chatMsgList, 'li', rightBubble)
       // 发送完消息清空内容
       chatMsgSend.value = ''
@@ -274,6 +282,25 @@ nodejsChat.method = {
       chatMsgSend.focus()
       // 滚动到最新消息
       nodejsChat.method.toBottom()
+      // 调用图灵机器人
+      // axios.post(nodejsChat.data.robot.api, {
+      //   key: nodejsChat.data.robot.key,
+      //   info: parsedMessage
+      // }).then(function(req) {
+      //   console.log('req')
+      // }).catch(function(res) {
+      //   console.log('res')
+      // })
+      axios.get(nodejsChat.data.robot.api, {
+        params: {
+          key: nodejsChat.data.robot.key,
+          info: parsedMessage
+        }
+      }).then(function(req) {
+        console.log(req)
+      }).catch(function(res) {
+        console.log(res)
+      })
     } else {
       userRegTip.innerHTML = '内容不能为空'
     }
