@@ -120,6 +120,13 @@ a {
 .chat-ctx:hover {
   overflow-y: auto;
 }
+.chat-ctx:hover::-webkit-scrollbar {
+  width: 12px;
+}
+.chat-ctx:hover::-webkit-scrollbar-thumb {
+  border-radius: 6px;
+  background-color: gray;
+}
 .chat-more-wrap {
   height: 40px;
   line-height: 40px;
