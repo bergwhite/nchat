@@ -157,6 +157,21 @@ router.get('/api/user/:id', function(req, res, next) {
   })
 });
 
+router.post('/api/user/:id/pass', function() {
+  // isUserExist()
+  // isUserLogin()
+})
+
+router.post('/api/user/:id/nick', function() {
+  // isUserExist()
+  // isUserLogin()
+})
+
+router.post('/api/user/:id/info', function() {
+  // isUserExist()
+  // isUserLogin()
+})
+
 /* 前端路由 */
 // 个人资料
 /**

@@ -77,9 +77,9 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 √  GET   /api/user/:id/info      // 获取资料
 ×  POST  /api/user/:id/info      // 修改资料
 ×  GET   /api/room               // 获取房间列表
-×  GET   /api/room/add           // 添加房间
-×  GET   /api/room/:id           // 获取房间信息
-×  GET   /api/room/:id/mess      // 获取房间记录
+√  GET   /api/room/add           // 添加房间
+√  GET   /api/room/:id           // 获取房间信息
+√  GET   /api/room/:id/mess      // 获取房间记录
 
 ```
 
