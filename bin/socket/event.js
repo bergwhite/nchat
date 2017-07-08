@@ -1,6 +1,6 @@
 const io = require('./io.js').io
 const server = require('./io.js').server
-const mess = require('../database').mess;
+const mess = require('../database/model').mess;
 
 const event = function (chatData, chatMethod, port) {
   // socket链接时执行

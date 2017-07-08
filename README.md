@@ -68,7 +68,7 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 ```
 
 ×  GET   /api/user               // 用户列表
-×  POST  /api/user/add           // 注册
+√  POST  /api/user/add           // 注册
 ×  POST  /api/user/login         // 登陆
 ×  POST  /api/user/logout        // 注销
 ×  POST  /api/user/del           // 删除
