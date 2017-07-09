@@ -6,19 +6,29 @@
 <body>
   <%= user !== undefined ? user : 'not login' %>
   <form>
-    <input type="text" placeholder="user">
-    <input type="password" placeholder="pass">
+    <input id="login-user" type="text" placeholder="user">
+    <input id="login-pass" type="password" placeholder="pass">
     <input type="button" value="登陆" onclick="login()">
   </form>
   <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
+    var user = document.getElementById('login-user')
+    var pass = document.getElementById('login-pass')
+    function reflash() {
+      document.location = document.location
+    }
     function login () {
       axios.post('http://localhost:8088/api/user/login', {
-        name: 'admin',
-        pass: 'admin'
+        name: user.value,
+        pass: pass.value
       })
       .then(function(res){
-        console.log(res.data)
+        if (res.data.msgCode === 200) {
+          reflash()
+        }
+        else {
+          console.log(res.data)
+        }
       })
       .catch(function(err){
         console.log(err)

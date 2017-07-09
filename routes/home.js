@@ -3,7 +3,7 @@ var express = basic.express;
 var router = basic.router;
 
 router.get('/', function(req, res, next) {
-  res.render('index', { title: '大众聊天室' });
+  res.render('index', { title: '大众聊天室', user: req.session.loginUser});
 });
 
 module.exports = router

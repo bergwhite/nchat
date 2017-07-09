@@ -27,7 +27,7 @@ router.get('/api/room', function(req, res, next) {
 })
 
 // 房间信息
-router.get('/api/room/:id', function(req, res, next) {
+router.get('/api/room/info/:id', function(req, res, next) {
   room.findOne({name: req.params.id}, function(err, val){
     if (val !== null) {
       res.send(val)
@@ -57,7 +57,7 @@ router.post('/api/room/add', function(req, res, next) {
 })
 
 // 房间记录
-router.get('/api/room/:id/mess', function(req, res, next) {
+router.get('/api/room/mess/:id', function(req, res, next) {
   room.findOne({name: req.params.id}, function(err, val){
     if (val !== null) {
       mess.find({room: req.params.id}, function(errChild, valChild) {

@@ -59,7 +59,7 @@ router.post('/api/user/register', function(req, res, next) {
 
     // 用户已存在则直接返回提示信息
     if (val !== null) {
-      res.send({msgCode:200, msgCtx: 'User is exist.'})
+      res.send({msgCode:304, msgCtx: 'User is exist.'})
     }
 
     else {
@@ -96,7 +96,7 @@ router.post('/api/user/register', function(req, res, next) {
         req.session.regenerate(function(err) {
 
           if (err) {
-            res.send({msgCode:200, msgCtx: 'Reg success but not logined.'})
+            res.send({msgCode:500, msgCtx: 'Reg success but not logined.'})
           }
 
           else {
@@ -109,7 +109,7 @@ router.post('/api/user/register', function(req, res, next) {
       }
 
       else {
-        res.send({msgCode:1001, msgCtx: 'User is exist.'});
+        res.send({msgCode:304, msgCtx: 'User is exist.'});
       }
     }
   })
@@ -196,7 +196,7 @@ router.post('/api/user/logout', function(req, res, next) {
 });
 
 // 个人资料
-router.get('/api/user/:id', function(req, res, next) {
+router.get('/api/user/info/:id', function(req, res, next) {
   // 获取用户资料
   info.findOne({user: req.params.id}, function(err,val){
     // 如果当前用户不存在
@@ -210,22 +210,59 @@ router.get('/api/user/:id', function(req, res, next) {
     else {
       res.send(val);
     }
-    console.log('/user/:id/info / val: ' + val)
-    console.log('/user/:id/info / err: ' + err)
+    console.log('/api/user/info/:id / val: ' + val)
+    console.log('/api/user/info/:id / err: ' + err)
   })
 });
 
-router.post('/api/user/:id/pass', function() {
+router.post('/api/user/pass', function(req, res, next) {
+  // 已登录则执行
+  if (req.session.loginUser) {
+    // 带了请求参数则执行
+    if (req.body) {
+      // 用户和密码别名
+      var userName = req.session.loginUser
+      var passOld = req.body.passOld
+      var passNew = req.body.passNew
+      // 查询当前用户的账号
+      user.findOne({name: userName}, function(err, val) {
+        // 输入的旧密码等于原始密码则执行
+        if (val.pass === passOld) {
+          // 更新成新密码
+          user.update({name: userName}, {$set: {pass: passNew}}, function(err){
+            // 提示成功
+            if (!err) {
+              res.send({msgCode:200, msgCtx: 'Pass is changed.'})
+            }
+            // 提示错误信息
+            else {
+              res.send({msgCode:304, msgCtx: err})
+            }
+          })
+        }
+        // 旧密码错误
+        else {
+          res.send({msgCode:304, msgCtx: 'Old password is incorrect.'})
+        }
+      })
+    }
+    // 提示在请求中带参数
+    else {
+      res.send({msgCode:304, msgCtx: 'Please enter oldPass and newPass.'})
+    }
+  }
+  // 提示需要登陆才能操作
+  else {
+    res.send({msgCode:304, msgCtx: 'Please login.'})
+  }
+})
+
+router.post('/api/user/nick', function() {
   // isUserExist()
   // isUserLogin()
 })
 
-router.post('/api/user/:id/nick', function() {
-  // isUserExist()
-  // isUserLogin()
-})
-
-router.post('/api/user/:id/info', function() {
+router.post('/api/user/info', function() {
   // isUserExist()
   // isUserLogin()
 })
@@ -255,13 +292,13 @@ router.get('/user/:id', function(req, res, next) {
 
 // 登陆页面
 router.get('/login', function(req, res, next) {
-  console.log(req.session.loginUser)
   res.render('userLogin', {user: req.session.loginUser})
 })
 
 // 注册页面
 router.get('/register', function(req, res, next) {
-  res.render('userRegister')
+  console.log(req.session.loginUser)
+  res.render('userRegister', {user: req.session.loginUser})
 })
 
 module.exports = router
