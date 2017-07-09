@@ -328,13 +328,23 @@ router.get('/user/:id', function(req, res, next) {
 
 // 登陆页面
 router.get('/login', function(req, res, next) {
-  res.render('userLogin', {user: req.session.loginUser})
+  if (!req.session.loginUser) {
+    res.render('userLogin')
+  }
+  else {
+    res.redirect('/')
+  }
 })
 
 // 注册页面
 router.get('/register', function(req, res, next) {
   console.log(req.session.loginUser)
   res.render('userRegister', {user: req.session.loginUser})
+})
+
+// 忘记密码
+router.get('/forget', function(req, res, next) {
+  res.send('<h1>Page is building.</h1>')
 })
 
 module.exports = router

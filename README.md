@@ -60,9 +60,9 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 √  /                   // 首页
 √  /room/:id           // 房间
-×  /user/:id           // 用户
-×  /register      // 注册
-×  /login         // 登陆
+√  /user/:id           // 用户
+√  /register           // 注册
+√  /login              // 登陆
 
 ```
 
@@ -76,10 +76,9 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 √  POST  /api/user/logout        // 注销
 ×  POST  /api/user/del           // 删除
 ×  PUT   /api/user/img           // 上传用户头像
-×  POST  /api/user/nick          // 修改昵称
 √  POST  /api/user/pass          // 修改密码
 √  GET   /api/user/info/:id      // 获取资料
-×  POST  /api/user/info          // 修改资料
+√  POST  /api/user/info          // 修改资料
 √  GET   /api/room               // 获取房间列表
 √  POST  /api/room/add           // 添加房间
 √  GET   /api/room/info/:id      // 获取房间信息

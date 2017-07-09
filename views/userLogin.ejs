@@ -2,37 +2,125 @@
 <html>
 <head>
   <title></title>
+  <style type="text/css">
+    .login {
+      width: 344px;
+      position: absolute;
+      left: 50%;
+      margin-left: -172px;
+      top: 180px;
+    }
+    .login-user,.login-pass,.login-confirm {
+      padding: 10px 20px;
+      width: 300px;
+      margin-top: 30px;
+    }
+    .login-confirm {
+      width: 340px;
+      margin-top: 30px;
+    }
+    .login-tip {
+      display: block;
+      color: red;
+      position: absolute;
+      left: 0;
+      top: 0;
+    }
+    .login-confirm-wrap {
+      position: relative;
+    }
+    .login-repass {
+      position: absolute;
+      right: 0;
+      top: 0;
+    }
+  </style>
 </head>
 <body>
-  <%= user !== undefined ? user : 'not login' %>
-  <form>
-    <input id="login-user" type="text" placeholder="user">
-    <input id="login-pass" type="password" placeholder="pass">
-    <input type="button" value="登陆" onclick="login()">
-  </form>
+  <div class="login">
+    <div class="login-user-wrap">
+      <input class="login-user" type="text" placeholder="user">
+    </div>
+    <div class="login-pass-wrap">
+      <input class="login-pass" type="password" placeholder="pass">
+    </div>
+    <div class="login-confirm-wrap">
+      <span class="login-tip"></span>
+      <span class="login-repass"><a href="http://localhost:8088/forget">忘记密码</a></span>
+      <input class="login-confirm" type="button" value="登陆" onclick="handle()">
+    </div>
+  </div>
   <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
-    var user = document.getElementById('login-user')
-    var pass = document.getElementById('login-pass')
+
+    var user = document.getElementsByClassName('login-user')[0]
+    var pass = document.getElementsByClassName('login-pass')[0]
+    var loginTip = document.getElementsByClassName('login-tip')[0]
+
+    // 获取当前地址
+
+    var origin = document.location.origin
+
+    // 焦点聚焦到用户名
+
+    user.focus()
+
+    // 跳转到首页函数
+
     function reflash() {
-      document.location = document.location
+      document.location = origin
     }
-    function login () {
-      axios.post('http://localhost:8088/api/user/login', {
-        name: user.value,
-        pass: pass.value
-      })
-      .then(function(res){
-        if (res.data.msgCode === 200) {
-          reflash()
-        }
-        else {
-          console.log(res.data)
-        }
-      })
-      .catch(function(err){
-        console.log(err)
-      })
+
+    // 登陆和注册的URL
+
+    var url = {
+      login: origin + '/api/user/login',
+      register: origin + '/api/user/register'
+    }
+
+    // 默认使用登陆请求
+    url.current = url.login
+
+    function handle () {
+
+      // 用户名的值为空
+      if (user.value === '') {
+        // 焦点聚焦到用户名
+        user.focus()
+        // 更改提示
+        loginTip.innerHTML = '请输入用户名'
+      }
+      // 密码的值为空
+      else if (pass.value === '') {
+        // 焦点聚焦到密码
+        pass.focus()
+        // 更改提示
+        loginTip.innerHTML = '请输入密码'
+      }
+      else {
+        // 发起异步请求
+        axios.post(url.current, {
+          name: user.value,
+          pass: pass.value
+        })
+        .then(function(res){
+          // 状态码为200则跳转到首页
+          if (res.data.msgCode === 200) {
+            // 跳转到首页
+            reflash()
+          }
+          // 否则提示错误信息
+          else {
+            // 提示错误信息
+            loginTip.innerHTML = res.data.msgCtx
+            console.log(res.data)
+          }
+        })
+        // 捕捉错误
+        .catch(function(err){
+          console.log(err)
+        })
+      }
     }
   </script>
 </body>
