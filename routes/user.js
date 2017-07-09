@@ -131,12 +131,13 @@ router.post('/api/user/login', function(req, res, next) {
     var pass = req.body.pass
 
     user.findOne({name: name}, function(err, val) {
-
       // 错误提示
       if (err) {
         return res.send({msgCode:500, msgCtx: err})
       }
-
+      else if(req.session.loginUser) {
+        return res.send({msgCode:304, msgCtx: 'You have logined.'})
+      }
       // 用户不存在提示
       else if (val === null) {
         return res.send({msgCode:404, msgCtx: 'User is not exist.'})
@@ -238,7 +239,7 @@ router.post('/api/user/:id/info', function() {
 router.get('/user/:id', function(req, res, next) {
   info.findOne({user: req.params.id}, function(err,val){
     if (val === null) {
-      res.send({msgCode:404, msgCtx: 'User not exist.'})
+      res.send('<h1>404</h1>')
     }
     else {
       res.render('userInfo', {
@@ -254,7 +255,8 @@ router.get('/user/:id', function(req, res, next) {
 
 // 登陆页面
 router.get('/login', function(req, res, next) {
-  res.render('userLogin')
+  console.log(req.session.loginUser)
+  res.render('userLogin', {user: req.session.loginUser})
 })
 
 // 注册页面

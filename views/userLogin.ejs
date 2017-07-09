@@ -1,1 +1,29 @@
-userLogin
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+</head>
+<body>
+  <%= user !== undefined ? user : 'not login' %>
+  <form>
+    <input type="text" placeholder="user">
+    <input type="password" placeholder="pass">
+    <input type="button" value="登陆" onclick="login()">
+  </form>
+  <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+  <script type="text/javascript">
+    function login () {
+      axios.post('http://localhost:8088/api/user/login', {
+        name: 'admin',
+        pass: 'admin'
+      })
+      .then(function(res){
+        console.log(res.data)
+      })
+      .catch(function(err){
+        console.log(err)
+      })
+    }
+  </script>
+</body>
+</html>
