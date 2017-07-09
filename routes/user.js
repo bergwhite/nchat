@@ -38,6 +38,20 @@ router.get('/api/isUserExise/:id', function(req, res, next) {
 })
 
 /* 后端API */
+
+// 用户列表
+
+router.get('/api/user', function(req, res, next) {
+  user.find({}, function(err, val){
+    if (val!==null) {
+      res.send(val)
+    }
+    else {
+      res.send({msgCode:404, msgCtx: 'Has not any user.'})
+    }
+  })
+})
+
 // 注册
 router.post('/api/user/register', function(req, res, next) {
 
