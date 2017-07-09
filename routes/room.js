@@ -13,6 +13,19 @@ router.get('/room/:id', function(req, res, next) {
 
 // 后端API
 
+// 房间列表
+
+router.get('/api/room', function(req, res, next) {
+  room.find({}, function(err, val){
+    if (val!==null) {
+      res.send(val)
+    }
+    else {
+      res.send({msgCode:404, msgCtx: 'Has not any room.'})
+    }
+  })
+})
+
 // 房间信息
 router.get('/api/room/:id', function(req, res, next) {
   room.findOne({name: req.params.id}, function(err, val){
