@@ -5,6 +5,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var proxy = require('http-proxy-middleware');
+var session = require('express-session');
+var FileStore = require('session-file-store')(session);
 
 var router = require('./routes/index');
 
@@ -17,6 +19,16 @@ app.set('view engine', 'ejs');
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
+app.use(session({
+  name: 'key',
+  secret: 'whocarewhatisthepass',  // 用来对session id相关的cookie进行签名
+  store: new FileStore(),  // 本地存储session（文本文件，也可以选择其他store，比如redis的）
+  saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
+  resave: false,  // 是否每次都重新保存会话，建议false
+  cookie: {
+    maxAge: 10 * 1000  // 有效期，单位是毫秒
+  }
+}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -30,6 +42,8 @@ app.use('/api/robot', proxy({
   target: 'http://www.tuling123.com',
   changeOrigin: true
 }));
+
+var identityKey = 'key';
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

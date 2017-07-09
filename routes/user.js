@@ -1,34 +1,3 @@
-/*
-
-PersonModel.findById(id,function(err,person){
-      person.name = 'MDragon';
-      var _id = person._id; //需要取出主键_id
-      delete person._id;    //再将其删除
-      PersonModel.update({_id:_id},person,function(err){});
-      //此时才能用Model操作，否则报错
-    });
-
-PersonModel.update({_id:_id},{$set:{name:'MDragon'}},function(err){});
-
-Person.findByIdAndUpdate(_id,{$set:{name:'MDragon'}},function(err,person){
-  console.log(person.name); //MDragon
-});
-
-findByIdAndRemove
-
-如果是Entity，使用save方法，如果是Model，使用create方法
-
-//使用Entity来增加一条数据
-var krouky = new PersonModel({name:'krouky'});
-krouky.save(callback);
-//使用Model来增加一条数据
-var MDragon = {name:'MDragon'};
-PersonModel.create(MDragon,callback);
-
-remove
-
-*/
-
 var bodyParser = require('body-parser')
 var basic = require('./basic');
 var express = basic.express;
@@ -70,26 +39,36 @@ router.get('/api/isUserExise/:id', function(req, res, next) {
 
 /* 后端API */
 // 注册
-router.post('/api/register', function(req, res, next) {
+router.post('/api/user/register', function(req, res, next) {
+
   user.findOne({name: req.body.name}, function(err, val){
+
+    // 用户已存在则直接返回提示信息
     if (val !== null) {
       res.send({msgCode:200, msgCtx: 'User is exist.'})
     }
+
     else {
+
+      // POST中没有数据则进行提示
       if (!req.body) {
         res.send({msgCode:400, msgCtx: 'Please enter the entire form value.'});
       }
+
       else if (!false) {
+
+        // 设置别名
         var name = req.body.name
         var pass = req.body.pass
 
+        // 生成账号
         userSave = new user({
           name: name,
           pass: pass
         })
-
         userSave.save()
 
+        // 生成资料
         infoSava = new info({
           user: name,
           gender: 'secure',
@@ -97,11 +76,24 @@ router.post('/api/register', function(req, res, next) {
           city: 'beijing',
           hobbies: []
         })
-
         infoSava.save()
 
-        res.send({msgCode:200, msgCtx: 'Reg success.'})
+        // 生成Session
+        req.session.regenerate(function(err) {
+
+          if (err) {
+            res.send({msgCode:200, msgCtx: 'Reg success but not logined.'})
+          }
+
+          else {
+
+            // 保存Session
+            req.session.loginUser = name;
+            res.send({msgCode:200, msgCtx: 'Reg success & logined.'})
+          }
+        });
       }
+
       else {
         res.send({msgCode:1001, msgCtx: 'User is exist.'});
       }
@@ -109,34 +101,85 @@ router.post('/api/register', function(req, res, next) {
   })
   // res.send({msgCode:400, msgCtx: 'Please enter the entire form value.'})
 });
+
 // 登陆
-router.post('/api/login', function(req, res, next) {
+router.post('/api/user/login', function(req, res, next) {
+
+  // POST中没有数据则进行提示
   if (!req.body) {
     res.send({msgCode:400, msgCtx: 'Please enter the entire form value.'});
   }
+
   else if (!false) {
+
+    // 设置别名
     var name = req.body.name
     var pass = req.body.pass
 
-    user.findOne({user: name, pass: pass}, function(err, val) {
-      if (val===null) {
-        res.send({msgCode:404, msgCtx: 'Name or password is incorrect.'})
+    user.findOne({name: name}, function(err, val) {
+
+      // 错误提示
+      if (err) {
+        return res.send({msgCode:500, msgCtx: err})
       }
+
+      // 用户不存在提示
+      else if (val === null) {
+        return res.send({msgCode:404, msgCtx: 'User is not exist.'})
+      }
+
+      // 密码错误提示
+      else if(val.pass !== pass) {
+        return res.send({msgCode:404, msgCtx: 'Pass is incorrect.'})
+      }
+
       else {
-        res.send({msgCode:404, msgCtx: 'Login success.'})
+
+        // 存在Session则提示已登录
+        if (req.session.loginUser) {
+          return res.send({msgCode:304, msgCtx: 'You have alread logined.'});
+        }
+
+        // 否则重新生成Session
+        else {
+          req.session.regenerate(function(err) {
+
+            // 错误提示
+            if(err){
+              return res.send({msgCode:404, msgCtx: 'Login fail.'});
+            }
+
+            // 登陆成功提示
+            else {
+              req.session.loginUser = name;
+              return res.send({msgCode:200, msgCtx: 'Login success.'})
+            }
+          });
+        }
       }
     })
-
-    res.send({msgCode:200, msgCtx: 'User login  success.'})
   }
+
+  // 登陆失败提示
   else {
     res.send({msgCode:1001, msgCtx: 'User login fail.'});
   }
 });
+
 // 注销
-router.post('/api/logout', function(req, res, next) {
-  res.send({status: "success"});
+router.post('/api/user/logout', function(req, res, next) {
+  req.session.destroy(function(err) {
+    if(err){
+      res.send({msgCode:404, msgCtx: 'User logout fail.'});
+      return;
+    }
+    // req.session.loginUser = null;
+    res.clearCookie('key');
+    return res.send({msgCode:200, msgCtx: 'User logout success.'});
+    // res.redirect('/');
+  });
 });
+
 // 个人资料
 router.get('/api/user/:id', function(req, res, next) {
   // 获取用户资料
@@ -177,6 +220,7 @@ router.post('/api/user/:id/info', function() {
 /**
  * {user, gender, img, city, hobbies[]}
  */
+
 router.get('/user/:id', function(req, res, next) {
   info.findOne({user: req.params.id}, function(err,val){
     if (val === null) {
@@ -193,10 +237,12 @@ router.get('/user/:id', function(req, res, next) {
     }
   })
 })
+
 // 登陆页面
 router.get('/login', function(req, res, next) {
   res.render('userLogin')
 })
+
 // 注册页面
 router.get('/register', function(req, res, next) {
   res.render('userRegister')
