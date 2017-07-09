@@ -257,14 +257,50 @@ router.post('/api/user/pass', function(req, res, next) {
   }
 })
 
-router.post('/api/user/nick', function() {
-  // isUserExist()
-  // isUserLogin()
-})
-
-router.post('/api/user/info', function() {
-  // isUserExist()
-  // isUserLogin()
+router.post('/api/user/info', function(req, res, next) {
+  // 已登录则执行
+  if (req.session.loginUser) {
+    // 带了请求参数则执行
+    if (req.body) {
+      // 用户资料别名
+      var userName = req.session.loginUser
+      var userGender = req.body.gender
+      var userImg = req.body.img
+      var userCity = req.body.city
+      var userHobbies = req.body.hobbies.split(',')
+      // 查询当前用户的账号
+      info.findOne({user: userName}, function(err, val) {
+        // 更新资料
+        info.update({user: userName}, {$set: {
+          gender: userGender,
+          img: userImg,
+          city: userCity,
+          hobbies: userHobbies
+        }}, function(err){
+          // 提示成功
+          if (!err) {
+            console.log(userGender)
+            console.log(userImg)
+            console.log(userCity)
+            console.log(userHobbies)
+            res.send({msgCode:200, msgCtx: 'User info is changed.'})
+          }
+          // 提示错误信息
+          else {
+            res.send({msgCode:304, msgCtx: err})
+          }
+        })
+      })
+    }
+    // 提示在请求中带参数
+    else {
+      res.send({msgCode:304, msgCtx: 'Please enter user info.'})
+    }
+  }
+  // 提示需要登陆才能操作
+  else {
+    res.send({msgCode:304, msgCtx: 'Please login.'})
+  }
 })
 
 /* 前端路由 */
