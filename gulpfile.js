@@ -1,4 +1,5 @@
 const gulp = require('gulp'),
+      lessToCSS = require('gulp-less'),
       minifyCSS = require('gulp-clean-css'),
       minifyJS = require('gulp-uglifyjs'),
       babel = require('gulp-babel'),
@@ -16,6 +17,7 @@ const compileDir = {
 // 编译CSS
 gulp.task('compile-css', () => {
   return gulp.src(compileDir.css.src)
+        .pipe(lessToCSS())
         .pipe(minifyCSS())
         .pipe(rename(function(path) {
           path.basename += '.min'

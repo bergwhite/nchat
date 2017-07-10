@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no">
     <title><%= title %> - NodeJS Chat</title>
     <link rel='stylesheet' href='/css/index.min.css' />
   </head>
@@ -11,14 +13,7 @@
     <h1 class="chat-name text-center"><%= title %></h1>
     <div class="chat">
       <div class="chat-info">
-      </div>
-      <div class="info-room">
-        <p class="info-title text-center">房间列表</p>
-        <ul class="room-list">
-          <% for(var x = 0; x < room.length; x++){ %>
-          <li><a href=<%= '/room/' + room[x].name %> class="room-link" target="_black"><%= room[x].name %></a></li>
-          <% } %>
-        </ul>
+        <p><%= desc %></p>
       </div>
       <div class="chat-ctx-wrap">
         <div class="chat-ctx">
@@ -40,7 +35,7 @@
           </div>
         </div>
       </div>
-      <div class="user-list-wrap">
+      <!-- <div class="user-list-wrap">
         <div class="info-tab-cut">
           <ul class="info-tab">
             <div class="info-user">
@@ -62,7 +57,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div> -->
     <script type="text/javascript">
       var socketScript = document.createElement('script')
       var tempSrc = 'http://' + document.location.hostname + ':8089/socket.io/socket.io.js'

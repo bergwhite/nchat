@@ -53,7 +53,11 @@ router.get('/room/:id', function(req, res, next) {
     }
     else {
       room.find({}, function(err, val){
-        res.render('index', {title: req.params.id, room: val});
+        var roomObj = val.find(function(el,i,arr){
+          return el.name === req.params.id
+        })
+        var desc = roomObj.desc
+        res.render('index', {title: req.params.id, desc: desc, room: val});
       })
     }
   })

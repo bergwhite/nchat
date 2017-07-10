@@ -40,7 +40,7 @@ nodejsChat.data = {
     sex: 'men'
   },
   robot: {
-    api: 'api/robot/openapi/api',
+    api: document.location.origin + '/api/robot/openapi/api',
     key: '57a5b6849e2b4d47ae0badadf849c261',
     nick: '小美',
     img: 'https://randomuser.me/api/portraits/women/60.jpg'
@@ -111,7 +111,7 @@ nodejsChat.room = {
   },
   // 渲染
   render: function () {
-    // 进入页面打印当前聊天室状态
+    /*// 进入页面打印当前聊天室状态
     socket.on('current status', function  (data) {
       nodejsChat.method.initList(userList)
       nodejsChat.method.getOnlineList(data.room, nodejsChat.data.roomID)
@@ -122,7 +122,7 @@ nodejsChat.room = {
           var ctx = nodejsChat.method.renderUserList(nodejsChat.data.onlineUserListImg[i], nodejsChat.data.onlineUserList[i])
           nodejsChat.method.insertToList(userList, 'li', ctx)
         }
-      }
+      }*/
 
       // here has been replaced, maybe the below code will be removed
       /*// nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
@@ -141,11 +141,11 @@ nodejsChat.room = {
         }
       }
       // nodejsChat.method.renderList('room', data.roomList)*/
-      
-      console.log(data)
+
+      /*console.log(data)
       console.log("在线统计：" + nodejsChat.data.onlineUserCount)
-      console.log('在线用户：' + nodejsChat.data.onlineUserList)
-    })
+      console.log('在线用户：' + nodejsChat.data.onlineUserList)*/
+    // })
     // 渲染在线用户列表
     socket.on('user add to list req', function (data) {
       // TODO: img change
@@ -412,7 +412,7 @@ nodejsChat.method = {
 
 document.body.onload = function () {
   // 文档加载完毕自动在输入框获得焦点
-  userReg.focus()
+  // userReg.focus()
   // 初始化房间ID
   nodejsChat.data.roomID = nodejsChat.method.getRoomID()
   // 初始化
@@ -424,7 +424,7 @@ document.body.onload = function () {
   console.log(nodejsChat.method.getRandomImg('men'))
   // 测试随机昵称
   console.log(nodejsChat.method.getRandomNick('china','male'))
-  inputRadioSex[0].addEventListener('click', function () {
+  /*inputRadioSex[0].addEventListener('click', function () {
     // if (!inputRadioSex[0].checked) {
       var sex = nodejsChat.method.checkInputRadioSex()
       nodejsChat.data.user.sex = sex
@@ -448,5 +448,5 @@ document.body.onload = function () {
     nodejsChat.data.user.img = src
     userImgChoose.src = src
   }, false)
-  console.log(nodejsChat.method.checkInputRadioSex())
+  console.log(nodejsChat.method.checkInputRadioSex())*/
 }
