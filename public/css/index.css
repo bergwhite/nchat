@@ -44,6 +44,10 @@ a {
 @chatSendBoxWidth: 7rem;
 @chatSendBoxHeight: 0.8rem;
 
+// 发送按钮
+
+@chatSendButtonWidth: 0.5rem;
+
 // 布局高度
 
 @chatNameHeight: 0.8rem;
@@ -53,7 +57,7 @@ a {
 .chat-name {
   height: @chatNameHeight;
   background-color: rgb(33,150,243);
-  padding: 20px;
+  padding: 0.2rem;
 }
 .chat {
   width: @baseWidth;
@@ -65,17 +69,17 @@ a {
   height: @chatCtxHeight;
   overflow-y: scroll;
 }
-.chat-ctx:hover::-webkit-scrollbar {
-  width: 12px;
+.chat-ctx::-webkit-scrollbar {
+  width: 0.12rem;
 }
-.chat-ctx:hover::-webkit-scrollbar-thumb {
-  border-radius: 6px;
+.chat-ctx::-webkit-scrollbar-thumb {
+  border-radius: 0.06rem;
   background-color: gray;
 }
 
 .room-link {
   display: block;
-  padding: 5px;
+  padding: 0.05rem;
   color: black;
 }
 .room-link:hover {
@@ -100,71 +104,74 @@ a {
 /* 用户列表 */
 /* 用户列表的用户头像 && 保存用户名界面的用户头像 */
 .user-img {
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 0.2rem;
   float: left;
 }
 .user-img-choose {
-  width: 80px;
-  height: 80px;
-  border-radius: 40px;
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.4rem;
 }
 .user-name {
-  padding-left: 10px;
+  padding-left: 0.1rem;
   display: inline-block;
-  height: 40px;
-  line-height: 40px;
+  height: 0.4rem;
+  line-height: 0.4rem;
   overflow: hidden;
 }
 .info-title {
-  height: 30px;
-  line-height: 30px;
+  height: 0.3rem;
+  line-height: 0.3rem;
 }
 .info-user {
   text-align: center;
 }
 #user-reg {
-  padding: 10px 20px;
+  padding: 0.1rem 0.2rem;
 }
 .chat-info-confirm {
   background-color: rgb(68,138,255);
-  padding: 5px;
+  padding: 0.05rem;
   cursor: pointer;
 }
 #user-reg, .chat-info-confirm, #user-reg-tip {
   width: 80%;
-  margin: 5px auto 0 auto;
+  margin: 0.05rem auto 0 auto;
 }
 .user-list-wrap {
-  width: 181px;
-  height: 400px;
-  border: 1px solid white;
+  width: 1.81rem;
+  height: 4rem;
+  border: 0.01rem solid white;
   float: left;
   border-left: 0;
   overflow: hidden;
 }
 .user-lists {
-  padding: 0 20px;
-  height: 180px;
+  padding: 0 0.2rem;
+  height: 1.8rem;
   overflow-y: scroll;
 }
 .room-list {
-  padding: 5px 10px;
-  height: 348px;
+  padding: 0.05rem 0.1rem;
+  height: 3.48rem;
   overflow-y: scroll;
 }
 .chat-ctx-wrap {
   overflow: hidden;
 }
 .chat-more-wrap {
+  position: fixed;
+  left: 0;
+  bottom: @chatSendBoxHeight;
   height: @chatToolWidth;
   line-height: @chatToolHeight;
-  border-bottom: 1px solid white;
+  border-bottom: 0.01rem solid white;
 }
 .chat-more > li {
   float: left;
-  width: 40px;
+  width: 0.4rem;
   text-align: center;
   cursor: pointer;
   position: relative;
@@ -172,15 +179,15 @@ a {
 .chat-more-box {
   position: absolute;
   left: 0;
-  top: -80px;
-  width: 280px;
-  height: 80px;
+  top: -0.8rem;
+  width: 2.8rem;
+  height: 0.8rem;
   text-align: left;
   visibility: hidden;
   background-color: #EFEFEF;
 }
 .chat-more-box > li {
-  width: 20px;
+  width: 0.2rem;
   text-align: center;
   float: left;
 }
@@ -194,10 +201,10 @@ a {
 }
 .chat-msg-send {
   overflow-y: auto;
-  height: @chatSendBoxHeight;
   width: @chatSendBoxWidth;
+  height: @chatSendBoxHeight;
   float: left;
-  padding: 10px 20px;
+  padding: 0.1rem 0.2rem;
   outline: none;
   color: black;
   resize: none;
@@ -205,6 +212,9 @@ a {
   border: 0;
 }
 .chat-send-btn {
+  float: left;
+  width: @chatSendButtonWidth;
+  height: @chatSendBoxHeight;
   overflow: hidden;
   text-align: center;
   line-height: @chatSendBoxHeight;
@@ -217,27 +227,27 @@ a {
 }
 .info-tab {
   transition: all .7s;
-  width: 180px;
-  height: 400px;
+  width: 1.8rem;
+  height: 4rem;
   overflow: hidden;
 }
 .info-tab-cut,.info-user,.info-menber,.info-room {
-  width: 180px;
+  width: 1.8rem;
 }
 .info-room {
   position: absolute;
-  left: -180px;
-  top: 30px;
-  border: 1px solid white;
+  left: -1.8rem;
+  top: 0.3rem;
+  border: 0.01rem solid white;
   border-right: 0;
-  height: 400px;
-  padding: 10px;
+  height: 4rem;
+  padding: 0.1rem;
 }
 .info-user {
-  height: 190px;
+  height: 1.9rem;
 }
 .info-menber {
-  height: 210px;
+  height: 2.1rem;
 }
 .info-tab > li {
   float: left;
@@ -246,7 +256,7 @@ a {
 .bubble {
   color: black;
   overflow: hidden;
-  padding: 10px;
+  padding: 0.1rem;
 }
 /* 左边泡泡 */
 .bubble-left {
@@ -267,7 +277,7 @@ a {
 /* 左边泡泡 内容 */
 .bubble-left > .bubble-ctx {
   float: left;
-  margin-left: 20px;
+  margin-left: 0.2rem;
 }
 .bubble-ctx-show::before {
   content: '';
@@ -282,44 +292,44 @@ a {
   position: absolute;
 }
 .bubble-left .bubble-ctx-show::before {
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-right: 10px solid #00bcd4;
-  left: -10px;
-  top: 10px;
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-right: 0.1rem solid #00bcd4;
+  left: -0.1rem;
+  top: 0.1rem;
 }
 /* 左边泡泡 三角形 */
 .bubble-left .bubble-ctx-show::after {
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-right: 10px solid #EFEFEF;
-  left: -9px;
-  top: 10px;
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-right: 0.1rem solid #EFEFEF;
+  left: -0.09rem;
+  top: 0.1rem;
 }
 /* 左边泡泡 内容 */
 .bubble-right > .bubble-ctx {
-  margin-right: 20px;
+  margin-right: 0.2rem;
   float: right;
 }
 /* 右边泡泡 三角形 */
 .bubble-right .bubble-ctx-show::before {
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 10px solid #00bcd4;
-  right: -10px;
-  top: 10px;
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-left: 0.1rem solid #00bcd4;
+  right: -0.1rem;
+  top: 0.1rem;
 }
 .bubble-right .bubble-ctx-show::after {
-  border-top: 5px solid transparent;
-  border-bottom: 5px solid transparent;
-  border-left: 10px solid #EFEFEF;
-  right: -9px;
-  top: 10px;
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-left: 0.1rem solid #EFEFEF;
+  right: -0.09rem;
+  top: 0.1rem;
 }
 /* 全局泡泡 头部 */
 .bubble-head {
   width: @chatBubbleHeadWidth;
-  height: 40px;
+  height: 0.4rem;
 }
 /* 全局泡泡 内容 */
 .bubble-ctx {
@@ -327,20 +337,20 @@ a {
   width: @chatBubbleCtxWidth;
 }
 .bubble-ctx-border {
-  border: 1px solid #00bcd4;
-  border-radius: 10px;
+  border: 0.01rem solid #00bcd4;
+  border-radius: 0.1rem;
   margin: 0;
-  padding: 5px;
+  padding: 0.05rem;
   position: relative;
 }
 .bubble-ctx-show {
   margin: 0;
-  padding: 5px 10px;
+  padding: 0.05rem 0.1rem;
 }
 /* 全局泡泡 信息 */
 .bubble-info {
   overflow: hidden;
-  padding-bottom: 5px;
+  padding-bottom: 0.05rem;
 }
 /* 全局泡泡 信息列表 */
 .bubble-left .bubble-info-user {
@@ -349,7 +359,7 @@ a {
 }
 .bubble-left .bubble-info-time {
   float: right;
-  padding-right: 16px;
+  padding-right: 0.16rem;
 }
 .bubble-right .bubble-info-user {
   color: #ffc107;
@@ -358,5 +368,5 @@ a {
 }
 .bubble-right .bubble-info-time {
   float: left;
-  padding-left: 16px;
+  padding-left: 0.16rem;
 }
