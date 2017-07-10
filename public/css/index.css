@@ -41,12 +41,12 @@ a {
 
 // 发送框
 
-@chatSendBoxWidth: 7rem;
+@chatSendBoxWidth: 6.5rem;
 @chatSendBoxHeight: 0.8rem;
 
 // 发送按钮
 
-@chatSendButtonWidth: 0.5rem;
+@chatSendButtonWidth: 1rem;
 
 // 布局高度
 
@@ -54,9 +54,13 @@ a {
 @chatMainHeight: 12.54rem;
 @chatCtxHeight: 11.34rem;
 
+// 配色方案
+
+@colorMain: #2196f3;
+
 .chat-name {
   height: @chatNameHeight;
-  background-color: rgb(33,150,243);
+  background-color: @colorMain;
   padding: 0.2rem;
 }
 .chat {
@@ -219,8 +223,8 @@ a {
   text-align: center;
   line-height: @chatSendBoxHeight;
   cursor: pointer;
-  background-color: #EFEFEF;
-  color: black;
+  background-color: @colorMain;
+  color: white;
 }
 .info-tab-cut {
   overflow: hidden;

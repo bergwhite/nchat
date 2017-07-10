@@ -75,6 +75,7 @@ nodejsChat.room = {
       nodejsChat.method.insertToList(chatMsgList, 'li', nodejsChat.data.welcomeInfo + nodejsChat.data.roomID)
       // 初始化输入框内容为空
       chatMsgSend.value = ''
+      chatMsgSend.focus()
       // 初始化表情框为不可见
       chatMoreBox.style.visibility = 'hidden'
       // 监听输入框点击事件
