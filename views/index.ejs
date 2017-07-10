@@ -15,6 +15,9 @@
       <div class="info-room">
         <p class="info-title text-center">房间列表</p>
         <ul class="room-list">
+          <% for(var x = 0; x < room.length; x++){ %>
+          <li><a href=<%= '/room/' + room[x].name %> class="room-link" target="_black"><%= room[x].name %></a></li>
+          <% } %>
         </ul>
       </div>
       <div class="chat-ctx-wrap">

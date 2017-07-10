@@ -21,10 +21,13 @@ const event = function (chatData, chatMethod, port) {
       console.log('connection / currentRoom: ' + chatData.currentRoomID)
       // 不存在则创建新房间
       if(!chatMethod.isRoomExist(chatData.room, roomID)) {
-        // 向当前接受请求的页面发送更新房间列表请求
+
+        // here has been replaced, maybe the below code will be removed
+        /*// 向当前接受请求的页面发送更新房间列表请求
         socket.emit('add room', roomID)
         // 向其他房间发送更新列表请求
-        socket.broadcast.emit('add room', roomID)
+        socket.broadcast.emit('add room', roomID)*/
+
         chatData.roomList.push(roomID)
         chatData.room.push({
           name: roomID,

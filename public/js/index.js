@@ -51,8 +51,11 @@ nodejsChat.room = {
   // 初始化
   init: function () {
     socket.on('request room id', function () {
-      // 每次进来，先清空房间列表
-      roomList.innerHTML = ''
+
+      // here has been replaced, maybe the below code will be removed
+      /*每次进来，先清空房间列表
+      roomList.innerHTML = ''*/
+
       // 把当前房间id返回给后台
       socket.emit('response room id', nodejsChat.data.roomID)
       // 为当前房间发送欢迎消息
@@ -68,11 +71,14 @@ nodejsChat.room = {
         nodejsChat.data.messIsFoucs = true
       }
     })
-    socket.on('add room', function  (data) {
+
+    // here has been replaced, maybe the below code will be removed
+    /*socket.on('add room', function  (data) {
       var url = document.location.origin
       var link = `<a href="${url}/room/${data}" class="room-link">${data}</a>`
       nodejsChat.method.insertToList(roomList, 'li', link)
-    })
+    })*/
+
     socket.on('user login req', function (data) {
       nodejsChat.method.insertToList(chatMsgList, 'li', data)
     })
@@ -117,7 +123,9 @@ nodejsChat.room = {
           nodejsChat.method.insertToList(userList, 'li', ctx)
         }
       }
-      // nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
+
+      // here has been replaced, maybe the below code will be removed
+      /*// nodejsChat.method.renderList('user', nodejsChat.data.onlineUserList)
       var roomLen = data.roomList.length
       if (roomLen !== 0) {
         for(var i = 0; i < roomLen; i++){
@@ -132,7 +140,8 @@ nodejsChat.room = {
           nodejsChat.method.insertToList(roomList, 'li', link)
         }
       }
-      // nodejsChat.method.renderList('room', data.roomList)
+      // nodejsChat.method.renderList('room', data.roomList)*/
+      
       console.log(data)
       console.log("在线统计：" + nodejsChat.data.onlineUserCount)
       console.log('在线用户：' + nodejsChat.data.onlineUserList)
