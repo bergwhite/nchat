@@ -70,19 +70,28 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 ```
 
-√  GET   /api/user               // 用户列表
-√  POST  /api/user/register      // 注册
-√  POST  /api/user/login         // 登陆
-√  POST  /api/user/logout        // 注销
-×  POST  /api/user/del           // 删除
-×  PUT   /api/user/img           // 上传用户头像
-√  POST  /api/user/pass          // 修改密码
-√  GET   /api/user/info/:id      // 获取资料
-√  POST  /api/user/info          // 修改资料
-√  GET   /api/room               // 获取房间列表
-√  POST  /api/room/add           // 添加房间
-√  GET   /api/room/info/:id      // 获取房间信息
-√  GET   /api/room/mess/:id      // 获取房间记录
+用户
+
+接口       状态   请求  地址                 必须    参数
+
+用户注册   √      POST  /api/user/register   未登录  {name: String, pass: String}
+用户登陆   √      POST  /api/user/login      未登录  {name: String, pass: String}
+注销用户   √      POST  /api/user/logout     已登录  空
+删除用户   ×      POST  /api/user/del        已登录  {passOld: String}
+用户资料   √      GET   /api/user/info/:id   无      空
+用户列表   √      GET   /api/user            无      空
+修改密码   √      POST  /api/user/pass       已登录  {passOld: String, passNew: String}
+修改资料   √      POST  /api/user/info       已登录  {gender: String, img: String, city: String, hobbies: String}
+上传头像   ×      PUT   /api/user/img        已登录  {img: String}
+
+房间
+
+接口       状态   请求  地址                 必须    参数
+
+添加房间   √      POST  /api/room/add        已登录  {name: String, desc: String}
+房间描述   √      GET   /api/room/info/:id   无      空
+聊天记录   √      GET   /api/room/mess/:id   无      空
+房间列表   √      GET   /api/room            无      空
 
 ```
 
