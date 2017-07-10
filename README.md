@@ -109,6 +109,46 @@ app.use('/api/robot', proxy({
 
 ```
 
+> 数据库
+
+```
+
+infos
+
+{
+  user: String,
+  gender: String,
+  img: String,
+  city: String,
+  hobbies: Array
+}
+
+messes
+
+{
+  room: String,
+  user: String,
+  mess: String,
+  time: Number,
+  img: String
+}
+
+rooms
+
+{
+  name: String,
+  desc: String
+}
+
+users
+
+{
+  name: String,
+  pass: String
+}
+
+```
+
 > 目录
 
 ```
