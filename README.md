@@ -18,6 +18,7 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
   - √ 表情
   - × 斗图
   - × 更多表情
+  - √ 聊天机器人（图灵）
 
 * 用户
   - √ 在线清单
@@ -52,17 +53,30 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 > 踩坑
 
-暂时没有很特别的坑...
+跨域调用图灵机器人API
+
+```
+
+var proxy = require('http-proxy-middleware');
+
+app.use('/api/robot', proxy({
+  target: 'http://www.tuling123.com',
+  changeOrigin: true
+}));
+
+```
 
 > 前端路由
 
 ```
 
-√  /                   // 首页
-√  /room/:id           // 房间
-√  /user/:id           // 用户
-√  /register           // 注册
-√  /login              // 登陆
+类型    状态    地址
+
+首页    √       /        
+房间    √       /room/:id
+用户    √       /user/:id
+注册    √       /register
+登陆    √       /login   
 
 ```
 
@@ -74,8 +88,8 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 接口       状态   请求  地址                 必须    参数
 
-用户注册   √      POST  /api/user/register   未登录  {name: String, pass: String}
-用户登陆   √      POST  /api/user/login      未登录  {name: String, pass: String}
+用户注册   √      POST  /api/user/register   无      {name: String, pass: String}
+用户登陆   √      POST  /api/user/login      无      {name: String, pass: String}
 注销用户   √      POST  /api/user/logout     已登录  空
 删除用户   ×      POST  /api/user/del        已登录  {passOld: String}
 用户资料   √      GET   /api/user/info/:id   无      空
