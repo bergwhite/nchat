@@ -1,0 +1,376 @@
+/* 清除样式 */
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background-color: #EFEFEF;
+  color: black;
+  overflow: hidden;
+  font-size: 16px;
+}
+ul,li,p,h1 {
+  padding: 0;
+  margin: 0;
+}
+li {
+  list-style-type: none;
+}
+a {
+  text-decoration: none;
+}
+
+// 100%宽度
+
+@baseWidth: 7.5rem;
+
+// fork按钮
+
+@forkMeButtomWidth: 1.49rem;
+@forkMeButtomHeight: 1.49rem;
+
+// 消息气泡
+
+@chatBubbleHeadWidth: 0.4rem;
+@chatBubbleCtxWidth: 4.3rem;
+
+// 工具栏
+
+@chatToolWidth: 0.4rem;
+@chatToolHeight: 0.4rem;
+
+// 发送框
+
+@chatSendBoxWidth: 6.5rem;
+@chatSendBoxHeight: 0.8rem;
+
+// 发送按钮
+
+@chatSendButtonWidth: 1rem;
+
+// 布局高度
+
+@chatNameHeight: 0.8rem;
+@chatMainHeight: 12.54rem;
+@chatCtxHeight: 11.34rem;
+
+// 配色方案
+
+@colorMain: #2196f3;
+
+.chat-name {
+  height: @chatNameHeight;
+  background-color: @colorMain;
+  padding: 0.2rem;
+}
+.chat {
+  width: @baseWidth;
+  height: @chatMainHeight;
+  margin: auto;
+  position: relative;
+}
+.chat-ctx {
+  height: @chatCtxHeight;
+  overflow-y: scroll;
+}
+.chat-ctx::-webkit-scrollbar {
+  width: 0.12rem;
+}
+.chat-ctx::-webkit-scrollbar-thumb {
+  border-radius: 0.06rem;
+  background-color: gray;
+}
+
+.room-link {
+  display: block;
+  padding: 0.05rem;
+  color: black;
+}
+.room-link:hover {
+  background-color: rgb(33,150,243);
+}
+.text-center {
+  text-align: center;
+}
+/* fork按钮 */
+.fork-me-wrap {
+  display: block;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: @forkMeButtomWidth;
+  height: @forkMeButtomHeight;
+}
+.fork-me {
+  width: @forkMeButtomWidth;
+  height: @forkMeButtomHeight;
+}
+/* 用户列表 */
+/* 用户列表的用户头像 && 保存用户名界面的用户头像 */
+.user-img {
+  width: 0.4rem;
+  height: 0.4rem;
+  border-radius: 0.2rem;
+  float: left;
+}
+.user-img-choose {
+  width: 0.8rem;
+  height: 0.8rem;
+  border-radius: 0.4rem;
+}
+.user-name {
+  padding-left: 0.1rem;
+  display: inline-block;
+  height: 0.4rem;
+  line-height: 0.4rem;
+  overflow: hidden;
+}
+.info-title {
+  height: 0.3rem;
+  line-height: 0.3rem;
+}
+.info-user {
+  text-align: center;
+}
+#user-reg {
+  padding: 0.1rem 0.2rem;
+}
+.chat-info-confirm {
+  background-color: rgb(68,138,255);
+  padding: 0.05rem;
+  cursor: pointer;
+}
+#user-reg, .chat-info-confirm, #user-reg-tip {
+  width: 80%;
+  margin: 0.05rem auto 0 auto;
+}
+.user-list-wrap {
+  width: 1.81rem;
+  height: 4rem;
+  border: 0.01rem solid white;
+  float: left;
+  border-left: 0;
+  overflow: hidden;
+}
+.user-lists {
+  padding: 0 0.2rem;
+  height: 1.8rem;
+  overflow-y: scroll;
+}
+.room-list {
+  padding: 0.05rem 0.1rem;
+  height: 3.48rem;
+  overflow-y: scroll;
+}
+.chat-ctx-wrap {
+  overflow: hidden;
+}
+.chat-more-wrap {
+  position: fixed;
+  left: 0;
+  bottom: @chatSendBoxHeight;
+  height: @chatToolWidth;
+  line-height: @chatToolHeight;
+  border-bottom: 0.01rem solid white;
+}
+.chat-more > li {
+  float: left;
+  width: 0.4rem;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+.chat-more-box {
+  position: absolute;
+  left: 0;
+  top: -0.8rem;
+  width: 2.8rem;
+  height: 0.8rem;
+  text-align: left;
+  visibility: hidden;
+  background-color: #EFEFEF;
+}
+.chat-more-box > li {
+  width: 0.2rem;
+  text-align: center;
+  float: left;
+}
+.chat-msg-list > li {
+  word-break:break-all;
+}
+.chat-send {
+  position: fixed;
+  left: 0;
+  bottom: 0;
+}
+.chat-msg-send {
+  overflow-y: auto;
+  width: @chatSendBoxWidth;
+  height: @chatSendBoxHeight;
+  float: left;
+  padding: 0.1rem 0.2rem;
+  outline: none;
+  color: black;
+  resize: none;
+  font-size: 16px;
+  border: 0;
+}
+.chat-send-btn {
+  float: left;
+  width: @chatSendButtonWidth;
+  height: @chatSendBoxHeight;
+  overflow: hidden;
+  text-align: center;
+  line-height: @chatSendBoxHeight;
+  cursor: pointer;
+  background-color: @colorMain;
+  color: white;
+}
+.info-tab-cut {
+  overflow: hidden;
+}
+.info-tab {
+  transition: all .7s;
+  width: 1.8rem;
+  height: 4rem;
+  overflow: hidden;
+}
+.info-tab-cut,.info-user,.info-menber,.info-room {
+  width: 1.8rem;
+}
+.info-room {
+  position: absolute;
+  left: -1.8rem;
+  top: 0.3rem;
+  border: 0.01rem solid white;
+  border-right: 0;
+  height: 4rem;
+  padding: 0.1rem;
+}
+.info-user {
+  height: 1.9rem;
+}
+.info-menber {
+  height: 2.1rem;
+}
+.info-tab > li {
+  float: left;
+}
+/* 泡泡组件 */
+.bubble {
+  color: black;
+  overflow: hidden;
+  padding: 0.1rem;
+}
+/* 左边泡泡 */
+.bubble-left {
+  // background-color: #03a9f4;
+}
+/* 右边泡泡 */
+.bubble-right {
+  // background-color: #009688;
+}
+/* 左边泡泡 头部信息 */
+.bubble-left > .bubble-head {
+  float: left;
+}
+/* 右边泡泡 头部信息 */
+.bubble-right > .bubble-head {
+  float: right;
+}
+/* 左边泡泡 内容 */
+.bubble-left > .bubble-ctx {
+  float: left;
+  margin-left: 0.2rem;
+}
+.bubble-ctx-show::before {
+  content: '';
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.bubble-ctx-show::after {
+  content: '';
+  width: 0;
+  height: 0;
+  position: absolute;
+}
+.bubble-left .bubble-ctx-show::before {
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-right: 0.1rem solid #00bcd4;
+  left: -0.1rem;
+  top: 0.1rem;
+}
+/* 左边泡泡 三角形 */
+.bubble-left .bubble-ctx-show::after {
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-right: 0.1rem solid #EFEFEF;
+  left: -0.09rem;
+  top: 0.1rem;
+}
+/* 左边泡泡 内容 */
+.bubble-right > .bubble-ctx {
+  margin-right: 0.2rem;
+  float: right;
+}
+/* 右边泡泡 三角形 */
+.bubble-right .bubble-ctx-show::before {
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-left: 0.1rem solid #00bcd4;
+  right: -0.1rem;
+  top: 0.1rem;
+}
+.bubble-right .bubble-ctx-show::after {
+  border-top: 0.05rem solid transparent;
+  border-bottom: 0.05rem solid transparent;
+  border-left: 0.1rem solid #EFEFEF;
+  right: -0.09rem;
+  top: 0.1rem;
+}
+/* 全局泡泡 头部 */
+.bubble-head {
+  width: @chatBubbleHeadWidth;
+  height: 0.4rem;
+}
+/* 全局泡泡 内容 */
+.bubble-ctx {
+  word-break: break-all;
+  width: @chatBubbleCtxWidth;
+}
+.bubble-ctx-border {
+  border: 0.01rem solid #00bcd4;
+  border-radius: 0.1rem;
+  margin: 0;
+  padding: 0.05rem;
+  position: relative;
+}
+.bubble-ctx-show {
+  margin: 0;
+  padding: 0.05rem 0.1rem;
+}
+/* 全局泡泡 信息 */
+.bubble-info {
+  overflow: hidden;
+  padding-bottom: 0.05rem;
+}
+/* 全局泡泡 信息列表 */
+.bubble-left .bubble-info-user {
+  float: left;
+  color: #00bcd4;
+}
+.bubble-left .bubble-info-time {
+  float: right;
+  padding-right: 0.16rem;
+}
+.bubble-right .bubble-info-user {
+  color: #ffc107;
+  float: right;
+  margin-right: 0;
+}
+.bubble-right .bubble-info-time {
+  float: left;
+  padding-left: 0.16rem;
+}

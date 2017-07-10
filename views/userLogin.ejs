@@ -1,40 +1,9 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title></title>
-  <style type="text/css">
-    .login {
-      width: 344px;
-      position: absolute;
-      left: 50%;
-      margin-left: -172px;
-      top: 180px;
-    }
-    .login-user,.login-pass,.login-confirm {
-      padding: 10px 20px;
-      width: 300px;
-      margin-top: 30px;
-    }
-    .login-confirm {
-      width: 340px;
-      margin-top: 30px;
-    }
-    .login-tip {
-      display: block;
-      color: red;
-      position: absolute;
-      left: 0;
-      top: 0;
-    }
-    .login-confirm-wrap {
-      position: relative;
-    }
-    .login-repass {
-      position: absolute;
-      right: 0;
-      top: 0;
-    }
-  </style>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
+  <title>Login - NodeJS Chat</title>
+  <link rel='stylesheet' href='/css/index.min.css' />
 </head>
 <body>
   <div class="login">
@@ -50,6 +19,17 @@
       <input class="login-confirm" type="button" value="登陆" onclick="handle()">
     </div>
   </div>
+  <script type="text/javascript">
+    var socketScript = document.createElement('script')
+    var tempSrc = 'http://' + document.location.hostname + ':8089/socket.io/socket.io.js'
+    socketScript.src = tempSrc
+    document.head.appendChild(socketScript)
+    socketScript.onload = function () {
+      var indexScript = document.createElement('script')
+      indexScript.src = '/js/index.min.js'
+      document.body.appendChild(indexScript)
+    }
+  </script>
   <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
 

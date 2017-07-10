@@ -57,7 +57,7 @@ router.get('/room/:id', function(req, res, next) {
           return el.name === req.params.id
         })
         var desc = roomObj.desc
-        res.render('index', {title: req.params.id, desc: desc, room: val});
+        res.render('room', {title: req.params.id, desc: desc, room: val});
       })
     }
   })
