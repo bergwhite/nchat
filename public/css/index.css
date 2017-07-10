@@ -1,3 +1,5 @@
+@base: 100;
+
 /* 清除样式 */
 * {
   box-sizing: border-box;
@@ -62,6 +64,7 @@ a {
 }
 /* 聊天室的名称 */
 .chat-name {
+  height: 80px;
   background-color: rgb(33,150,243);
   padding: 20px;
 }
@@ -70,7 +73,6 @@ a {
   height: 600px;
   margin: auto;
   position: relative;
-  padding-top: 30px;
 }
 .info-user {
   text-align: center;
@@ -106,19 +108,11 @@ a {
   overflow-y: scroll;
 }
 .chat-ctx-wrap {
-  float: left;
-  width: 600px;
-  height: 400px;
-  border: 1px solid white;
   overflow: hidden;
 }
 .chat-ctx {
-  padding: 20px;
-  height: 280px;
-  overflow-y: hidden;
-}
-.chat-ctx:hover {
-  overflow-y: auto;
+  height: 1134px;
+  overflow-y: scroll;
 }
 .chat-ctx:hover::-webkit-scrollbar {
   width: 12px;
@@ -163,7 +157,7 @@ a {
 .chat-msg-send {
   overflow-y: auto;
   height: 80px;
-  width: 80%;
+  width: 700px;
   float: left;
   padding: 10px 20px;
   outline: none;
@@ -292,7 +286,7 @@ a {
 /* 全局泡泡 内容 */
 .bubble-ctx {
   word-break: break-all;
-  width: 60%;
+  width: 430px;
 }
 .bubble-ctx-border {
   border: 1px solid #00bcd4;
