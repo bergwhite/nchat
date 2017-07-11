@@ -47,14 +47,16 @@ a {
 
 // 布局高度
 
-@chatNameHeight: 0.8rem;
-@chatMainHeight: 12.54rem;
+@chatNameHeight: 1rem;
+@chatMainHeight: 12.34rem;
 @chatCtxHeight: 11.34rem;
 
 .chat-name {
   height: @chatNameHeight;
+  line-height: @chatNameHeight;
   background-color: @colorMain;
-  padding: 0.2rem;
+  color: white;
+  text-align: center;
 }
 .chat {
   width: @baseWidth;
@@ -93,6 +95,7 @@ a {
   top: 0;
   width: @forkMeButtomWidth;
   height: @forkMeButtomHeight;
+  z-index: 999;
 }
 .fork-me {
   width: @forkMeButtomWidth;

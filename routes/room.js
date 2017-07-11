@@ -8,6 +8,10 @@ var mess = databaseModel.mess;
 
 // 前端路由
 
+router.get('/rooms/add', function(req, res, next) {
+  res.render('roomAdd', {title: '添加房间'})
+})
+
 router.get('/room', function(req, res, next) {
   room.find({}, function(err, val) {
     if (err) {
@@ -18,7 +22,7 @@ router.get('/room', function(req, res, next) {
     }
     else {
       room.find({}, function(err, val){
-        res.render('roomList', {room: val});
+        res.render('roomList', {title: '房间列表', room: val});
       })
     }
   })
@@ -110,7 +114,10 @@ router.get('/api/room/info/:id', function(req, res, next) {
 // 添加房间
 router.post('/api/room/add', function(req, res, next) {
   room.findOne({name: req.body.name}, function(err, val){
-    if (val !== null) {
+    if (err) {
+      res.send({msgCode:500, msgCtx: err})
+    }
+    else if (val !== null) {
       res.send({msgCode:404, msgCtx: 'Room is exist.'})
     }
     else {
@@ -121,6 +128,7 @@ router.post('/api/room/add', function(req, res, next) {
         desc: desc
       })
       roomSave.save()
+      res.send({msgCode:200, msgCtx: 'Room add success.'})
     }
   })
 })

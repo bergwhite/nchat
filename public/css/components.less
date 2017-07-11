@@ -1,22 +1,27 @@
 // 顶栏组件
 
-.top {
-  .top-title {
-    height: 1rem;
-    line-height: 1rem;
-    background-color: @colorMain;
-    margin: 0;
-    position: relative;
-    text-align: center;
-    font-size: @fontTitle;
-    color: white;
-  }
-  .top-prev {
-    
-  }
-  .top-next {
-    
-  }
+.top-title {
+  height: @boxTopHeight;
+  line-height: @boxTopHeight;
+  background-color: @colorMain;
+  margin: 0;
+  position: relative;
+  text-align: center;
+  font-size: @fontTitle;
+  color: white;
+}
+.top-prev, .top-next {
+  top: 0;
+  color: white;
+  width: 0.8rem;
+}
+.top-prev {
+  position: absolute;
+  left: 0;
+}
+.top-next {
+  position: absolute;
+  right: 0;
 }
 
 // 盒子组件
@@ -26,6 +31,8 @@
 
 .box-list-wrap {
   margin: @marginBox 0;
+  overflow-y: scroll;
+  height: 12rem;
   .box-list {
     background-color: white;
     & + .box-list {

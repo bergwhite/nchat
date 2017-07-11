@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <title><%= title %> - NodeJS Chat</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-    <title><%= title %> - NodeJS Chat</title>
     <link rel='stylesheet' href='/css/index.min.css' />
   </head>
   <body>
     <a class="fork-me-wrap" href="https://github.com/bergwhite/nodejs-chat" target="_blank">
       <img class="fork-me" src="http://images.cnitblog.com/i/214648/201403/181013198028385.png">
     </a>
-    <h1 class="chat-name text-center"><%= title %></h1>
+    <div class="chat-name top-title">
+      <span>
+        <a class="top-prev" href="/room">&lt;</a>
+      </span>
+      <span>
+        <a class="top-next" href="/rooms/add">&amp;</a>
+      </span>
+      <p><%= title %></p>
+    </div>
     <!-- <p><%= desc %></p> -->
     <div class="chat">
       <div class="chat-ctx-wrap">

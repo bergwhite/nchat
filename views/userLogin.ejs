@@ -19,17 +19,7 @@
       <input class="login-confirm" type="button" value="登陆" onclick="handle()">
     </div>
   </div>
-  <script type="text/javascript">
-    var socketScript = document.createElement('script')
-    var tempSrc = 'http://' + document.location.hostname + ':8089/socket.io/socket.io.js'
-    socketScript.src = tempSrc
-    document.head.appendChild(socketScript)
-    socketScript.onload = function () {
-      var indexScript = document.createElement('script')
-      indexScript.src = '/js/index.min.js'
-      document.body.appendChild(indexScript)
-    }
-  </script>
+  <script type="text/javascript" src="/js/mobile.js"></script>
   <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   <script type="text/javascript">
 

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title><%= title %> - NodeJS Chat</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
+  <link rel='stylesheet' href='/css/index.min.css' />
+</head>
+<body>
+  <div class="room-add">
+    <div class="top-title">
+      <span>
+        <a class="top-prev" href="/room">&lt;</a>
+      </span>
+      <span>
+        <a class="top-next room-add-submit" href="#">√</a>
+      </span>
+      <p><%= title %></p>
+    </div>
+    <div class="add-info">
+      <div>
+        <input type="text" class="add-info-name" placeholder="房间名字">
+      </div>
+      <div>
+        <input type="text" class="add-info-desc" placeholder="房间简介">
+      </div>
+      <p class="add-info-tip"></p>
+    </div>
+  </div>
+  <script type="text/javascript" src="/js/mobile.js"></script>
+  <script type="text/javascript">
+    var roomAddName = document.getElementsByClassName('add-info-name')[0]
+    var roomAddDesc = document.getElementsByClassName('add-info-desc')[0]
+    var roomAddTip = document.getElementsByClassName('add-info-tip')[0]
+    var roomAddSubmit = document.getElementsByClassName('room-add-submit')[0]
+    var prevHost = document.location.origin
+    var prevUrl = prevHost + '/api/room/add'
+
+    document.body.ready = function() {
+      roomAddName.focus()
+    }
+
+    roomAddSubmit.addEventListener('click', function(e) {
+      e.preventDefault()
+      if (roomAddName.value === '') {
+        roomAddTip.innerText = '请输入名称'
+        roomAddName.focus()
+      }
+      else if (roomAddDesc.value === '') {
+        roomAddTip.innerText = '请输入描述'
+        roomAddDesc.focus()
+      }
+      else {
+        submitTheRoomAdd()
+      }
+    }, false)
+
+    function submitTheRoomAdd() {
+      console.log(roomAddName.value)
+      axios.post(prevUrl, {
+        name: roomAddName.value,
+        desc: roomAddDesc.value
+      }).then(function(res){
+        if (res.data.msgCode === 200) {
+          document.location = '/room'
+        }
+        else {
+          roomAddTip.innerText = res.data.msgCtx
+          roomAddName.focus()
+        }
+      }).catch(function(err){
+        roomAddTip.innerText = err
+        roomAddName.focus()
+      })
+    }
+  </script>
+  <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+</body>
+</html>
