@@ -1,0 +1,45 @@
+// 顶栏组件
+
+.top {
+  .top-title {
+    height: 1rem;
+    line-height: 1rem;
+    background-color: @colorMain;
+    margin: 0;
+    position: relative;
+    text-align: center;
+    font-size: @fontTitle;
+    color: white;
+  }
+  .top-prev {
+    
+  }
+  .top-next {
+    
+  }
+}
+
+// 盒子组件
+
+@marginBox: 0.2rem;
+@paddingBox: 0.2rem;
+
+.box-list-wrap {
+  margin: @marginBox 0;
+  .box-list {
+    background-color: white;
+    & + .box-list {
+      margin-top: @marginBox / 2;
+    }
+  }
+  .box-link {
+    padding: @paddingBox;
+    display: block;
+    .box-name, .box-desc {
+      color: black;
+    }
+    .box-desc {
+      padding-top: @marginBox / 2;
+    }
+  }
+}

@@ -1,8 +1,26 @@
-<div class="info-room">
-  <p class="info-title text-center">房间列表</p>
-  <ul class="room-list">
-    <% for(var x = 0; x < room.length; x++){ %>
-    <li><a href=<%= '/room/' + room[x].name %> class="room-link" target="_black"><%= room[x].name %></a></li>
-    <% } %>
-  </ul>
-</div>
+<!DOCTYPE html>
+<html>
+<head>
+  <title></title>
+  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
+  <link rel='stylesheet' href='/css/index.min.css' />
+</head>
+<body>
+  <div class="top">
+    <p class="top-title">房间列表</p>
+    <ul class="box-list-wrap">
+      <% for(var x = 0; x < room.length; x++){ %>
+      <li class="box-list">
+        <a href=<%= '/room/' + room[x].name %> class="box-link">
+          <div>
+            <p class="box-name"><%= room[x].name %></p>
+            <p class="box-desc"><%= room[x].desc %></p>
+          </div>
+        </a>
+      </li>
+      <% } %>
+    </ul>
+  </div>
+  <script type="text/javascript" src="/js/mobile.js"></script>
+</body>
+</html>

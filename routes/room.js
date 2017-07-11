@@ -7,6 +7,23 @@ var mess = databaseModel.mess;
 
 
 // 前端路由
+
+router.get('/room', function(req, res, next) {
+  room.find({}, function(err, val) {
+    if (err) {
+      res.send('err: ' + err)
+    }
+    else if (val === null) {
+      res.send('<h1>Room is not exist.</h1>')
+    }
+    else {
+      room.find({}, function(err, val){
+        res.render('roomList', {room: val});
+      })
+    }
+  })
+})
+
 router.get('/room/:id', function(req, res, next) {
   // 修改房间名（线上代码修改方案）
   room.find({name: 'NodeJS Chat Room'}, function(err, val) {

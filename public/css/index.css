@@ -1,3 +1,6 @@
+@import 'common';
+@import 'components';
 @import 'home';
 @import 'room';
 @import 'login';
+@import 'roomList';
