@@ -16,7 +16,10 @@
     <div class="login-confirm-wrap">
       <span class="login-tip"></span>
       <span class="login-repass"><a href="http://localhost:8088/forget">忘记密码</a></span>
-      <input class="login-confirm" type="button" value="登陆" onclick="handle()">
+      <div class="login-info-wrap">
+        <input class="register-confirm" type="button" value="注册">
+        <input class="login-confirm" type="button" value="登陆">
+      </div>
     </div>
   </div>
   <script type="text/javascript" src="/js/mobile.js"></script>
@@ -25,7 +28,16 @@
 
     var user = document.getElementsByClassName('login-user')[0]
     var pass = document.getElementsByClassName('login-pass')[0]
+    var login = document.getElementsByClassName('login-confirm')[0]
+    var register = document.getElementsByClassName('register-confirm')[0]
     var loginTip = document.getElementsByClassName('login-tip')[0]
+
+    login.addEventListener('click', function() {
+      handle('login')
+    },false)
+    register.addEventListener('click', function() {
+      handle('register')
+    },false)
 
     // 获取当前地址
 
@@ -51,7 +63,14 @@
     // 默认使用登陆请求
     url.current = url.login
 
-    function handle () {
+    function handle (type) {
+
+      if (type === 'login') {
+        url.current = url.login
+      }
+      else if (type === 'register') {
+        url.current = url.register
+      }
 
       // 用户名的值为空
       if (user.value === '') {
