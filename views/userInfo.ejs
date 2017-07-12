@@ -19,26 +19,63 @@
     <div class="user-info">
       <div>
         <span>用户</span>
-        <input class="input-default" type="text" contenteditable="false" value=<%= user %>>
+        <input class="input-default" type="text" disabled="disabled" value=<%= user %>>
       </div>
       <div>
         <span>性别</span>
-        <input class="input-default" type="text" value=<%= gender %>>
+        <input class="input-default info-gender" type="text" value=<%= gender %>>
       </div>
       <div>
         <span>图片</span>
-        <input class="input-default" type="text" value=<%= img %>>
+        <input class="input-default info-img" type="text" value=<%= img %>>
       </div>
       <div>
         <span>城市</span>
-        <input class="input-default" type="text" value=<%= city %>>
+        <input class="input-default info-city" type="text" value=<%= city %>>
       </div>
       <div>
         <span>爱好</span>
-        <input class="input-default" type="text" value=<%= hobbies %>>
+        <input class="input-default info-hobbies" type="text" value=<%= hobbies %>>
       </div>
+      <span class="info-tip"></span>
     </div>
     <script type="text/javascript" src="/js/mobile.js"></script>
+    <script type="text/javascript">
+      var infoGender = document.getElementsByClassName('info-gender')[0]
+      var infoImg = document.getElementsByClassName('info-img')[0]
+      var infoCity = document.getElementsByClassName('info-city')[0]
+      var infoHobbies = document.getElementsByClassName('info-hobbies')[0]
+      var infoTip = document.getElementsByClassName('info-tip')[0]
+      var infoModBtn = document.getElementsByClassName('user-info-mod')[0]
+      
+      document.body.ready = function(){
+        infoGender.focus();
+      }
+
+      infoModBtn.addEventListener('click', function() {
+        submitUserInfo()
+      }, false)
+
+      function submitUserInfo() {
+        axios.post('/api/user/info',{
+          gender: infoGender.value,
+          img: infoImg.value,
+          city: infoCity.value,
+          hobbies: infoHobbies.value
+        }).then(function(res) {
+            if (res.data.msgCode === 200) {
+              document.location = '/'
+            }
+            else {
+              infoTip.innerText = res.data.msgCtx
+            }
+          })
+          .catch(function(err) {
+            infoTip.innerText = err
+          })
+      }
+
+    </script>
     <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   </body>
 </html>

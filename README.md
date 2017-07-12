@@ -90,7 +90,7 @@ app.use('/api/robot', proxy({
 
 用户注册   √      POST  /api/user/register   无      {name: String, pass: String}
 用户登陆   √      POST  /api/user/login      无      {name: String, pass: String}
-注销用户   √      POST  /api/user/logout     已登录  空
+注销账号   √      POST  /api/user/logout     已登录  空
 删除用户   ×      POST  /api/user/del        已登录  {passOld: String}
 用户资料   √      GET   /api/user/info/:id   无      空
 用户列表   √      GET   /api/user            无      空

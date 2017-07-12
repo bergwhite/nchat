@@ -17,6 +17,15 @@ router.get('/rooms/add', function(req, res, next) {
   }
 })
 
+router.get('/room/:id/member', function(req, res, next) {
+  if (req.session.loginUser) {
+    res.render('roomMember', {title: '在线成员', room: req.params.id})
+  }
+  else {
+    res.redirect('/login')
+  }
+})
+
 router.get('/room', function(req, res, next) {
   if (req.session.loginUser) {
     room.find({}, function(err, val) {
@@ -89,7 +98,7 @@ router.get('/room/:id', function(req, res, next) {
             return el.name === req.params.id
           })
           var desc = roomObj.desc
-          res.render('room', {title: req.params.id, desc: desc, room: val});
+          res.render('room', {title: req.params.id, desc: desc, room: val, roomId: req.params.id});
         })
       }
     })
