@@ -342,15 +342,13 @@ router.get('/login', function(req, res, next) {
   }
 })
 
-// 注册页面
-router.get('/register', function(req, res, next) {
-  console.log(req.session.loginUser)
-  res.render('userRegister', {user: req.session.loginUser})
-})
-
 // 忘记密码
 router.get('/forget', function(req, res, next) {
   res.send('<h1>Page is building.</h1>')
+})
+
+router.get('/tip/pc', function(req, res, next) {
+  res.render('tipJumpToPc')
 })
 
 module.exports = router

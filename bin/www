@@ -13,7 +13,7 @@ require('./socket')
  * Get port from environment and store in Express.
  */
 
-var port = normalizePort(process.env.PORT || '8088');
+var port = normalizePort(process.env.PORT || '8086');
 console.log('express-server on ' + port)
 app.set('port', port);
 

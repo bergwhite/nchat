@@ -11,7 +11,7 @@ var userImgChoose = document.getElementsByClassName('user-img-choose')[0]
 
 // 为socket.io设置别名
 var socketHostName = document.location.hostname
-var socketURI = 'http://' +  socketHostName + ':8089/'
+var socketURI = 'http://' +  socketHostName + ':8087/'
 var socket = io(socketURI)
 
 // 把聊天室所有的操作封装在命名空间内

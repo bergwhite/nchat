@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>跳转到PC - NodeJS Chat</title>
+</head>
+<body>
+  <h1>当前项目不支持PC访问，PC端请访问<a class="his-pc" href="#">历史版本</a>。</h1>
+  <h2>开发者请打开浏览器的手机视图，并访问<a href="/">首页</a>，进入移动端访问。</h2>
+  <script type="text/javascript">
+    var hisPC = document.getElementsByClassName('his-pc')[0]
+    var newUrl = document.location.origin.replace('8086', '8088')
+    hisPC.href = newUrl
+  </script>
+</body>
+</html>

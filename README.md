@@ -187,7 +187,6 @@ users
 │    userInfo.ejs  // 用户信息
 │    userList.ejs  // 用户列表
 │    userLogin.ejs  // 登陆
-│    userRegister.ejs  // 注册
 ├─app.js  // express
 ├─gulpfile.js  // gulp
 ├─package.json

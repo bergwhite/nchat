@@ -7,9 +7,8 @@ var bodyParser = require('body-parser');
 var proxy = require('http-proxy-middleware');
 var session = require('express-session');
 var FileStore = require('session-file-store')(session);
-
+var cors = require('cors')
 var router = require('./routes/index');
-
 var app = express();
 
 // view engine setup
@@ -18,6 +17,7 @@ app.set('view engine', 'ejs');
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+app.use(cors())
 app.use(logger('dev'));
 app.use(session({
   name: 'key',
