@@ -10,8 +10,10 @@
     <a class="fork-me-wrap" href="https://github.com/bergwhite/nodejs-chat" target="_blank">
       <img class="fork-me" src="http://images.cnitblog.com/i/214648/201403/181013198028385.png">
     </a>
-    <h1>首页加工中，请去</h1>
-    <a href="/room">房间列表</a>
+    <div class="chat-name top-title">
+      <p><%= title %></p>
+    </div>
+    <h1>欢迎<a href=<%= '/user/' + user %>><%= user %></a>。首页加工中，请去<a href="/room">房间列表</a></h1>
     <!-- <h1 class="chat-name text-center"><%= title %></h1>
     <div class="chat">
       <div class="chat-ctx-wrap">
@@ -58,7 +60,7 @@
       </div>
     </div> -->
     <script type="text/javascript" src="/js/mobile.js"></script>
-    <script type="text/javascript">
+    <!-- <script type="text/javascript">
       var socketScript = document.createElement('script')
       var tempSrc = 'http://' + document.location.hostname + ':8089/socket.io/socket.io.js'
       socketScript.src = tempSrc
@@ -68,7 +70,7 @@
         indexScript.src = '/js/index.min.js'
         document.body.appendChild(indexScript)
       }
-    </script>
+    </script> -->
     <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   </body>
 </html>

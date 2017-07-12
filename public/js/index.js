@@ -294,22 +294,24 @@ nodejsChat.method = {
       chatMsgSend.focus()
       // 滚动到最新消息
       nodejsChat.method.toBottom()
-      // 调用图灵机器人
-      // TODO: post not work
-      axios.get(nodejsChat.data.robot.api, {
-        params: {
-          key: nodejsChat.data.robot.key,
-          info: parsedMessage
-        }
-      }).then(function(res) {
-        var tm = nodejsChat.method.getTime(new Date())
-        var leftBubble = nodejsChat.method.renderBubbleMsg('left', nodejsChat.data.robot.nick, tm,  res.data.text, nodejsChat.data.robot.img)
-        nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
-        socket.emit('send message req', time, nodejsChat.data.roomID , {user: nodejsChat.data.robot.nick,tm: time, msg: res.data.text, img: nodejsChat.data.robot.img})
-        nodejsChat.method.toBottom()
-      }).catch(function(err) {
-        console.log(err)
-      })
+      if (nodejsChat.data.roomID === '小美') {
+        // 调用图灵机器人
+        // TODO: post not work
+        axios.get(nodejsChat.data.robot.api, {
+          params: {
+            key: nodejsChat.data.robot.key,
+            info: parsedMessage
+          }
+        }).then(function(res) {
+          var tm = nodejsChat.method.getTime(new Date())
+          var leftBubble = nodejsChat.method.renderBubbleMsg('left', nodejsChat.data.robot.nick, tm,  res.data.text, nodejsChat.data.robot.img)
+          nodejsChat.method.insertToList(chatMsgList, 'li', leftBubble)
+          socket.emit('send message req', time, nodejsChat.data.roomID , {user: nodejsChat.data.robot.nick,tm: time, msg: res.data.text, img: nodejsChat.data.robot.img})
+          nodejsChat.method.toBottom()
+        }).catch(function(err) {
+          console.log(err)
+        })
+      }
     } else {
       userRegTip.innerHTML = '内容不能为空'
     }

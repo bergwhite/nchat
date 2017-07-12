@@ -310,29 +310,35 @@ router.post('/api/user/info', function(req, res, next) {
  */
 
 router.get('/user/:id', function(req, res, next) {
-  info.findOne({user: req.params.id}, function(err,val){
-    if (val === null) {
-      res.send('<h1>404</h1>')
-    }
-    else {
-      res.render('userInfo', {
-        user: val.user,
-        gender: val.gender,
-        img: val.img,
-        city: val.city,
-        hobbies: val.hobbies
-      })
-    }
-  })
+  if (req.session.loginUser) {
+    info.findOne({user: req.params.id}, function(err,val){
+      if (val === null) {
+        res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
+      }
+      else {
+        res.render('userInfo', {
+          title: '我的资料',
+          user: val.user,
+          gender: val.gender,
+          img: val.img,
+          city: val.city,
+          hobbies: val.hobbies
+        })
+      }
+    })
+  }
+  else {
+    res.redirect('/')
+  }
 })
 
 // 登陆页面
 router.get('/login', function(req, res, next) {
-  if (!req.session.loginUser) {
-    res.render('userLogin')
+  if (req.session.loginUser) {
+    res.redirect('/')
   }
   else {
-    res.redirect('/')
+    res.render('userLogin')
   }
 })
 
