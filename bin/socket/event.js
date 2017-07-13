@@ -1,10 +1,27 @@
 const io = require('./io.js').io
 const server = require('./io.js').server
 const mess = require('../database/model').mess;
+const socketSession = require('express-session-socket.io')
+const cookie = require('cookie')
+const cookieParser = require('cookie-parser')
 
 const event = function (chatData, chatMethod, port) {
+
   // socket链接时执行
   io.on('connection', function (socket) {
+    var data = cookie.parse(socket.handshake.headers.cookie);
+    var sessionId = cookieParser.signedCookie(data['key'], 'whocarewhatisthepass');
+    var sessionDir = '../../sessions/'
+    var sessionExtension = '.json'
+    try {
+      const sessionFile = require(sessionDir + sessionId + sessionExtension)
+      console.log('sessionFile.loginUser: ' + sessionFile.loginUser)
+    } catch(e) {
+      console.log('not login' + e);
+    }
+    // console.log(data)
+    // console.log(sessionId)
+
     // 初始化房间ID
     chatData.currentRoomID = chatMethod.getCurrentRoomID(socket)
     // 发送请求当前房间号事件
