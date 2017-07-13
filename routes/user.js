@@ -215,7 +215,7 @@ router.get('/api/user/info/:id', function(req, res, next) {
   })
 });
 
-router.post('/api/user/pass', function(req, res, next) {
+router.put('/api/user/pass', function(req, res, next) {
   // 已登录则执行
   if (req.session.loginUser) {
     // 带了请求参数则执行
@@ -257,7 +257,7 @@ router.post('/api/user/pass', function(req, res, next) {
   }
 })
 
-router.post('/api/user/info', function(req, res, next) {
+router.put('/api/user/info', function(req, res, next) {
   // 已登录则执行
   if (req.session.loginUser) {
     // 带了请求参数则执行

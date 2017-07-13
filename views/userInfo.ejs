@@ -57,7 +57,7 @@
       }, false)
 
       function submitUserInfo() {
-        axios.post('/api/user/info',{
+        axios.put('/api/user/info',{
           gender: infoGender.value,
           img: infoImg.value,
           city: infoCity.value,
