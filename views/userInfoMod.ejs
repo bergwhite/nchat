@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title><%= title %> - NodeJS Chat</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
+    <link rel='stylesheet' href='/css/index.min.css' />
+  </head>
+  <body>
+    <div class="top-title">
+      <p><%= title %></p>
+      <span>
+        <a class="top-prev" href=<%= '/user/' + user %>>&lt;</a>
+      </span>
+      <span>
+        <a class="top-next user-info-mod">√</a>
+      </span>
+    </div>
+    <div class="user-info-wrap">
+      <div class="user-info-img-wrap">
+        <div>
+          <img class="user-info-img" src=<%= img %>>
+        </div>
+        <div>
+          <input placeholder="用户" class="input-default" type="text" disabled="disabled" value=<%= user %>>
+        </div>
+        <div>
+          <input placeholder="性别" class="input-default info-gender" type="text" value=<%= gender %>>
+        </div>
+        <div>
+          <input placeholder="城市" class="input-default info-city" type="text" value=<%= city %>>
+        </div>
+        <div>
+          <input placeholder="爱好" class="input-default info-hobbies" type="text" value=<%= hobbies %>>
+        </div>
+        <div>
+          <input placeholder="图片" class="input-default info-img" type="text" value=<%= img %>>
+        </div>
+        <span class="info-tip"></span>
+      </div>
+      </div>
+    <script type="text/javascript" src="/js/mobile.js"></script>
+    <script type="text/javascript">
+      var infoGender = document.getElementsByClassName('info-gender')[0]
+      var infoImg = document.getElementsByClassName('info-img')[0]
+      var infoCity = document.getElementsByClassName('info-city')[0]
+      var infoHobbies = document.getElementsByClassName('info-hobbies')[0]
+      var infoTip = document.getElementsByClassName('info-tip')[0]
+      var infoModBtn = document.getElementsByClassName('user-info-mod')[0]
+      
+      document.body.ready = function(){
+        infoGender.focus();
+      }
+
+      infoModBtn.addEventListener('click', function() {
+        submitUserInfo()
+      }, false)
+
+      function submitUserInfo() {
+        axios.put('/api/user/info',{
+          gender: infoGender.value,
+          img: infoImg.value,
+          city: infoCity.value,
+          hobbies: infoHobbies.value
+        }).then(function(res) {
+            if (res.data.msgCode === 200) {
+              document.location = '/'
+            }
+            else {
+              infoTip.innerText = res.data.msgCtx
+            }
+          })
+          .catch(function(err) {
+            infoTip.innerText = err
+          })
+      }
+
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+  </body>
+</html>

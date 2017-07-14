@@ -6,8 +6,6 @@ var chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 var userList = document.getElementsByClassName('user-lists')[0]
 var roomList = document.getElementsByClassName('room-list')[0]
 var chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
-var inputRadioSex = document.getElementsByClassName('input-radio-sex')
-var userImgChoose = document.getElementsByClassName('user-img-choose')[0]
 
 // 为socket.io设置别名
 var socketHostName = document.location.hostname
@@ -51,10 +49,6 @@ nodejsChat.room = {
   // 初始化
   init: function () {
     socket.on('request room id', function () {
-
-      // here has been replaced, maybe the below code will be removed
-      /*每次进来，先清空房间列表
-      roomList.innerHTML = ''*/
 
       // 把当前房间id返回给后台
       socket.emit('response room id', nodejsChat.data.roomID)
@@ -170,23 +164,6 @@ nodejsChat.room = {
       // 滚动到最新消息
       nodejsChat.method.toBottom()
     })
-    //
-    socket.on('user add res', function  (data) {
-      if (!data.status) {
-        userRegTip.innerHTML = '用户名已存在'
-        nodejsChat.data.user.name = null
-      } else {
-        // userReg.value = '输入密码可以完成注册'
-        userRegTip.innerHTML = '注册成功'
-        // 聚焦到输入框
-        chatMsgSend.focus()
-        var ctx = nodejsChat.method.renderUserList(nodejsChat.data.user.img, data.user)
-        nodejsChat.method.insertToList(userList, 'li', ctx)
-      }
-      console.log(data)
-      console.log("当前在线：" + data.user.length)
-      console.log("注册状态：" + data.status)
-    })
   }
 }
 // 方法（存放函数）
@@ -232,12 +209,16 @@ nodejsChat.method = {
   },
   // 左右泡泡组件模板
   renderBubbleMsg: function (type, user, time, msg, img) {
-    var timeEl
+    var bubbleInfoEl
     if (time !== '') {
-      timeEl = `<li class="bubble-info-time">${time}</li>`
+      bubbleInfoEl = `
+        <ul class="bubble-info">
+          <li class="bubble-info-user">${user}</li>
+          <li class="bubble-info-time">${time}</li>
+        </ul>`
     }
     else {
-      timeEl = ''
+      bubbleInfoEl = ''
     }
     if (typeof img === 'undefined' || img === null) {
        img = nodejsChat.data.defaultUserImg
@@ -247,10 +228,7 @@ nodejsChat.method = {
         <img src=${img} class="user-img">
       </div>
       <div class="bubble-ctx">
-        <ul class="bubble-info">
-          <li class="bubble-info-user">${user}</li>
-          ${timeEl}
-        </ul>
+        ${bubbleInfoEl}
         <div class="bubble-ctx-border">
           <p class="bubble-ctx-show">${msg}</p>
         </div>
@@ -314,18 +292,6 @@ nodejsChat.method = {
       }
     } else {
       userRegTip.innerHTML = '内容不能为空'
-    }
-  },
-  // 注册用户
-  regUser: function () {
-    if (nodejsChat.data.user.name) {
-      userRegTip.innerHTML = '已登陆，用户名为：' + nodejsChat.data.user.name
-    }else if (userReg.value !== "" && userReg.value !== " ") { 
-      userRegTip.innerHTML = '注册中...'
-      nodejsChat.data.user.name = nodejsChat.method.parseMsgVal(userReg.value)
-      socket.emit('user add req', nodejsChat.data.roomID, {name: nodejsChat.method.parseMsgVal(userReg.value), img: nodejsChat.data.user.img})
-    } else {
-      userRegTip.innerHTML = '请输入用户名'
     }
   },
   // 获取在线列表
@@ -402,14 +368,6 @@ nodejsChat.method = {
   toBottom: function () {
     var div = document.getElementsByClassName("chat-ctx")[0];
     div.scrollTop = div.scrollHeight;
-  },
-  checkInputRadioSex: function () {
-    var len = inputRadioSex.length
-    for(var i = 0; i < len; i++){
-      if (inputRadioSex[i].checked) {
-        return inputRadioSex[i].value
-      }
-    }
   }
 }
 
@@ -427,29 +385,4 @@ document.body.onload = function () {
   console.log(nodejsChat.method.getRandomImg('men'))
   // 测试随机昵称
   console.log(nodejsChat.method.getRandomNick('china','male'))
-  /*inputRadioSex[0].addEventListener('click', function () {
-    // if (!inputRadioSex[0].checked) {
-      var sex = nodejsChat.method.checkInputRadioSex()
-      nodejsChat.data.user.sex = sex
-      var src = nodejsChat.method.getRandomImg(sex)
-      nodejsChat.data.user.img = src
-      userImgChoose.src = src
-    // }
-  }, false)
-  inputRadioSex[1].addEventListener('click', function () {
-    // if (!inputRadioSex[1].checked) {
-      var sex = nodejsChat.method.checkInputRadioSex()
-      nodejsChat.data.user.sex = sex
-      var src = nodejsChat.method.getRandomImg(sex)
-      nodejsChat.data.user.img = src
-      userImgChoose.src = src
-    // }
-  }, false)
-  userImgChoose.addEventListener('click', function () {
-    var sex = nodejsChat.data.user.sex
-    var src = nodejsChat.method.getRandomImg(sex)
-    nodejsChat.data.user.img = src
-    userImgChoose.src = src
-  }, false)
-  console.log(nodejsChat.method.checkInputRadioSex())*/
 }

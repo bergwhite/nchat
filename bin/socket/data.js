@@ -12,11 +12,6 @@ const data = {
     img: []
   }],
   roomList: ['Chat Room'],
-  // 为用户添加状态
-  // 在用户下线的时候可以进行判断
-  socketID: {},
-  // 添加用户的状态
-  addUserStatus: null,
   currentRoomID: null,
   currentRoomIndex: null
 }

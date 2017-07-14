@@ -71,6 +71,14 @@ router.post('/api/user/register', function(req, res, next) {
 
       else if (!false) {
 
+        function getRandomImg (gender) {
+          // example / https://randomuser.me/api/portraits/men/100.jpg
+          var randomNumber = parseInt(Math.random() * 100)
+          return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
+        }
+
+        var userImg = 'https://randomuser.me/api/portraits/men/1.jpg'
+
         // 设置别名
         var name = req.body.name
         var pass = req.body.pass
@@ -86,7 +94,7 @@ router.post('/api/user/register', function(req, res, next) {
         infoSava = new info({
           user: name,
           gender: 'secure',
-          img: '',
+          img: userImg,
           city: 'beijing',
           hobbies: []
         })
@@ -317,6 +325,32 @@ router.get('/user/:id', function(req, res, next) {
       }
       else {
         res.render('userInfo', {
+          title: '我的资料',
+          user: val.user,
+          gender: val.gender,
+          img: val.img,
+          city: val.city,
+          hobbies: val.hobbies
+        })
+      }
+    })
+  }
+  else {
+    res.redirect('/')
+  }
+})
+
+router.get('/user/:id/mod', function(req, res, next) {
+  if (req.session.loginUser !== req.params.id) {
+    return res.redirect('/')
+  }
+  else if (req.session.loginUser) {
+    info.findOne({user: req.params.id}, function(err,val){
+      if (val === null) {
+        res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
+      }
+      else {
+        res.render('userInfoMod', {
           title: '我的资料',
           user: val.user,
           gender: val.gender,

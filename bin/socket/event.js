@@ -1,6 +1,7 @@
 const io = require('./io.js').io
 const server = require('./io.js').server
 const mess = require('../database/model').mess;
+const info = require('../database/model').info;
 const socketSession = require('express-session-socket.io')
 const cookie = require('cookie')
 const cookieParser = require('cookie-parser')
@@ -13,9 +14,25 @@ const event = function (chatData, chatMethod, port) {
     var sessionId = cookieParser.signedCookie(data['key'], 'whocarewhatisthepass');
     var sessionDir = '../../sessions/'
     var sessionExtension = '.json'
+    var loginUser = ''
+    var roomID = chatMethod.getCurrentRoomID(socket)
+    var userImg = ''
+    console.log('当前房间 / ' + roomID)
     try {
       const sessionFile = require(sessionDir + sessionId + sessionExtension)
-      console.log('sessionFile.loginUser: ' + sessionFile.loginUser)
+      loginUser = sessionFile.loginUser
+      info.findOne({user: loginUser}, function(err, val){
+        if (err) {
+          console.log(err)
+        }
+        else if (val !== null) {
+          userImg = val.img
+          console.log(userImg)
+        }
+      })
+      console.log('sessionFile.loginUser: ' + loginUser)
+      console.log('userImg: ' + userImg)
+      // console.log(socket)
     } catch(e) {
       console.log('not login' + e);
     }
@@ -38,13 +55,6 @@ const event = function (chatData, chatMethod, port) {
       console.log('connection / currentRoom: ' + chatData.currentRoomID)
       // 不存在则创建新房间
       if(!chatMethod.isRoomExist(chatData.room, roomID)) {
-
-        // here has been replaced, maybe the below code will be removed
-        /*// 向当前接受请求的页面发送更新房间列表请求
-        socket.emit('add room', roomID)
-        // 向其他房间发送更新列表请求
-        socket.broadcast.emit('add room', roomID)*/
-
         chatData.roomList.push(roomID)
         chatData.room.push({
           name: roomID,
@@ -56,27 +66,15 @@ const event = function (chatData, chatMethod, port) {
       // 进入房间
       socket.join(roomID)
     })
-    // 添加用户
-    socket.on('user add req', function (id, msg) {
-      chatMethod.addUserToRoom(msg.name,id, msg.img)
-      console.log(msg)
-      if (chatData.addUserStatus) {
-        chatMethod.welcomeUser(id, '欢迎' + msg.name + '加入房间')
-        socket.broadcast.to(id).emit('user add to list req', {name: msg.name, img: msg.img})
-        chatData.socketID[socket.id] = msg.name
-      }
-      socket.emit('user add res', {
-        status: chatData.addUserStatus,
-        user: msg.name
-      })
-    })
     // 给指定房间发送消息
     socket.on('send message req', function (time, id, msg) {
+      msg.user = loginUser
+      msg.img = userImg
       socket.broadcast.to(id).emit('send message res', msg)
       // 存储信息到数据库
       var newMess = new mess({
         room: id,
-        user: msg.user,
+        user: loginUser,
         mess: msg.msg,
         time: time,
         img: msg.img
@@ -90,17 +88,14 @@ const event = function (chatData, chatMethod, port) {
       // chatMethod.getCurrentRoomID(socket)
       chatData.currentRoomID = chatMethod.getCurrentRoomID(socket)
       chatData.currentRoomIndex = chatMethod.getCurrentRoomIndex(chatData.currentRoomID)
-      if (chatData.socketID[socket.id] !== undefined) {
-        chatMethod.delUserFromRoom(chatData.socketID[socket.id],chatData.currentRoomIndex)
-        socket.broadcast.to(chatData.currentRoomID).emit('user logout req', {
-          currentUser: chatData.socketID[socket.id],
-          currentUserList: chatData.room[chatData.currentRoomIndex].user,
-          currentUserListImg: chatData.room[chatData.currentRoomIndex].img
-        })
-      }
+      socket.broadcast.to(chatData.currentRoomID).emit('user logout req', {
+        currentUser: loginUser,
+        currentUserList: chatData.room[chatData.currentRoomIndex].user,
+        currentUserListImg: chatData.room[chatData.currentRoomIndex].img
+      })
       console.log('disconnect / getCurrentRoomID / ' + chatData.currentRoomID)
       console.log('disconnect / getCurrentRoomIndex / ' + chatData.currentRoomIndex)
-      console.log('disconnect / getCurrentUser  / ' + chatData.socketID[socket.id])
+      console.log('disconnect / getCurrentUser  / ' + loginUser)
     });
   })
   server.listen(port)
