@@ -8,7 +8,15 @@
 
 PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue全家桶二次开发的V2EX社区](https://github.com/bergwhite/v2ex-vue)。
 
-[最新版本在线演示](http://47.93.252.247:8088/) | 最新版本图片演示 | [历史版本图片演示](DEMO.md)
+> 项目链接
+
+* 第三版 源码 | 演示 | 图片 （定位移动端，提供REST API接口，预计2017/7/17发布）
+
+* 第二版 [源码](https://github.com/bergwhite/nodejs-chat2) | [演示](http://47.93.252.247:8088/) | 图片 （定位PC端）
+
+* 第一版 [源码](https://github.com/bergwhite/nodejs-chat1) | [演示](http://47.93.252.247:8082/) | [图片](DEMO.md) （只做基本维护）
+
+* 测试版 源码 | 演示 | 图片
 
 > 功能
 
