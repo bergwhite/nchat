@@ -46,10 +46,10 @@ nChat.data = {
 nChat.room = {
   // 初始化
   init () {
-    socket.on('request room id', function () {
+    socket.on('room id req', function () {
 
       // 把当前房间id返回给后台
-      socket.emit('response room id', nChat.data.currentRoomName)
+      socket.emit('room id res', nChat.data.currentRoomName)
       // 为当前房间发送欢迎消息
       nChat.method.insertToList(chatMsgList, 'li', nChat.data.welcomeInfo + nChat.data.currentRoomName)
       // 初始化输入框内容为空
@@ -76,7 +76,7 @@ nChat.room = {
       nChat.method.scrollToBottom()
     })
     // 读取当前房间的聊天信息
-    socket.on('show latest talk', function (data) {
+    socket.on('mess show res', function (data) {
       console.log(data)
       const len = data.length
       for(let i = 0; i < len; i++){

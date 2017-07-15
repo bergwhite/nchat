@@ -2,108 +2,119 @@ const io = require('./io.js').io
 const server = require('./io.js').server
 const mess = require('../database/model').mess;
 const info = require('../database/model').info;
-const socketSession = require('express-session-socket.io')
 const cookie = require('cookie')
 const cookieParser = require('cookie-parser')
 
 const event = function (chatData, chatMethod, port) {
 
   // socket链接时执行
-  io.on('connection', function (socket) {
-    var cookieData = cookie.parse(socket.handshake.headers.cookie);
-    var sessionId = cookieParser.signedCookie(cookieData['key'], 'whocarewhatisthepass');
-    var sessionDir = '../../sessions/'
-    var sessionExtension = '.json'
-    var loginedUserName = ''
-    var roomID = chatMethod.getCurrentRoomID(socket)
-    var loginedUserImg = ''
-    console.log('当前房间 / ' + roomID)
-    // 进入房间
-    socket.join(roomID)
-    console.log(socket.adapter.rooms)
-    // console.log(socket.adapter.nsp.sids)
-    // console.log(socket.conn.server.clients)
-    // console.log(socket.conn.server.clients.clientsCount)
+  io.on('connection', (socket) =>  {
+    const cookieData = cookie.parse(socket.handshake.headers.cookie);
+    const sessionId = cookieParser.signedCookie(cookieData['key'], 'whocarewhatisthepass');
+    const sessionDir = '../../sessions/'
+    const sessionExtension = '.json'
+    const currentRoomName = chatMethod.getCurrentRoomID(socket)
+    let loginedUserName = ''
+    let loginedUserImg = ''
+    socket.join(currentRoomName)  // 进入房间
     try {
+
+      // 查询session中保存的用户名
       const sessionFile = require(sessionDir + sessionId + sessionExtension)
       loginedUserName = sessionFile.loginUser
-      info.findOne({user: loginedUserName}, function(err, val){
+
+      // 通过session中的用户名在数据库中查询用户信息
+      info.findOne({user: loginedUserName}, (err, val) => {
+
+        // 如果出错则打印出来
         if (err) {
-          console.log(err)
+          console.log('findInfoFromDB / err : ' + err)
         }
+
+        // 如果查询到用户数据则保持图片Url到loginedUserImg变量里
         else if (val !== null) {
           loginedUserImg = val.img
-          console.log(loginedUserImg)
+          console.log('currentRoomName: ' + currentRoomName)
+          console.log('findInfoFromDB / loginedUserName: ' + loginedUserName)
+          console.log('findInfoFromDB / loginedUserImg: ' + loginedUserImg)
         }
       })
-      console.log('sessionFile.loginedUserName: ' + loginedUserName)
-      console.log('loginedUserImg: ' + loginedUserImg)
-      // console.log(socket)
-    } catch(e) {
-      console.log('not login' + e);
-    }
-    // console.log(data)
-    // console.log(sessionId)
 
-    // 初始化房间ID
-    chatData.currentRoomID = chatMethod.getCurrentRoomID(socket)
+      // 如果捕获到错误则报错
+    } catch(err) {
+      console.log('sessionFile / err: ' + err);
+    }
+
+    // 初始化房间
+    chatData.currentRoomName = chatMethod.getCurrentRoomID(socket)
+
     // 发送请求当前房间号事件
-    socket.emit('request room id')
+    socket.emit('room id req')
+
     // 监听到相应后，存储当前的房间号
-    socket.on('response room id', function (roomID) {
+    socket.on('room id res', (currentRoomName) => {
+
       // 读取当前房间的聊天信息
-      var messShow = mess.find({'room': roomID}, function (err, data) {
+      mess.find({'room': currentRoomName}, (err, data) =>  {
         console.log('room data ready / ' + (data.lenth !== 0))
-        socket.emit('show latest talk', data)
+        socket.emit('mess show res', data)
       })
+
       // 存储房间ID
-      chatData.currentRoomID = roomID
-      console.log('connection / currentRoom: ' + chatData.currentRoomID)
+      chatData.currentRoomName = currentRoomName
+      console.log('connection / currentRoom: ' + chatData.currentRoomName)
+
       // 不存在则创建新房间
-      if(!chatMethod.isRoomExist(chatData.room, roomID)) {
-        chatData.roomList.push(roomID)
+      if(!chatMethod.isRoomExist(chatData.room, currentRoomName)) {
+        chatData.roomList.push(currentRoomName)
         chatData.room.push({
-          name: roomID,
+          name: currentRoomName,
           desc: null,
           user: [],
           img: []
         })
       }
     })
-    // 给指定房间发送消息
-    socket.on('send message req', function (time, id, msg) {
-      console.log(msg)
+
+    // 处理发送消息事件
+    socket.on('send message req', (time, id, msg) => {
       msg.user = loginedUserName
-      msg.img = loginedUserImg || ''
+      msg.img = loginedUserImg
+      // 把消息广播到相同房间
       socket.broadcast.to(id).emit('send message res', msg)
-      // 存储信息到数据库
-      var newMess = new mess({
+      // 存储消息到数据库
+      const messEntity = new mess({
         room: id,
-        user: loginedUserName,
+        user: lmsg.user,
         mess: msg.msg,
         time: time,
         img: msg.img
       })
-      newMess.save()
+      messEntity.save()
     })
-    // 显示当前状态
+
+    // 发送用于调试的状态信息
     socket.emit('current status', chatData)
-    // 退出连接时的方法
-    socket.on('disconnect', function () {
-      // chatMethod.getCurrentRoomID(socket)
-      chatData.currentRoomID = chatMethod.getCurrentRoomID(socket)
-      chatData.currentRoomIndex = chatMethod.getCurrentRoomIndex(chatData.currentRoomID)
-      socket.broadcast.to(chatData.currentRoomID).emit('user logout req', {
+
+    // 处理断开连接事件
+    socket.on('disconnect', () => {
+
+      // 重新获取房间名称和索引
+      chatData.currentRoomName = chatMethod.getCurrentRoomID(socket)
+      chatData.currentRoomIndex = chatMethod.getCurrentRoomIndex(chatData.currentRoomName)
+      
+      // 向当前房间广播用户退出信息
+      socket.broadcast.to(chatData.currentRoomName).emit('user logout req', {
         currentUser: loginedUserName,
         currentUserList: chatData.room[chatData.currentRoomIndex].user,
         currentUserListImg: chatData.room[chatData.currentRoomIndex].img
       })
-      console.log('disconnect / getCurrentRoomID / ' + chatData.currentRoomID)
+      console.log('disconnect / getCurrentRoomID / ' + chatData.currentRoomName)
       console.log('disconnect / getCurrentRoomIndex / ' + chatData.currentRoomIndex)
       console.log('disconnect / getCurrentUser  / ' + loginedUserName)
     });
   })
   server.listen(port)
-  console.log('socket-server on ' + port)
+  console.log(`socket-server on ${port}`)
 }
 module.exports = event

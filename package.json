@@ -16,7 +16,6 @@
     "ejs": "~2.5.5",
     "express": "~4.14.1",
     "express-session": "^1.15.3",
-    "express-session-socket.io": "^1.0.1",
     "gulp-less": "^3.3.2",
     "mongoose": "^4.10.0",
     "morgan": "~1.7.0",
