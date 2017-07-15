@@ -182,7 +182,7 @@ nChat.method = {
   },
   // 解析时间戳
   parseTime (t) {
-    let tm = new Date()
+    const tm = new Date()
     tm.setTime(t * 1000)
     return tm.toLocaleString()
   },
@@ -192,12 +192,12 @@ nChat.method = {
       // 隐藏表情框
       chatMoreBox.style.visibility = 'hidden'
       // 获取当前时间戳
-      let time = nChat.method.getTime(new Date())
-      // let timeShow = nChat.method.parseTime(time)
-      let name = nChat.data.user.name !== null ? nChat.data.user.name : '神秘人'
-      let parsedMessage = nChat.method.parseMsgVal(chatMsgSend.value)
+      const time = nChat.method.getTime(new Date())
+      // const timeShow = nChat.method.parseTime(time)
+      const name = nChat.data.user.name !== null ? nChat.data.user.name : '神秘人'
+      const parsedMessage = nChat.method.parseMsgVal(chatMsgSend.value)
       // 添加内容到当前界面
-      let rightBubble = nChat.method.renderBubbleMsg('right', name, '',  parsedMessage, nChat.data.user.img)
+      const rightBubble = nChat.method.renderBubbleMsg('right', name, '',  parsedMessage, nChat.data.user.img)
       // 添加内容到当前房间的其他用户界面
       socket.emit('send message req', time, nChat.data.currentRoomName , {user: name,time: time, msg: parsedMessage, img: nChat.data.user.img})
       nChat.method.insertToList(chatMsgList, 'li', rightBubble)

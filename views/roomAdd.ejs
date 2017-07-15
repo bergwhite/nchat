@@ -13,7 +13,7 @@
         <a class="top-prev" href="/room">&lt;</a>
       </span>
       <span>
-        <a class="top-next room-add-submit" href="#">√</a>
+        <a class="top-next room-add-submit">√</a>
       </span>
       <p><%= title %></p>
     </div>
@@ -29,49 +29,54 @@
   </div>
   <script type="text/javascript" src="/js/mobile.js"></script>
   <script type="text/javascript">
-    (function(){
-      var roomAddName = document.getElementsByClassName('add-info-name')[0]
-      var roomAddDesc = document.getElementsByClassName('add-info-desc')[0]
-      var roomAddTip = document.getElementsByClassName('add-info-tip')[0]
-      var roomAddSubmit = document.getElementsByClassName('room-add-submit')[0]
-      var prevHost = document.location.origin
-      var prevUrl = prevHost + '/api/room/add'
+    (() => {
+      const roomName = document.getElementsByClassName('add-info-name')[0]
+      const roomDesc = document.getElementsByClassName('add-info-desc')[0]
+      const infoSubmitBtn = document.getElementsByClassName('room-add-submit')[0]
+      const infoSubmitTip = document.getElementsByClassName('add-info-tip')[0]
+      const prevPageHost = document.location.origin
+      const prevPageHostUrl = prevPageHost + '/api/room/add'
 
-      document.body.onload = function() {
-        roomAddName.focus()
-      }
+      // 页面加载完成时，聚焦房间名字输入框
+      document.body.onload = () => roomName.focus()
 
-      roomAddSubmit.addEventListener('click', function(e) {
+      // 监听提交按钮
+      infoSubmitBtn.addEventListener('click', (e) => {
+        // 阻止链接默认事件
         e.preventDefault()
-        if (roomAddName.value === '') {
-          roomAddTip.innerText = '请输入名称'
-          roomAddName.focus()
+        // 信息输入完整则提交，未输入完整则提示
+        if (roomName.value === '') {
+          infoSubmitTip.innerText = '请输入名称'
+          roomName.focus()
         }
-        else if (roomAddDesc.value === '') {
-          roomAddTip.innerText = '请输入描述'
-          roomAddDesc.focus()
+        else if (roomDesc.value === '') {
+          infoSubmitTip.innerText = '请输入描述'
+          roomDesc.focus()
         }
         else {
-          submitTheRoomAdd()
+          submitNewRoomInfo()
         }
       }, false)
 
-      function submitTheRoomAdd() {
-        console.log(roomAddName.value)
-        axios.post(prevUrl, {
-          name: roomAddName.value,
-          desc: roomAddDesc.value
-        }).then(function(res){
+      // 新房间提交函数
+      function submitNewRoomInfo() {
+        axios.post(prevPageHostUrl, {
+          name: roomName.value,
+          desc: roomDesc.value
+        }).then((res) => {
+          // 成功则跳转到房间列表
           if (res.data.msgCode === 200) {
             document.location = '/room'
           }
+          // 否则显示返回的信息
           else {
-            roomAddTip.innerText = res.data.msgCtx
-            roomAddName.focus()
+            infoSubmitTip.innerText = res.data.msgCtx
+            roomName.focus()
           }
-        }).catch(function(err){
-          roomAddTip.innerText = err
-          roomAddName.focus()
+        }).catch((err) => {
+          // 如果捕获到错误，则进行提示
+          infoSubmitTip.innerText = err
+          roomName.focus()
         })
       }
     })()
