@@ -1,4 +1,6 @@
 const chatMsgSend = document.getElementsByClassName('chat-msg-send')[0]
+const chatMsgSendBtn = document.getElementsByClassName('chat-send-btn')[0]
+const chatEmojiList = document.getElementsByClassName('chat-emoji-list')[0]
 const infoTab = document.getElementsByClassName('info-tab')[0]
 const chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
 const chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
@@ -198,7 +200,6 @@ nChat.method = {
       let rightBubble = nChat.method.renderBubbleMsg('right', name, '',  parsedMessage, nChat.data.user.img)
       // 添加内容到当前房间的其他用户界面
       socket.emit('send message req', time, nChat.data.currentRoomName , {user: name,time: time, msg: parsedMessage, img: nChat.data.user.img})
-      console.log(name)
       nChat.method.insertToList(chatMsgList, 'li', rightBubble)
       // 发送完消息清空内容
       chatMsgSend.value = ''
@@ -314,4 +315,10 @@ document.body.onload = function () {
   console.log(nChat.method.getRandomImg('men'))
   // 测试随机昵称
   console.log(nChat.method.getRandomNick('china','male'))
+  chatMsgSendBtn.addEventListener('click', function() {
+    nChat.method.sendMessage()
+  }, false)
+  chatEmojiList.addEventListener('click', function() {
+    nChat.method.getEmoji()
+  }, false)
 }

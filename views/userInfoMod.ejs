@@ -41,40 +41,41 @@
       </div>
     <script type="text/javascript" src="/js/mobile.js"></script>
     <script type="text/javascript">
-      var infoGender = document.getElementsByClassName('info-gender')[0]
-      var infoImg = document.getElementsByClassName('info-img')[0]
-      var infoCity = document.getElementsByClassName('info-city')[0]
-      var infoHobbies = document.getElementsByClassName('info-hobbies')[0]
-      var infoTip = document.getElementsByClassName('info-tip')[0]
-      var infoModBtn = document.getElementsByClassName('user-info-mod')[0]
-      
-      document.body.ready = function(){
-        infoGender.focus();
-      }
+      (function(){
+        var infoGender = document.getElementsByClassName('info-gender')[0]
+        var infoImg = document.getElementsByClassName('info-img')[0]
+        var infoCity = document.getElementsByClassName('info-city')[0]
+        var infoHobbies = document.getElementsByClassName('info-hobbies')[0]
+        var infoTip = document.getElementsByClassName('info-tip')[0]
+        var infoModBtn = document.getElementsByClassName('user-info-mod')[0]
+        
+        document.body.ready = function(){
+          infoGender.focus();
+        }
 
-      infoModBtn.addEventListener('click', function() {
-        submitUserInfo()
-      }, false)
+        infoModBtn.addEventListener('click', function() {
+          submitUserInfo()
+        }, false)
 
-      function submitUserInfo() {
-        axios.put('/api/user/info',{
-          gender: infoGender.value,
-          img: infoImg.value,
-          city: infoCity.value,
-          hobbies: infoHobbies.value
-        }).then(function(res) {
-            if (res.data.msgCode === 200) {
-              document.location = '/'
-            }
-            else {
-              infoTip.innerText = res.data.msgCtx
-            }
-          })
-          .catch(function(err) {
-            infoTip.innerText = err
-          })
-      }
-
+        function submitUserInfo() {
+          axios.put('/api/user/info',{
+            gender: infoGender.value,
+            img: infoImg.value,
+            city: infoCity.value,
+            hobbies: infoHobbies.value
+          }).then(function(res) {
+              if (res.data.msgCode === 200) {
+                document.location = '/'
+              }
+              else {
+                infoTip.innerText = res.data.msgCtx
+              }
+            })
+            .catch(function(err) {
+              infoTip.innerText = err
+            })
+        }
+      })()
     </script>
     <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   </body>

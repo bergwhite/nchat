@@ -29,50 +29,52 @@
   </div>
   <script type="text/javascript" src="/js/mobile.js"></script>
   <script type="text/javascript">
-    var roomAddName = document.getElementsByClassName('add-info-name')[0]
-    var roomAddDesc = document.getElementsByClassName('add-info-desc')[0]
-    var roomAddTip = document.getElementsByClassName('add-info-tip')[0]
-    var roomAddSubmit = document.getElementsByClassName('room-add-submit')[0]
-    var prevHost = document.location.origin
-    var prevUrl = prevHost + '/api/room/add'
+    (function(){
+      var roomAddName = document.getElementsByClassName('add-info-name')[0]
+      var roomAddDesc = document.getElementsByClassName('add-info-desc')[0]
+      var roomAddTip = document.getElementsByClassName('add-info-tip')[0]
+      var roomAddSubmit = document.getElementsByClassName('room-add-submit')[0]
+      var prevHost = document.location.origin
+      var prevUrl = prevHost + '/api/room/add'
 
-    document.body.onload = function() {
-      roomAddName.focus()
-    }
-
-    roomAddSubmit.addEventListener('click', function(e) {
-      e.preventDefault()
-      if (roomAddName.value === '') {
-        roomAddTip.innerText = '请输入名称'
+      document.body.onload = function() {
         roomAddName.focus()
       }
-      else if (roomAddDesc.value === '') {
-        roomAddTip.innerText = '请输入描述'
-        roomAddDesc.focus()
-      }
-      else {
-        submitTheRoomAdd()
-      }
-    }, false)
 
-    function submitTheRoomAdd() {
-      console.log(roomAddName.value)
-      axios.post(prevUrl, {
-        name: roomAddName.value,
-        desc: roomAddDesc.value
-      }).then(function(res){
-        if (res.data.msgCode === 200) {
-          document.location = '/room'
-        }
-        else {
-          roomAddTip.innerText = res.data.msgCtx
+      roomAddSubmit.addEventListener('click', function(e) {
+        e.preventDefault()
+        if (roomAddName.value === '') {
+          roomAddTip.innerText = '请输入名称'
           roomAddName.focus()
         }
-      }).catch(function(err){
-        roomAddTip.innerText = err
-        roomAddName.focus()
-      })
-    }
+        else if (roomAddDesc.value === '') {
+          roomAddTip.innerText = '请输入描述'
+          roomAddDesc.focus()
+        }
+        else {
+          submitTheRoomAdd()
+        }
+      }, false)
+
+      function submitTheRoomAdd() {
+        console.log(roomAddName.value)
+        axios.post(prevUrl, {
+          name: roomAddName.value,
+          desc: roomAddDesc.value
+        }).then(function(res){
+          if (res.data.msgCode === 200) {
+            document.location = '/room'
+          }
+          else {
+            roomAddTip.innerText = res.data.msgCtx
+            roomAddName.focus()
+          }
+        }).catch(function(err){
+          roomAddTip.innerText = err
+          roomAddName.focus()
+        })
+      }
+    })()
   </script>
   <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
 </body>

@@ -1,23 +1,27 @@
-function isMobile() {
-  var pcState = false
-  var x = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'].map(function(e){
-    if(navigator.userAgent.indexOf(e) !== -1) pcState = true
-  })
-  return pcState
-}
+(function(){
 
-if (!isMobile()) {
-  document.location = '/tip/pc'
-}
+  function isMobile() {
+    var pcState = false
+    var x = ['Android', 'iPhone', 'SymbianOS', 'Windows Phone', 'iPad', 'iPod'].map(function(e){
+      if(navigator.userAgent.indexOf(e) !== -1) pcState = true
+    })
+    return pcState
+  }
 
-function startResponse() {
-  var pageScale = 1 / window.devicePixelRatio;
-  document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + pageScale + ', maximum-scale=' + pageScale + ', minimum-scale=' + pageScale + ', user-scalable=no');
-  document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px'
-}
+  if (!isMobile()) {
+    document.location = '/tip/pc'
+  }
 
-startResponse()
+  function startResponse() {
+    var pageScale = 1 / window.devicePixelRatio;
+    document.querySelector('meta[name="viewport"]').setAttribute('content','initial-scale=' + pageScale + ', maximum-scale=' + pageScale + ', minimum-scale=' + pageScale + ', user-scalable=no');
+    document.documentElement.style.fontSize = document.documentElement.clientWidth / 7.5 + 'px'
+  }
 
-window.onresize = function () {
   startResponse()
-}
+
+  window.onresize = function () {
+    startResponse()
+  }
+
+})()
