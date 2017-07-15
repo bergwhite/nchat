@@ -7,9 +7,6 @@
     <link rel='stylesheet' href='/css/index.min.css' />
   </head>
   <body>
-    <!-- <a class="fork-me-wrap" href="https://github.com/bergwhite/nodejs-chat" target="_blank">
-      <img class="fork-me" src="http://images.cnitblog.com/i/214648/201403/181013198028385.png">
-    </a> -->
     <div class="chat-name top-title">
       <span>
         <a class="top-prev" href="/room">&lt;</a>
@@ -19,7 +16,6 @@
       </span>
       <p><%= title %></p>
     </div>
-    <!-- <p><%= desc %></p> -->
     <div class="chat">
       <div class="chat-ctx-wrap">
         <div class="chat-ctx">
@@ -27,7 +23,7 @@
         </div>
         <div class="chat-more-wrap">
           <ul class="chat-more">
-            <li onclick="nodejsChat.method.getEmoji()">
+            <li onclick="nChat.method.getEmoji()">
               <ul class="chat-more-box">
               </ul>
               <span>🙂</span>
@@ -36,34 +32,11 @@
         </div>
         <div class="chat-send">
           <textarea class="chat-msg-send" contenteditable></textarea>
-          <div class="chat-send-btn" onclick="nodejsChat.method.sendMessage()">
+          <div class="chat-send-btn" onclick="nChat.method.sendMessage()">
             发送
           </div>
         </div>
       </div>
-      <!-- <div class="user-list-wrap">
-        <div class="info-tab-cut">
-          <ul class="info-tab">
-            <div class="info-user">
-              <img src="https://randomuser.me/api/portraits/men/1.jpg" class="user-img-choose">
-              <div>
-                <input type="radio" name="sex" value="men" checked class="input-radio-sex">
-                <label for="sex">男</label>
-                <input type="radio" name="sex" value="women" class="input-radio-sex">
-                <label for="sex">女</label>
-              </div>
-              <input type="text" placeholder="取个名字吧" id="user-reg">
-              <div class="chat-info-confirm" onclick="nodejsChat.method.regUser()">保存</div>
-              <p  id="user-reg-tip" style="color: red;"></p>
-            </div>
-            <div class="info-menber">
-              <p class="info-title text-center">在线成员</p>
-              <ul class="user-lists"></ul>
-            </div>
-          </ul>
-        </div>
-      </div>
-    </div> -->
     <script type="text/javascript" src="/js/mobile.js"></script>
     <script type="text/javascript">
       var socketScript = document.createElement('script')

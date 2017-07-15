@@ -49,7 +49,7 @@ router.get('/room', function(req, res, next) {
 
 router.get('/room/:id', function(req, res, next) {
   if (req.session.loginUser) {
-    // 修改房间名（线上代码修改方案）
+    /*// 修改房间名（线上代码修改方案）
     room.find({name: 'NodeJS Chat Room'}, function(err, val) {
       if (err) {
         console.log(err)
@@ -84,7 +84,7 @@ router.get('/room/:id', function(req, res, next) {
           })
         }
       }
-    })
+    })*/
     room.findOne({name: req.params.id}, function(err, val) {
       if (err) {
         res.send('err: ' + err)
@@ -93,12 +93,12 @@ router.get('/room/:id', function(req, res, next) {
         res.send('<h1>Room is not exist.</h1>')
       }
       else {
-        room.find({}, function(err, val){
-          var roomObj = val.find(function(el,i,arr){
+        mess.find({room: req.params.id}, function(err, val){
+          /*var roomObj = val.find(function(el,i,arr){
             return el.name === req.params.id
           })
-          var desc = roomObj.desc
-          res.render('room', {title: req.params.id, desc: desc, room: val, roomId: req.params.id});
+          var desc = roomObj.desc*/
+          res.render('room', {title: req.params.id,/* desc: desc,*/ room: val, roomId: req.params.id});
         })
       }
     })

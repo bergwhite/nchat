@@ -10,28 +10,34 @@ const event = function (chatData, chatMethod, port) {
 
   // socket链接时执行
   io.on('connection', function (socket) {
-    var data = cookie.parse(socket.handshake.headers.cookie);
-    var sessionId = cookieParser.signedCookie(data['key'], 'whocarewhatisthepass');
+    var cookieData = cookie.parse(socket.handshake.headers.cookie);
+    var sessionId = cookieParser.signedCookie(cookieData['key'], 'whocarewhatisthepass');
     var sessionDir = '../../sessions/'
     var sessionExtension = '.json'
-    var loginUser = ''
+    var loginedUserName = ''
     var roomID = chatMethod.getCurrentRoomID(socket)
-    var userImg = ''
+    var loginedUserImg = ''
     console.log('当前房间 / ' + roomID)
+    // 进入房间
+    socket.join(roomID)
+    console.log(socket.adapter.rooms)
+    // console.log(socket.adapter.nsp.sids)
+    // console.log(socket.conn.server.clients)
+    // console.log(socket.conn.server.clients.clientsCount)
     try {
       const sessionFile = require(sessionDir + sessionId + sessionExtension)
-      loginUser = sessionFile.loginUser
-      info.findOne({user: loginUser}, function(err, val){
+      loginedUserName = sessionFile.loginUser
+      info.findOne({user: loginedUserName}, function(err, val){
         if (err) {
           console.log(err)
         }
         else if (val !== null) {
-          userImg = val.img
-          console.log(userImg)
+          loginedUserImg = val.img
+          console.log(loginedUserImg)
         }
       })
-      console.log('sessionFile.loginUser: ' + loginUser)
-      console.log('userImg: ' + userImg)
+      console.log('sessionFile.loginedUserName: ' + loginedUserName)
+      console.log('loginedUserImg: ' + loginedUserImg)
       // console.log(socket)
     } catch(e) {
       console.log('not login' + e);
@@ -63,18 +69,17 @@ const event = function (chatData, chatMethod, port) {
           img: []
         })
       }
-      // 进入房间
-      socket.join(roomID)
     })
     // 给指定房间发送消息
     socket.on('send message req', function (time, id, msg) {
-      msg.user = loginUser
-      msg.img = userImg
+      console.log(msg)
+      msg.user = loginedUserName
+      msg.img = loginedUserImg || ''
       socket.broadcast.to(id).emit('send message res', msg)
       // 存储信息到数据库
       var newMess = new mess({
         room: id,
-        user: loginUser,
+        user: loginedUserName,
         mess: msg.msg,
         time: time,
         img: msg.img
@@ -89,13 +94,13 @@ const event = function (chatData, chatMethod, port) {
       chatData.currentRoomID = chatMethod.getCurrentRoomID(socket)
       chatData.currentRoomIndex = chatMethod.getCurrentRoomIndex(chatData.currentRoomID)
       socket.broadcast.to(chatData.currentRoomID).emit('user logout req', {
-        currentUser: loginUser,
+        currentUser: loginedUserName,
         currentUserList: chatData.room[chatData.currentRoomIndex].user,
         currentUserListImg: chatData.room[chatData.currentRoomIndex].img
       })
       console.log('disconnect / getCurrentRoomID / ' + chatData.currentRoomID)
       console.log('disconnect / getCurrentRoomIndex / ' + chatData.currentRoomIndex)
-      console.log('disconnect / getCurrentUser  / ' + loginUser)
+      console.log('disconnect / getCurrentUser  / ' + loginedUserName)
     });
   })
   server.listen(port)
