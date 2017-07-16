@@ -1,23 +1,17 @@
-var basic = require('./basic');
-var express = basic.express;
-var router = basic.router;
-var databaseModel = require('../bin/database/model')
-var room = databaseModel.room;
+const basic = require('./basic');
+const express = basic.express;
+const router = basic.router;
+const databaseModel = require('../bin/database/model')
+const room = databaseModel.room;
 
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next) => {
+
+  // 已登陆则显示首页
   if (req.session.loginUser) {
-    room.find({}, function(err, val) {
-      if (err) {
-        res.send('err: ' + err)
-      }
-      else if (val===null) {
-        res.send('<h1>Room is not exist.</h1>')
-      }
-      else {
-        res.render('home', { title: 'NodeJS Chat', user: req.session.loginUser, room: val});
-      }
-    })
+    res.render('home', { title: 'NodeJS Chat', user: req.session.loginUser});
   }
+  
+  // 否则跳转登陆页面
   else {
     res.redirect('/login')
   }

@@ -1,105 +1,144 @@
-var basic = require('./basic');
-var express = basic.express;
-var router = basic.router;
-var databaseModel = require('../bin/database/model')
-var room = databaseModel.room;
-var mess = databaseModel.mess;
+const basic = require('./basic');
+const express = basic.express;
+const router = basic.router;
+const databaseModel = require('../bin/database/model')
+const room = databaseModel.room;
+const mess = databaseModel.mess;
 
 
-// 前端路由
+/*
+ * 前端路由
+ */
 
-router.get('/rooms/add', function(req, res, next) {
+// 添加房间页面
+router.get('/rooms/add', (req, res, next) => {
+
+  // 已登录则显示页面
   if (req.session.loginUser) {
     res.render('roomAdd', {title: '添加房间'})
   }
+
+  // 否则跳转到登陆页面
   else {
     res.redirect('/login')
   }
 })
 
-router.get('/room/:id/member', function(req, res, next) {
+// 用户信息页面
+router.get('/room/:id/member', (req, res, next) => {
+
+  // 已登录则显示页面
   if (req.session.loginUser) {
     res.render('roomMember', {title: '在线成员', room: req.params.id})
   }
+
+  // 否则跳转到登陆页面
   else {
     res.redirect('/login')
   }
 })
 
-router.get('/room', function(req, res, next) {
+// 房间列表页面
+router.get('/room', (req, res, next) => {
+
+  // 已登录则显示页面
   if (req.session.loginUser) {
-    room.find({}, function(err, val) {
+    room.find({}, (err, val) => {
+
+      // 处理错误
       if (err) {
-        res.send('err: ' + err)
+        res.send(`<h1>err: ${err}</h1>`)
       }
+
+      // 房间为空时
       else if (val === null) {
-        res.send('<h1>Room is not exist.</h1>')
+        res.render('roomList', {title: '房间列表', room: []});
       }
+
+      // 渲染房间列表
       else {
-        room.find({}, function(err, val){
+        room.find({}, (err, val) => {
           res.render('roomList', {title: '房间列表', room: val});
         })
       }
     })
   }
+
+  // 否则跳转到登陆页面
   else {
     res.redirect('/login')
   }
 })
 
-router.get('/room/:id', function(req, res, next) {
+// 具体房间页面
+router.get('/room/:id', (req, res, next) => {
+
+  // 已登录则显示页面
+  // 否则跳转到登陆页面
   if (req.session.loginUser) {
-    /*// 修改房间名（线上代码修改方案）
-    room.find({name: 'NodeJS Chat Room'}, function(err, val) {
+
+    // 查询房间是否存在
+    // 操作数据库的过程中发生错误或房间不存在，则把提示发送到前端页面
+    room.findOne({name: req.params.id}, (err, val) => {
       if (err) {
-        console.log(err)
-      }
-      else if (val === null) {
-        console.log(null)
-      }
-      else {
-        for(var i = 0; i < val.length; i++){
-          room.update({name: 'NodeJS Chat Room'}, {$set: {name: 'center'}}, function(err){
-            if (err) {
-              console.log(err)
-            }
-          })
-        }
-      }
-    })
-    // 修改历史聊天记录的房间名（线上代码修改方案）
-    mess.find({room: 'Chat Room'}, function(err, val) {
-      if (err) {
-        console.log(err)
-      }
-      else if (val === null) {
-        console.log(null)
-      }
-      else {
-        for(var i = 0; i < val.length; i++){
-          mess.update({room: 'Chat Room'}, {$set: {room: 'center'}}, function(err){
-            if (err) {
-              console.log(err)
-            }
-          })
-        }
-      }
-    })*/
-    room.findOne({name: req.params.id}, function(err, val) {
-      if (err) {
-        res.send('err: ' + err)
+        res.send(`<h1>err: ${err}</h1>`)
       }
       else if (val === null) {
         res.send('<h1>Room is not exist.</h1>')
       }
       else {
-        mess.find({room: req.params.id}, function(err, val){
-          /*var roomObj = val.find(function(el,i,arr){
-            return el.name === req.params.id
-          })
-          var desc = roomObj.desc*/
-          res.render('room', {title: req.params.id,/* desc: desc,*/ room: val, roomId: req.params.id});
+
+        // 查询当前房间的所有聊天记录
+        // 查询到了则渲染页面
+        // 如果操作数据库的过程中发生错误则把错误信息发送过去
+        mess.find({room: req.params.id}, (err, val) => {
+          if (err) {
+            res.send(`<h1>err: ${err}</h1>`)
+          }
+          else {
+            res.render('room', {title: req.params.id, room: val, roomId: req.params.id})
+          }
         })
+      }
+    })
+
+    // 批量修改线上代码的房间名
+    // 如果发送错误或房间未找到，则打印错误信息
+    room.find({name: 'NodeJS Chat Room'}, function(err, val) {
+      if (err) {
+        console.log(`roomFindErr: ${err}`)
+      }
+      else if (val === null) {
+        console.log('roomFind404: No room NodeJS Chat Room found.')
+      }
+      else {
+        for(var i = 0; i < val.length; i++){
+          room.update({name: 'NodeJS Chat Room'}, {$set: {name: 'center'}}, function(err){
+            if (err) {
+              console.log(`roomUpdateErr: ${err}`)
+            }
+          })
+        }
+      }
+    })
+
+    // 批量修改线上代码聊天记录中的房间名
+    // 如果发送错误或房间未找到，则打印错误信息
+    mess.find({room: 'Chat Room'}, function(err, val) {
+      if (err) {
+        console.log(`<h1>roomChatErr: ${err}</h1>`)
+      }
+      else if (val === null) {
+        console.log('roomFind404: No info about Chat Room.')
+      }
+      else {
+        for(var i = 0; i < val.length; i++){
+          mess.update({room: 'Chat Room'}, {$set: {room: 'center'}}, function(err){
+            if (err) {
+              console.log(`roomChatUpdateErr: ${err}`)
+            }
+          })
+        }
       }
     })
   }
@@ -108,14 +147,22 @@ router.get('/room/:id', function(req, res, next) {
   }
 });
 
-// 后端API
+/*
+ * 后端API
+ */
 
-// 房间列表
+// 请求房间列表
+router.get('/api/room', (req, res, next) => {
 
-router.get('/api/room', function(req, res, next) {
+  // 如果查询到了房间则返回
+  // 否则提示暂时没有任何房间
+  // 操作数据库的过程中遇到错误则把错误返回给前端
   room.find({}, function(err, val){
-    if (val!==null) {
-      res.send(val)
+    if (err) {
+      res.send({msgCode:500, msgCtx: err})
+    }
+    else if (val!==null) {
+      res.send({msgCode:200, msgCtx: val})
     }
     else {
       res.send({msgCode:404, msgCtx: 'Has not any room.'})
@@ -123,11 +170,14 @@ router.get('/api/room', function(req, res, next) {
   })
 })
 
-// 房间信息
-router.get('/api/room/info/:id', function(req, res, next) {
-  room.findOne({name: req.params.id}, function(err, val){
+// 请求房间信息
+router.get('/api/room/info/:id', (req, res, next) => {
+
+  // 如果房间存在则返回信息
+  // 不存在则返回房间不存在的提示
+  room.findOne({name: req.params.id}, (err, val) => {
     if (val !== null) {
-      res.send(val)
+      res.send({msgCode: 200, msgCtx: val})
     }
     else {
       res.send({msgCode:404, msgCtx: 'Room is not exist.'})
@@ -135,43 +185,61 @@ router.get('/api/room/info/:id', function(req, res, next) {
   })
 })
 
-// 添加房间
-router.post('/api/room/add', function(req, res, next) {
-  room.findOne({name: req.body.name}, function(err, val){
-    if (err) {
-      res.send({msgCode:500, msgCtx: err})
-    }
-    else if (val !== null) {
-      res.send({msgCode:404, msgCtx: 'Room is exist.'})
-    }
-    else {
-      name = req.body.name
-      desc = req.body.desc || '暂时没有简介。'
-      roomSave = new room({
-        name: name,
-        desc: desc
-      })
-      roomSave.save()
-      res.send({msgCode:200, msgCtx: 'Room add success.'})
-    }
-  })
+// 请求添加房间
+router.post('/api/room/add', (req, res, next) => {
+
+  // 已登录则继续请求添加房间
+  // 未登录则提示请登陆
+  if (req.session.loginUser) {
+
+    // 如果当前房间存在则添加
+    // 否则提示当前房间已存在
+    // 操作数据库的过程中遇到错误则返回错误信息给前端
+    room.findOne({name: req.body.name}, (err, val) => {
+      if (err) {
+        res.send({msgCode:500, msgCtx: err})
+      }
+      else if (val !== null) {
+        res.send({msgCode:304, msgCtx: 'Room is exist.'})
+      }
+      else {
+        name = req.body.name
+        desc = req.body.desc || '暂时没有简介。'
+        roomSave = new room({
+          name: name,
+          desc: desc
+        })
+        roomSave.save()
+        res.send({msgCode:200, msgCtx: 'Room add success.'})
+      }
+    })
+  }
+  else {
+    res.send({msgCode:401, msgCtx: 'You cannot access the api. Please login.'})
+  }
 })
 
-// 房间记录
-router.get('/api/room/mess/:id', function(req, res, next) {
-  room.findOne({name: req.params.id}, function(err, val){
+// 请求房间聊天记录
+router.get('/api/room/mess/:id', (req, res, next) => {
+
+  // 如果有这个房间则继续请求房间的聊天记录
+  // 否则提示当前房间不存在
+  room.findOne({name: req.params.id}, (err, val) => {
     if (val !== null) {
-      mess.find({room: req.params.id}, function(errChild, valChild) {
+
+      // 如果查询到当前房间的聊天记录则返回
+      // 否则提示未查询到消息
+      mess.find({room: req.params.id}, (errChild, valChild) => {
         if (val !== null) {
-          res.send(valChild)
+          res.send({msgCode:200, msgCtx: valChild})
         }
         else {
-          res.send([{msgCode:20, msgCtx: 'Has not found any mess.'}])
+          res.send({msgCode:404, msgCtx: 'Has not found any mess.'})
         }
       })
     }
     else {
-      res.send([{msgCode:404, msgCtx: 'Room is not exist.'}])
+      res.send({msgCode:404, msgCtx: 'This room is not exist.'})
     }
   })
 })

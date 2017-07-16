@@ -1,373 +1,85 @@
-var bodyParser = require('body-parser')
-var basic = require('./basic');
-var express = basic.express;
-var router = basic.router;
-var databaseModel = require('../bin/database/model')
-var info = databaseModel.info;
-var user = databaseModel.user;
+const bodyParser = require('body-parser')
+const basic = require('./basic');
+const express = basic.express;
+const router = basic.router;
+const databaseModel = require('../bin/database/model')
+const info = databaseModel.info;
+const user = databaseModel.user;
 
-// 判断用户是否存在
-function isUserExist(userName) {
-  var existState = false
-  user.findOne({name: userName}, function(err, val){
-    if (val !== null) {
-      console.log(existState)
-      existState = true
-      console.log(existState)
-    }
-  })
-  return existState
-}
-
-// 判断用户是否存在
-function isUserLogin(userName) {
-  if(isUserExist(userName)) {
-
-  }
-}
-
-router.get('/api/isUserExise/:id', function(req, res, next) {
-  user.findOne({name: req.params.id}, function(err, val){
-    if (val !== null) {
-      res.send(true)
-    }
-    else {
-      res.send(false)
-    }
-  })
-})
-
-/* 后端API */
-
-// 用户列表
-
-router.get('/api/user', function(req, res, next) {
-  user.find({}, function(err, val){
-    if (val!==null) {
-      res.send(val)
-    }
-    else {
-      res.send({msgCode:404, msgCtx: 'Has not any user.'})
-    }
-  })
-})
-
-// 注册
-router.post('/api/user/register', function(req, res, next) {
-
-  user.findOne({name: req.body.name}, function(err, val){
-
-    // 用户已存在则直接返回提示信息
-    if (val !== null) {
-      res.send({msgCode:304, msgCtx: 'User is exist.'})
-    }
-
-    else {
-
-      // POST中没有数据则进行提示
-      if (!req.body) {
-        res.send({msgCode:400, msgCtx: 'Please enter the entire form value.'});
-      }
-
-      else if (!false) {
-
-        function getRandomImg (gender) {
-          // example / https://randomuser.me/api/portraits/men/100.jpg
-          var randomNumber = parseInt(Math.random() * 100)
-          return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
-        }
-
-        var userImg = 'https://randomuser.me/api/portraits/men/1.jpg'
-
-        // 设置别名
-        var name = req.body.name
-        var pass = req.body.pass
-
-        // 生成账号
-        userSave = new user({
-          name: name,
-          pass: pass
-        })
-        userSave.save()
-
-        // 生成资料
-        infoSava = new info({
-          user: name,
-          gender: 'secure',
-          img: userImg,
-          city: 'beijing',
-          hobbies: []
-        })
-        infoSava.save()
-
-        // 生成Session
-        req.session.regenerate(function(err) {
-
-          if (err) {
-            res.send({msgCode:500, msgCtx: 'Reg success but not logined.'})
-          }
-
-          else {
-
-            // 保存Session
-            req.session.loginUser = name;
-            res.send({msgCode:200, msgCtx: 'Reg success & logined.'})
-          }
-        });
-      }
-
-      else {
-        res.send({msgCode:304, msgCtx: 'User is exist.'});
-      }
-    }
-  })
-  // res.send({msgCode:400, msgCtx: 'Please enter the entire form value.'})
-});
-
-// 登陆
-router.post('/api/user/login', function(req, res, next) {
-
-  // POST中没有数据则进行提示
-  if (!req.body) {
-    res.send({msgCode:400, msgCtx: 'Please enter the entire form value.'});
-  }
-
-  else if (!false) {
-
-    // 设置别名
-    var name = req.body.name
-    var pass = req.body.pass
-
-    user.findOne({name: name}, function(err, val) {
-      // 错误提示
-      if (err) {
-        return res.send({msgCode:500, msgCtx: err})
-      }
-      else if(req.session.loginUser) {
-        return res.send({msgCode:304, msgCtx: 'You have logined.'})
-      }
-      // 用户不存在提示
-      else if (val === null) {
-        return res.send({msgCode:404, msgCtx: 'User is not exist.'})
-      }
-
-      // 密码错误提示
-      else if(val.pass !== pass) {
-        return res.send({msgCode:404, msgCtx: 'Pass is incorrect.'})
-      }
-
-      else {
-
-        // 存在Session则提示已登录
-        if (req.session.loginUser) {
-          return res.send({msgCode:304, msgCtx: 'You have alread logined.'});
-        }
-
-        // 否则重新生成Session
-        else {
-          req.session.regenerate(function(err) {
-
-            // 错误提示
-            if(err){
-              return res.send({msgCode:404, msgCtx: 'Login fail.'});
-            }
-
-            // 登陆成功提示
-            else {
-              req.session.loginUser = name;
-              return res.send({msgCode:200, msgCtx: 'Login success.'})
-            }
-          });
-        }
-      }
-    })
-  }
-
-  // 登陆失败提示
-  else {
-    res.send({msgCode:1001, msgCtx: 'User login fail.'});
-  }
-});
-
-// 注销
-router.post('/api/user/logout', function(req, res, next) {
-  req.session.destroy(function(err) {
-    if(err){
-      res.send({msgCode:404, msgCtx: 'User logout fail.'});
-      return;
-    }
-    // req.session.loginUser = null;
-    res.clearCookie('key');
-    return res.send({msgCode:200, msgCtx: 'User logout success.'});
-    // res.redirect('/');
-  });
-});
-
-// 个人资料
-router.get('/api/user/info/:id', function(req, res, next) {
-  // 获取用户资料
-  info.findOne({user: req.params.id}, function(err,val){
-    // 如果当前用户不存在
-    // 返回错误信息
-    console.log('val / ')
-    console.log(val)
-    if (val === null) {
-      res.send({msgCode:404, msgCtx: 'User not exist.'})
-    }
-    // 返回用户信息
-    else {
-      res.send(val);
-    }
-    console.log('/api/user/info/:id / val: ' + val)
-    console.log('/api/user/info/:id / err: ' + err)
-  })
-});
-
-router.put('/api/user/pass', function(req, res, next) {
-  // 已登录则执行
-  if (req.session.loginUser) {
-    // 带了请求参数则执行
-    if (req.body) {
-      // 用户和密码别名
-      var userName = req.session.loginUser
-      var passOld = req.body.passOld
-      var passNew = req.body.passNew
-      // 查询当前用户的账号
-      user.findOne({name: userName}, function(err, val) {
-        // 输入的旧密码等于原始密码则执行
-        if (val.pass === passOld) {
-          // 更新成新密码
-          user.update({name: userName}, {$set: {pass: passNew}}, function(err){
-            // 提示成功
-            if (!err) {
-              res.send({msgCode:200, msgCtx: 'Pass is changed.'})
-            }
-            // 提示错误信息
-            else {
-              res.send({msgCode:304, msgCtx: err})
-            }
-          })
-        }
-        // 旧密码错误
-        else {
-          res.send({msgCode:304, msgCtx: 'Old password is incorrect.'})
-        }
-      })
-    }
-    // 提示在请求中带参数
-    else {
-      res.send({msgCode:304, msgCtx: 'Please enter oldPass and newPass.'})
-    }
-  }
-  // 提示需要登陆才能操作
-  else {
-    res.send({msgCode:304, msgCtx: 'Please login.'})
-  }
-})
-
-router.put('/api/user/info', function(req, res, next) {
-  // 已登录则执行
-  if (req.session.loginUser) {
-    // 带了请求参数则执行
-    if (req.body) {
-      // 用户资料别名
-      var userName = req.session.loginUser
-      var userGender = req.body.gender
-      var userImg = req.body.img
-      var userCity = req.body.city
-      var userHobbies = req.body.hobbies.split(',')
-      // 查询当前用户的账号
-      info.findOne({user: userName}, function(err, val) {
-        // 更新资料
-        info.update({user: userName}, {$set: {
-          gender: userGender,
-          img: userImg,
-          city: userCity,
-          hobbies: userHobbies
-        }}, function(err){
-          // 提示成功
-          if (!err) {
-            console.log(userGender)
-            console.log(userImg)
-            console.log(userCity)
-            console.log(userHobbies)
-            res.send({msgCode:200, msgCtx: 'User info is changed.'})
-          }
-          // 提示错误信息
-          else {
-            res.send({msgCode:304, msgCtx: err})
-          }
-        })
-      })
-    }
-    // 提示在请求中带参数
-    else {
-      res.send({msgCode:304, msgCtx: 'Please enter user info.'})
-    }
-  }
-  // 提示需要登陆才能操作
-  else {
-    res.send({msgCode:304, msgCtx: 'Please login.'})
-  }
-})
-
-/* 前端路由 */
-// 个人资料
-/**
- * {user, gender, img, city, hobbies[]}
+/*
+ * 前端路由
  */
 
-router.get('/user/:id', function(req, res, next) {
+// 用户资料页面
+router.get('/user/:id', (req, res, next) => {
+
+  // 已登录则继续
+  // 未登录则跳转到登陆页面
   if (req.session.loginUser) {
-    info.findOne({user: req.params.id}, function(err,val){
-      if (val === null) {
+
+    // 把查询到的用户信息渲染到页面
+    // 如果查询过程中出现错误或用户不存在，则发送对应信息到前端页面
+    info.findOne({user: req.params.id}, (err,val) => {
+      if (err) {
+        res.send(`<h1>err: ${err}</h1>`)
+      }
+      else if (val === null) {
         res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
       }
       else {
-        res.render('userInfo', {
+        const renderObj = {
           title: '我的资料',
           user: val.user,
           gender: val.gender,
           img: val.img,
           city: val.city,
           hobbies: val.hobbies
-        })
+        }
+        res.render('userInfo', renderObj)
       }
     })
   }
   else {
-    res.redirect('/')
+    res.redirect('/login')
   }
 })
 
-router.get('/user/:id/mod', function(req, res, next) {
-  if (req.session.loginUser !== req.params.id) {
-    return res.redirect('/')
-  }
-  else if (req.session.loginUser) {
-    info.findOne({user: req.params.id}, function(err,val){
+// 用户资料修改页面
+router.get('/user/:id/mod', (req, res, next) => {
+
+  // 如果用户已登录，并且登陆的用户和需要修改资料的用户一致则继续
+  // 否则跳转到登陆页面
+  if (req.session.loginUser && req.session.loginUser === req.params.id) {
+    if (req.session.loginUser !== req.params.id) {
+      res.redirect('/')
+    }
+    info.findOne({user: req.params.id}, (err,val) => {
       if (val === null) {
         res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
       }
       else {
-        res.render('userInfoMod', {
+        const renderObj = {
           title: '我的资料',
           user: val.user,
           gender: val.gender,
           img: val.img,
           city: val.city,
           hobbies: val.hobbies
-        })
+        }
+        res.render('userInfoMod', renderObj)
       }
     })
   }
   else {
-    res.redirect('/')
+    res.redirect('/login')
   }
 })
 
 // 登陆页面
-router.get('/login', function(req, res, next) {
+router.get('/login', (req, res, next) => {
+
+  // 如果已登录则跳转到首页
+  // 否则显示登陆页面
   if (req.session.loginUser) {
     res.redirect('/')
   }
@@ -376,13 +88,274 @@ router.get('/login', function(req, res, next) {
   }
 })
 
-// 忘记密码
-router.get('/forget', function(req, res, next) {
-  res.send('<h1>Page is building.</h1>')
+// 忘记密码页面
+router.get('/forget', (req, res, next) => res.send('<h1>Page is building.</h1>') )
+
+// 修改密码页面
+router.get('/changepass', (req, res, next) => res.send('<h1>Page is building.</h1>') )
+
+// PC端跳转提示页面
+router.get('/tip/pc', (req, res, next) => res.render('tipJumpToPc') )
+
+/*
+ * 后端API
+ */
+
+// 用户列表
+router.get('/api/user', (req, res, next) => {
+  user.find({}, (err, val) => {
+    if (val!==null) {
+      res.send({msgCode:200, msgCtx: val})
+    }
+    else {
+      res.send({msgCode:404, msgCtx: 'Has not any user.'})
+    }
+  })
 })
 
-router.get('/tip/pc', function(req, res, next) {
-  res.render('tipJumpToPc')
+// 用户注册
+router.post('/api/user/register', (req, res, next) => {
+
+  // 用户已登录或者请求头中为包含相关信息，则进行提示
+  if (req.session.loginUser) {
+    res.send({msgCode:304, msgCtx: 'You have logined.'})
+  }
+  else if (!req.body) {
+    res.send({msgCode:304, msgCtx: 'Please enter the entire form value.'});
+  }
+  else {
+    user.findOne({name: req.body.name}, (err, val) => {
+
+      // 用户已存在则返回已存在信息
+      // 数据库操作过程中发生错误则进行相关提示
+      // 否则继续执行
+      if (err) {
+        res.send({msgCode:500, msgCtx: err})
+      }
+      else if (val !== null) {
+        res.send({msgCode:304, msgCtx: 'User is exist.'})
+      }
+      else {
+        const defaultUserImg = 'https://randomuser.me/api/portraits/men/1.jpg'
+
+        // 设置别名
+        const name = req.body.name
+        const pass = req.body.pass
+
+        // 保存账号
+        userSave = new user({
+          name: name,
+          pass: pass
+        })
+        userSave.save()
+
+        // 保存资料
+        infoSava = new info({
+          user: name,
+          gender: 'secure',
+          img: defaultUserImg,
+          city: 'beijing',
+          hobbies: []
+        })
+        infoSava.save()
+
+        // 生成Session
+        req.session.regenerate((err) => {
+          if (err) {
+            res.send({msgCode:500, msgCtx: `Session regenerate err: ${err}`})
+          }
+          else {
+            req.session.loginUser = name;  // 保存Session
+            res.send({msgCode:200, msgCtx: 'Reg success & logined.'})
+          }
+        });
+      }
+    })
+  }
+});
+
+// 用户登陆
+router.post('/api/user/login', (req, res, next) => {
+
+  // 未登录则执行
+  // 已登录则提示已登陆
+  // POST中没有数据则进行提示
+
+  if (req.session.loginUser) {
+    res.send({msgCode:304, msgCtx: 'You have already logined.'})
+  }
+  else if (!req.body) {
+    res.send({msgCode:304, msgCtx: 'Please enter the entire form value.'});
+  }
+  else {
+
+    // 设置别名
+    const name = req.body.name
+    const pass = req.body.pass
+
+    // 查询数据库中发生错误或者用户名不存在、密码错误则进行相应的提示
+    user.findOne({name: name}, (err, val) => {
+      if (err) {
+        res.send({msgCode:500, msgCtx: err})
+      }
+      else if (val === null) {
+        res.send({msgCode:404, msgCtx: 'User is not exist.'})
+      }
+      else if(val.pass !== pass) {
+        res.send({msgCode:403, msgCtx: 'Pass is incorrect.'})
+      }
+      else {
+        req.session.regenerate((err) => {
+          if(err){
+            res.send({msgCode:500, msgCtx: `User login fail: ${err}`});
+          }
+          else {
+            req.session.loginUser = name;  // 保存Session
+            res.send({msgCode:200, msgCtx: 'Login success.'})
+          }
+        });
+      }
+    })
+  }
+});
+
+// 注销登陆
+router.post('/api/user/logout', (req, res, next) => {
+
+  // 已登录则执行
+  // 未登录则提示未登陆
+  if (req.session.loginUser) {
+    req.session.destroy((err) => {
+      if(err){
+        res.send({msgCode:500, msgCtx: `User logout fail: ${err}`});
+      }
+      else {
+        res.clearCookie('key');  // 清除Session
+        res.send({msgCode:200, msgCtx: 'User logout success.'});
+      }
+    });
+  }
+  else {
+    res.send({msgCode:304, msgCtx: 'You have not login.'})
+  }
+});
+
+// 用户资料
+router.get('/api/user/info/:id', (req, res, next) => {
+
+  // 获取用户资料
+  info.findOne({user: req.params.id}, (err,val) => {
+
+    if (err) {
+      res.send({msgCode:304, msgCtx: err})
+    }
+    else if (val === null) {
+      res.send({msgCode:404, msgCtx: 'User not exist.'})
+    }
+    else {
+      res.send({msgCode:200, msgCtx: val});
+    }
+  })
+});
+
+// 修改密码
+router.put('/api/user/pass', (req, res, next) => {
+
+  // 已登录则执行
+  // 未登录则提示请登陆
+  if (req.session.loginUser) {
+
+    // 带了请求参数则执行
+    // 未带参数则返回提示信息
+    if (req.body) {
+      const userName = req.session.loginUser
+      const passOld = req.body.passOld
+      const passNew = req.body.passNew
+
+      // 查询当前用户的账号
+      user.findOne({name: userName}, (err, val) => {
+
+        // 输入的旧密码等于原始密码则执行
+        // 不相等则返回提示信息
+        if (val.pass === passOld) {
+
+          // 更新成新密码
+          user.update({name: userName}, {$set: {pass: passNew}}, (err) => {
+            if (err) {
+              res.send({msgCode:304, msgCtx: err})
+            }
+            else {
+              res.send({msgCode:200, msgCtx: 'Pass is changed.'})
+            }
+          })
+        }
+        else {
+          res.send({msgCode:304, msgCtx: 'Old password is incorrect.'})
+        }
+      })
+    }
+    else {
+      res.send({msgCode:304, msgCtx: 'Please enter oldPass and newPass.'})
+    }
+  }
+  else {
+    res.send({msgCode:401, msgCtx: 'Please login.'})
+  }
+})
+
+// 修改个人信息
+router.put('/api/user/info', (req, res, next) => {
+
+  // 已登录则执行
+  // 未登录则提示请登陆
+  if (req.session.loginUser) {
+
+    // 带了请求参数则执行
+    if (req.body) {
+
+      // 用户资料别名
+      const userName = req.session.loginUser
+      const userGender = req.body.gender
+      const userImg = req.body.img
+      const userCity = req.body.city
+      const userHobbies = req.body.hobbies.split(',')
+
+      // 查询当前用户的账号
+      info.findOne({user: userName}, (err, val) => {
+
+        // 更新资料
+        info.update({user: userName}, {$set: {
+          gender: userGender,
+          img: userImg,
+          city: userCity,
+          hobbies: userHobbies
+        }}, (err) => {
+
+          // 提示错误信息
+          if (err) {
+            res.send({msgCode:304, msgCtx: err})
+          }
+
+          // 提示成功
+          else {
+            console.log(userGender)
+            console.log(userImg)
+            console.log(userCity)
+            console.log(userHobbies)
+            res.send({msgCode:200, msgCtx: 'User info is changed.'})
+          }
+        })
+      })
+    }
+
+    // 提示在请求中带参数
+    else {
+      res.send({msgCode:304, msgCtx: 'Please enter user info.'})
+    }
+  }
+  else {
+    res.send({msgCode:401, msgCtx: 'Please login.'})
+  }
 })
 
 module.exports = router

@@ -85,7 +85,7 @@ const event = function (chatData, chatMethod, port) {
       // 存储消息到数据库
       const messEntity = new mess({
         room: id,
-        user: lmsg.user,
+        user: msg.user,
         mess: msg.msg,
         time: time,
         img: msg.img

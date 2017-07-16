@@ -1,8 +1,8 @@
-var home = require('./home');
-var room = require('./room');
-var user = require('./user');
+const home = require('./home');
+const room = require('./room');
+const user = require('./user');
 
-var route = {
+const route = {
   home: home,
   room: room,
   user: user
