@@ -1,13 +1,13 @@
-var userScheme = require('./user.js')
-var infoScheme = require('./info.js')
-var roomScheme = require('./room.js')
-var messScheme = require('./mess.js')
+const userScheme = require('./user.js')
+const infoScheme = require('./info.js')
+const roomScheme = require('./room.js')
+const messScheme = require('./mess.js')
 
-var allScheme = {
-  userScheme: userScheme,
-  infoScheme: infoScheme,
-  roomScheme: roomScheme,
-  messScheme: messScheme
+const allScheme = {
+  userScheme,
+  infoScheme,
+  roomScheme,
+  messScheme
 }
 
 module.exports = allScheme

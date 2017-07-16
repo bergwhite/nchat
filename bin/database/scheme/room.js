@@ -1,6 +1,6 @@
-var Schema = require('./base')
+const Schema = require('./base')
 
-var roomScheme = new Schema({
+const roomScheme = new Schema({
   name: String,
   desc: String
 });

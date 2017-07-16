@@ -1,6 +1,6 @@
-var Schema = require('./base')
+const Schema = require('./base')
 
-var infoScheme = new Schema({
+const infoScheme = new Schema({
   user: String,
   gender: String,
   img: String,
