@@ -31,4 +31,4 @@
         // 捕获到错误则进行提示
       }).catch((err) => infoTip.innerText = err)
   }
-})()
+})();

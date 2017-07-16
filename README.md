@@ -1,4 +1,4 @@
-# NodeJS & SocketIO & Express & EJS & MongoDB & Gulp 打造多人在线聊天室
+# NodeJS & SocketIO & Express & EJS & MongoDB & ES6 & Gulp 打造多人在线聊天室
 
 > 项目背景
 
@@ -203,8 +203,6 @@ users
 
 > 安装
 
-
-
 启动项目以前，请确保已经安装mongodb，并在package.json中修改MongoDB的安装路径（--dbpath）。
 
 [Windows安装教程](https://jockchou.gitbooks.io/getting-started-with-mongodb/content/book/install.html) | Linux安装教程
@@ -216,6 +214,6 @@ cd nodejs-chat  // 进入目录
 npm install  // 安装依赖
 npm run build  // 构建代码
 npm run mongod // 开启MongoDB
-npm run start // 开启聊天室
+npm run start // 开启聊天室（在线部署）
 
 ```

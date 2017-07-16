@@ -15,4 +15,4 @@
     indexScriptTag.src = '/js/index.min.js'
     document.body.appendChild(indexScriptTag)
   }
-})()
+})();

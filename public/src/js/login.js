@@ -72,4 +72,4 @@
       }).catch((err) => userTip.innerHTML = err)
     }
   }
-})()
+})();

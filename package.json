@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "gulp build",
+    "dev": " gulp watch",
     "start": "node ./bin/www",
     "mongod": "start X:/MongoDB/bin/mongod --dbpath=X:\\MongoDB\\data\\db"
   },

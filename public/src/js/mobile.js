@@ -29,4 +29,4 @@
 
   window.onresize = () => compatibleDifferentDPI()
 
-})()
+})();
