@@ -30,7 +30,7 @@ gulp.task('compile-css', () => {
 
 // 编译JS
 gulp.task('compile-js', () => {
-  const JSTaskList = ['index', 'login', 'mobile', 'room', 'roomAdd', 'tipJumpToPc', 'userInfoMod']
+  const JSTaskList = ['index', 'login', 'mobile', 'room', 'roomAdd', 'tipJumpToPc', 'userInfoMod', 'roomMember']
   return JSTaskList.map((e) => {
     gulp.src(`${compileDir.js.src}${e}.js`)
       .pipe(babel({

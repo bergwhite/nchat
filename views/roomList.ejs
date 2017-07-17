@@ -5,6 +5,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
   <link rel='stylesheet' href='/css/index.min.css' />
+  <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
 </head>
 <body>
   <div class="room-list">
@@ -19,7 +20,7 @@
     </div>
     <ul class="box-list-wrap">
       <% for(let x = 0; x < room.length; x++){ %>
-      <li class="box-list">
+      <li class="box-list animated fadeInRight">
         <a href=<%= '/room/' + room[x].name %> class="box-link">
           <div>
             <p class="box-name"><%= room[x].name %></p>

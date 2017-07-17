@@ -12,6 +12,11 @@
   // 监听信息修改按钮的点击事件
   infoModBtn.addEventListener('click', () => submitModUserInfo(), false)
 
+  function getRandomImg(gender) {
+    const randomNumber = parseInt(Math.random() * 100)
+    return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
+  }
+
   // 提交修改后的用户信息的函数
   function submitModUserInfo() {
     axios.put('/api/user/info',{

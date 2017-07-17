@@ -34,8 +34,19 @@ const event = function (chatData, chatMethod, port) {
         // 如果查询到用户数据则保持图片Url到loginedUserImg变量里
         else if (val !== null) {
           loginedUserImg = val.img
+          
           // 发送请求当前房间号事件
           socket.emit('room id req', {name: loginedUserName, img: loginedUserImg})
+
+          // 添加用户到当前房间
+          chatMethod.addUserToTheRoom(currentRoomName, {
+            name: loginedUserName,
+            img: loginedUserImg
+          })
+
+          // 发送用于调试的状态信息
+          socket.emit('current status', chatData)
+          socket.emit('user list res', chatData.roomTest[currentRoomName])
           console.log('currentRoomName: ' + currentRoomName)
           console.log('findInfoFromDB / loginedUserName: ' + loginedUserName)
           console.log('findInfoFromDB / loginedUserImg: ' + loginedUserImg)
@@ -94,21 +105,17 @@ const event = function (chatData, chatMethod, port) {
       messEntity.save()
     })
 
-    // 发送用于调试的状态信息
-    socket.emit('current status', chatData)
-
     // 处理断开连接事件
     socket.on('disconnect', () => {
 
       // 重新获取房间名称和索引
       chatData.currentRoomName = chatMethod.getCurrentRoomID(socket)
       chatData.currentRoomIndex = chatMethod.getCurrentRoomIndex(chatData.currentRoomName)
+      chatMethod.delUserFromTheRoom(chatData.currentRoomName, loginedUserName)
       
       // 向当前房间广播用户退出信息
       socket.broadcast.to(chatData.currentRoomName).emit('user logout req', {
         currentUser: loginedUserName,
-        currentUserList: chatData.room[chatData.currentRoomIndex].user,
-        currentUserListImg: chatData.room[chatData.currentRoomIndex].img
       })
       console.log('disconnect / getCurrentRoomID / ' + chatData.currentRoomName)
       console.log('disconnect / getCurrentRoomIndex / ' + chatData.currentRoomIndex)

@@ -8,7 +8,7 @@
 
   // 为socket.io设置别名
   const socketHostName = document.location.hostname
-  const socketURI = 'http://' +  socketHostName + ':8087/'
+  const socketURI = `http://${socketHostName}:8087/`
   const socket = io(socketURI)
 
   // 把聊天室所有的操作封装在命名空间内
@@ -37,7 +37,7 @@
       sex: 'men'
     },
     robot: {
-      api: document.location.origin + '/api/robot/openapi/api',
+      api: `${document.location.origin}/api/robot/openapi/api`,
       key: '57a5b6849e2b4d47ae0badadf849c261',
       nick: '小美',
       img: 'https://randomuser.me/api/portraits/women/60.jpg'
@@ -47,38 +47,38 @@
   nChat.room = {
     // 初始化
     init () {
-      socket.on('room id req', function (msg) {
+      socket.on('room id req', (msg) => {
         nChat.data.user.name = msg.name
         nChat.data.user.img = msg.img
         // 把当前房间id返回给后台
         socket.emit('room id res', nChat.data.currentRoomName)
         // 为当前房间发送欢迎消息
-        nChat.method.insertToList(chatMsgList, 'li', nChat.data.welcomeInfo + nChat.data.currentRoomName)
+        nChat.method.insertToList(chatMsgList, 'li', `${nChat.data.welcomeInfo} ${nChat.data.currentRoomName}`)
         // 初始化输入框内容为空
         chatMsgSend.value = ''
         chatMsgSend.focus()
         // 初始化表情框为不可见
         chatMoreBox.style.visibility = 'hidden'
         // 监听输入框点击事件
-        chatMsgSend.onclick = function () {
+        chatMsgSend.onclick = () => {
           // 隐藏表情框
           chatMoreBox.style.visibility = 'hidden'
           nChat.data.messIsFoucs = true
         }
       })
 
-      socket.on('user login req', function (data) {
+      socket.on('user login req', (data) => {
         nChat.method.insertToList(chatMsgList, 'li', data)
       })
-      socket.on('user logout req', function (data) {
+      socket.on('user logout req', (data) => {
         console.log(data)
         // 发送用户离开通知
-        nChat.method.insertToList(chatMsgList, 'li', data.currentUser + ' 离开了房间')
+        nChat.method.insertToList(chatMsgList, 'li', `${data.currentUser} 离开了房间`)
         // 滚动到最新消息
         nChat.method.scrollToBottom()
       })
       // 读取当前房间的聊天信息
-      socket.on('mess show res', function (data) {
+      socket.on('mess show res', (data) => {
         console.log(data)
         const len = data.length
         for(let i = 0; i < len; i++){
@@ -90,16 +90,16 @@
     },
     // 渲染
     render () {
-      socket.on('current status', function (data) {
+      socket.on('current status', (data) => {
         console.log(data)
       })
       // 把最新的消息添加进DOM
-      socket.on('send message res', function (data) {
+      socket.on('send message res', (data) => {
         const time = nChat.method.parseTime(data.time)
         const leftBubble = nChat.method.renderBubbleMsg('left', data.user, time, nChat.method.parseMsgVal(data.msg), data.img)
         nChat.method.insertToList(chatMsgList, 'li', leftBubble)
         const len = data.length
-        console.log('total message / ' + len)
+        console.log(`total message / ${len}`)
         // 滚动到最新消息
         nChat.method.scrollToBottom()
       })
@@ -217,21 +217,19 @@
               key: nChat.data.robot.key,
               info: parsedMessage
             }
-          }).then(function(res) {
+          }).then((res) => {
             const tm = nChat.method.getTime(new Date())
             const leftBubble = nChat.method.renderBubbleMsg('left', nChat.data.robot.nick, tm,  res.data.text, nChat.data.robot.img)
             nChat.method.insertToList(chatMsgList, 'li', leftBubble)
             socket.emit('send message req', time, nChat.data.currentRoomName , {user: nChat.data.robot.nick,tm: time, msg: res.data.text, img: nChat.data.robot.img})
             nChat.method.scrollToBottom()
-          }).catch(function(err) {
-            console.log(err)
-          })
+          }).catch((err) => console.log(err))
         }
       }
     },
     // 获取在线列表
     getOnlineList (arr, type) {
-      arr.filter(function (val) {
+      arr.filter((val) => {
         if (val.name === type) {
           const newArr = val.user.concat()
           const newImg = val.img.concat()
@@ -245,12 +243,12 @@
     getRandomImg (gender) {
       // example / https://randomuser.me/api/portraits/men/100.jpg
       const randomNumber = parseInt(Math.random() * 100)
-      return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
+      return `https://randomuser.me/api/portraits/${gender}/${randomNumber}.jpg`
     },
     // 获取随机昵称
     getRandomNick (region,gender) {
       // example / https://uinames.com/api/?region=china&gender=female&amount=1
-      return 'https://uinames.com/api/?region=' + region + '&gender=' + gender + '&amount=1'
+      return `https://uinames.com/api/?region=${region}&gender=${gender}&amount=1`
     },
     // 渲染表情包
     getEmoji (node) {
@@ -264,7 +262,7 @@
     },
     // 用事件代理监听所有的标签添加事件
     initInsertEmoji () {
-      chatMoreBox.addEventListener('click', function (e) {
+      chatMoreBox.addEventListener('click', (e) => {
         // 如果当前值的目标标签的小写字母是select
         if (e.target.tagName.toLowerCase() === 'li') {
           // 则显示监听到的值
@@ -304,7 +302,7 @@
     }
   }
 
-  document.body.onload = function () {
+  document.body.onload = () => {
     // 页面加载完成后，初始化房间名字
     // 发送消息的时候会把当前房间的名字发送过去
     nChat.data.currentRoomName = nChat.method.getCurrentRoomName()
@@ -317,11 +315,7 @@
     console.log(nChat.method.getRandomImg('men'))
     // 测试随机昵称
     console.log(nChat.method.getRandomNick('china','male'))
-    chatMsgSendBtn.addEventListener('click', function() {
-      nChat.method.sendMessage()
-    }, false)
-    chatEmojiList.addEventListener('click', function() {
-      nChat.method.getEmoji()
-    }, false)
+    chatMsgSendBtn.addEventListener('click',() => nChat.method.sendMessage(), false)
+    chatEmojiList.addEventListener('click', () => nChat.method.getEmoji(), false)
   }
 })();

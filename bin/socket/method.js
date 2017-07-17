@@ -2,6 +2,55 @@ const io = require('./io.js').io
 const chatData = require('./data')
 const method = {
 
+  // 判断房间是否存在
+  isRoomExistReally (roomName) {
+    if (typeof chatData.roomTest[roomName] !== 'undefined') {
+      return true
+    }
+    return false
+  },
+
+  // 判断用户在指定房间的索引
+  getUserIndexOfRoom (roomName, userName) {
+    return chatData.roomTest[roomName].findIndex((e)=>e.name === userName)
+  },
+
+  // 添加房间
+  setRoomList (roomName) {
+    chatData.roomTest[roomName] = []
+  },
+
+  // 获取房间列表
+  getRoomList () {
+    return Object.keys(chatData.roomTest)
+  },
+
+  // 添加用户到指定房间
+  addUserToTheRoom (roomName, userInfo) {
+    if (!this.isRoomExistReally(roomName)) {
+      this.setRoomList(roomName)
+    }
+    if (this.getUserIndexOfRoom(roomName, userInfo.name) === -1) {  
+      chatData.roomTest[roomName].push(userInfo)
+    }
+  },
+
+  // 从指定房间删除用户
+  delUserFromTheRoom (roomName, userName) {
+    const userIndex = this.getUserIndexOfRoom(roomName, userName)
+    if( userIndex !== -1) {
+      chatData.roomTest[roomName].splice(userIndex ,1)
+    }
+  },
+
+  // 获取某个房间所有用户
+  getAllUsersFromOneRoom (roomName) {
+    if (this.isRoomExistReally(roomName)) {
+      return Object.keys(chatData.roomTest)
+    }
+    return []
+  },
+
   // 初始化房间索引
   getCurrentRoomIndex (roomID) {
     return chatData.room.findIndex((val,index) => {
