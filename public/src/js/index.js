@@ -47,8 +47,9 @@
   nChat.room = {
     // 初始化
     init () {
-      socket.on('room id req', function () {
-
+      socket.on('room id req', function (msg) {
+        nChat.data.user.name = msg.name
+        nChat.data.user.img = msg.img
         // 把当前房间id返回给后台
         socket.emit('room id res', nChat.data.currentRoomName)
         // 为当前房间发送欢迎消息

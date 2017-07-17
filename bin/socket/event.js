@@ -34,6 +34,8 @@ const event = function (chatData, chatMethod, port) {
         // 如果查询到用户数据则保持图片Url到loginedUserImg变量里
         else if (val !== null) {
           loginedUserImg = val.img
+          // 发送请求当前房间号事件
+          socket.emit('room id req', {name: loginedUserName, img: loginedUserImg})
           console.log('currentRoomName: ' + currentRoomName)
           console.log('findInfoFromDB / loginedUserName: ' + loginedUserName)
           console.log('findInfoFromDB / loginedUserImg: ' + loginedUserImg)
@@ -47,9 +49,6 @@ const event = function (chatData, chatMethod, port) {
 
     // 初始化房间
     chatData.currentRoomName = chatMethod.getCurrentRoomID(socket)
-
-    // 发送请求当前房间号事件
-    socket.emit('room id req')
 
     // 监听到相应后，存储当前的房间号
     socket.on('room id res', (currentRoomName) => {
