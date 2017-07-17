@@ -200,7 +200,7 @@
         // 添加内容到当前界面
         const rightBubble = nChat.method.renderBubbleMsg('right', name, '',  parsedMessage, nChat.data.user.img)
         // 添加内容到当前房间的其他用户界面
-        socket.emit('send message req', time, nChat.data.currentRoomName , {user: name,time: time, msg: parsedMessage, img: nChat.data.user.img})
+        socket.emit('send message req', time, nChat.data.currentRoomName , {time: time, msg: parsedMessage})
         nChat.method.insertToList(chatMsgList, 'li', rightBubble)
         // 发送完消息清空内容
         chatMsgSend.value = ''

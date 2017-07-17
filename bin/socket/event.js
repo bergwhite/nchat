@@ -78,6 +78,8 @@ const event = function (chatData, chatMethod, port) {
 
     // 处理发送消息事件
     socket.on('send message req', (time, id, msg) => {
+      const newUser = msg.user || loginedUserName
+      const newImg = msg.img || loginedUserImg
       msg.user = loginedUserName
       msg.img = loginedUserImg
       // 把消息广播到相同房间
@@ -85,10 +87,10 @@ const event = function (chatData, chatMethod, port) {
       // 存储消息到数据库
       const messEntity = new mess({
         room: id,
-        user: msg.user,
+        user: newUser,
         mess: msg.msg,
         time: time,
-        img: msg.img
+        img: newImg
       })
       messEntity.save()
     })
