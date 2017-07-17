@@ -1,31 +1,3 @@
-/* 清除样式 */
-* {
-  box-sizing: border-box;
-}
-body {
-  margin: 0;
-  background-color: #EFEFEF;
-  color: black;
-  overflow: hidden;
-  font-size: 16px;
-}
-ul,li,p,h1 {
-  padding: 0;
-  margin: 0;
-}
-li {
-  list-style-type: none;
-}
-a {
-  text-decoration: none;
-}
-
-
-// fork按钮
-
-@forkMeButtomWidth: 1.49rem;
-@forkMeButtomHeight: 1.49rem;
-
 // 消息气泡
 
 @chatBubbleHeadWidth: 0.4rem;
@@ -64,6 +36,7 @@ a {
   margin: auto;
   position: relative;
   font-size: @fontTitle;
+  line-height: @fontTitle;
 }
 .chat-ctx {
   height: @chatCtxHeight;
@@ -331,6 +304,7 @@ a {
 .bubble-head {
   width: @chatBubbleHeadWidth;
   height: 0.4rem;
+  margin-top: @fontTitle + 0.1;
 }
 /* 全局泡泡 内容 */
 .bubble-ctx {
@@ -347,6 +321,7 @@ a {
 .bubble-ctx-show {
   margin: 0;
   padding: 0.05rem 0.1rem;
+  font-size: @fontTitle - 0.1;
 }
 /* 全局泡泡 信息 */
 .bubble-info {
@@ -357,6 +332,11 @@ a {
 .bubble-left .bubble-info-user {
   float: left;
   color: #00bcd4;
+  padding-left: 0.05rem
+}
+.bubble-info-time {
+  font-size: @fontTitle / 8;
+  line-height: @fontTitle;
 }
 .bubble-left .bubble-info-time {
   float: right;
@@ -366,6 +346,7 @@ a {
   color: #ffc107;
   float: right;
   margin-right: 0;
+  padding-right: 0.05rem
 }
 .bubble-right .bubble-info-time {
   float: left;
