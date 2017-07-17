@@ -1,4 +1,4 @@
-# NodeJS & SocketIO & Express & EJS & MongoDB & ES6 & Gulp 打造多人在线聊天室
+# NodeJS & SocketIO & Express & EJS & MongoDB & ES6 & Less & Gulp 打造多人在线聊天室
 
 > 项目背景
 
