@@ -103,7 +103,7 @@ router.get('/tip/pc', (req, res, next) => res.render('tipJumpToPc') )
 
 // 用户列表
 router.get('/api/user', (req, res, next) => {
-  user.find({}, (err, val) => {
+  info.find({}, (err, val) => {
     if (val!==null) {
       res.send({msgCode:200, msgCtx: val})
     }
