@@ -13,7 +13,18 @@
       </span>
       <p><%= title %></p>
     </div>
-    <h1 class="link-tip">欢迎<a href=<%= '/user/' + user%>><%= user %></a>。首页加工中，请去<a href="/room">房间列表</a></h1>
+    <div>
+      <ul class="home-metro-box-wrap">
+        <li class="home-metro-box">用户</li>
+        <li>
+        <a class="home-metro-box" href="/room">房间</a>
+        </li>
+        <li>
+          <a class="home-metro-box" href=<%= '/user/' + user%>>个人</a>
+        </li>
+        <li class="home-metro-box">关于</li>
+      </ul>
+    </div>
     <script type="text/javascript" src="/js/mobile.min.js"></script>
     <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
   </body>
