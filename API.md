@@ -23,6 +23,7 @@ GET http://47.93.252.247:8086/api/user/info/admin
 
 > 返回结果
 
+```
 {
   "msgCode": 200,
   "msgCtx": {
