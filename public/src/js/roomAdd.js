@@ -1,10 +1,10 @@
 (() => {
   const roomName = document.getElementsByClassName('add-info-name')[0]
   const roomDesc = document.getElementsByClassName('add-info-desc')[0]
-  const infoSubmitBtn = document.getElementsByClassName('room-add-submit')[0]
+  const infoSubmitBtn = document.getElementsByClassName('top-next')[0]
   const infoSubmitTip = document.getElementsByClassName('add-info-tip')[0]
   const prevPageHost = document.location.origin
-  const prevPageHostUrl = prevPageHost + '/api/room/add'
+  const prevPageHostUrl = `${prevPageHost}/api/room/add`
 
   // 页面加载完成时，聚焦房间名字输入框
   document.body.onload = () => roomName.focus()

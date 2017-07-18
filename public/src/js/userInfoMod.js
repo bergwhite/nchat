@@ -4,13 +4,16 @@
   const userInfoCity = document.getElementsByClassName('info-city')[0]
   const userInfoHobbies = document.getElementsByClassName('info-hobbies')[0]
   const infoTip = document.getElementsByClassName('info-tip')[0]
-  const infoModBtn = document.getElementsByClassName('user-info-mod')[0]
+  const infoModBtn = document.getElementsByClassName('top-next')[0]
   
   // 页面加载完成的时候，聚焦用户性别输入框
   document.body.onload = () => userInfoGender.focus();
 
   // 监听信息修改按钮的点击事件
-  infoModBtn.addEventListener('click', () => submitModUserInfo(), false)
+  infoModBtn.addEventListener('click', (e) => {
+    e.preventDefault()
+    submitModUserInfo()
+  }, false)
 
   function getRandomImg(gender) {
     const randomNumber = parseInt(Math.random() * 100)

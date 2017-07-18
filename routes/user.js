@@ -1,10 +1,8 @@
+const {express, router} = require('./basic');
+const {info, user} = require('../bin/database/model')
 const bodyParser = require('body-parser')
-const basic = require('./basic');
-const express = basic.express;
-const router = basic.router;
-const databaseModel = require('../bin/database/model')
-const info = databaseModel.info;
-const user = databaseModel.user;
+
+const siteName = 'NChat'
 
 /*
  * 前端路由
@@ -12,6 +10,17 @@ const user = databaseModel.user;
 
 // 用户资料页面
 router.get('/user/:id', (req, res, next) => {
+
+  const infoTopTitle = `${req.params.id}的主页`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+  const prevButton = {
+    name: '<',
+    href: '/',
+  }
+  const nextButton = {
+    name: '?',
+    href: `/user/${req.session.loginUser}/mod`,
+  }
 
   // 已登录则继续
   // 未登录则跳转到登陆页面
@@ -28,12 +37,15 @@ router.get('/user/:id', (req, res, next) => {
       }
       else {
         const renderObj = {
-          title: '我的资料',
+          headTitle,
+          infoTopTitle,
+          prevButton,
+          nextButton,
           user: val.user,
           gender: val.gender,
           img: val.img,
           city: val.city,
-          hobbies: val.hobbies
+          hobbies: val.hobbies,
         }
         res.render('userInfo', renderObj)
       }
@@ -47,6 +59,17 @@ router.get('/user/:id', (req, res, next) => {
 // 用户资料修改页面
 router.get('/user/:id/mod', (req, res, next) => {
 
+  const infoTopTitle = `修改资料`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+  const prevButton = {
+    name: '<',
+    href: `/user/${req.session.loginUser}`,
+  }
+  const nextButton = {
+    name: '√',
+    href: '',
+  }
+
   // 如果用户已登录，并且登陆的用户和需要修改资料的用户一致则继续
   // 否则跳转到登陆页面
   if (req.session.loginUser && req.session.loginUser === req.params.id) {
@@ -59,12 +82,15 @@ router.get('/user/:id/mod', (req, res, next) => {
       }
       else {
         const renderObj = {
-          title: '我的资料',
+          headTitle,
+          infoTopTitle,
+          prevButton,
+          nextButton,
           user: val.user,
           gender: val.gender,
           img: val.img,
           city: val.city,
-          hobbies: val.hobbies
+          hobbies: val.hobbies,
         }
         res.render('userInfoMod', renderObj)
       }
@@ -78,13 +104,16 @@ router.get('/user/:id/mod', (req, res, next) => {
 // 登陆页面
 router.get('/login', (req, res, next) => {
 
+  const infoTopTitle = `登陆`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+
   // 如果已登录则跳转到首页
   // 否则显示登陆页面
   if (req.session.loginUser) {
     res.redirect('/')
   }
   else {
-    res.render('userLogin')
+    res.render('userLogin', {headTitle,})
   }
 })
 
@@ -95,7 +124,16 @@ router.get('/forget', (req, res, next) => res.send('<h1>Page is building.</h1>')
 router.get('/changepass', (req, res, next) => res.send('<h1>Page is building.</h1>') )
 
 // PC端跳转提示页面
-router.get('/tip/pc', (req, res, next) => res.render('tipJumpToPc') )
+router.get('/tip/pc', (req, res, next) => {
+
+  const infoTopTitle = `跳转提示`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+
+  res.render('tipJumpToPc', {
+    infoTopTitle,
+    headTitle,
+  })
+})
 
 /*
  * 后端API
@@ -105,10 +143,16 @@ router.get('/tip/pc', (req, res, next) => res.render('tipJumpToPc') )
 router.get('/api/user', (req, res, next) => {
   info.find({}, (err, val) => {
     if (val!==null) {
-      res.send({msgCode:200, msgCtx: val})
+      res.send({
+        msgCode:200,
+        msgCtx: val,
+      })
     }
     else {
-      res.send({msgCode:404, msgCtx: 'Has not any user.'})
+      res.send({
+        msgCode:404,
+        msgCtx: 'Has not any user.',
+      })
     }
   })
 })
@@ -118,22 +162,36 @@ router.post('/api/user/register', (req, res, next) => {
 
   // 用户已登录或者请求头中为包含相关信息，则进行提示
   if (req.session.loginUser) {
-    res.send({msgCode:304, msgCtx: 'You have logined.'})
+    res.send({
+      msgCode:304,
+      msgCtx: 'You have logined.',
+    })
   }
   else if (!req.body) {
-    res.send({msgCode:304, msgCtx: 'Please enter the entire form value.'});
+    res.send({
+      msgCode:304,
+      msgCtx: 'Please enter the entire form value.',
+    });
   }
   else {
-    user.findOne({name: req.body.name}, (err, val) => {
+    user.findOne({
+      name: req.body.name,
+    }, (err, val) => {
 
       // 用户已存在则返回已存在信息
       // 数据库操作过程中发生错误则进行相关提示
       // 否则继续执行
       if (err) {
-        res.send({msgCode:500, msgCtx: err})
+        res.send({
+          msgCode:500,
+          msgCtx: err,
+        })
       }
       else if (val !== null) {
-        res.send({msgCode:304, msgCtx: 'User is exist.'})
+        res.send({
+          msgCode:304,
+          msgCtx: 'User is exist.',
+        })
       }
       else {
         const defaultUserImg = 'https://randomuser.me/api/portraits/men/1.jpg'
@@ -145,7 +203,7 @@ router.post('/api/user/register', (req, res, next) => {
         // 保存账号
         userSave = new user({
           name: name,
-          pass: pass
+          pass: pass,
         })
         userSave.save()
 
@@ -155,18 +213,24 @@ router.post('/api/user/register', (req, res, next) => {
           gender: 'secure',
           img: defaultUserImg,
           city: 'beijing',
-          hobbies: []
+          hobbies: [],
         })
         infoSava.save()
 
         // 生成Session
         req.session.regenerate((err) => {
           if (err) {
-            res.send({msgCode:500, msgCtx: `Session regenerate err: ${err}`})
+            res.send({
+              msgCode:500,
+              msgCtx: `Session regenerate err: ${err}`,
+            })
           }
           else {
             req.session.loginUser = name;  // 保存Session
-            res.send({msgCode:200, msgCtx: 'Reg success & logined.'})
+            res.send({
+              msgCode:200,
+              msgCtx: 'Reg success & logined.',
+            })
           }
         });
       }
@@ -182,10 +246,16 @@ router.post('/api/user/login', (req, res, next) => {
   // POST中没有数据则进行提示
 
   if (req.session.loginUser) {
-    res.send({msgCode:304, msgCtx: 'You have already logined.'})
+    res.send({
+      msgCode:304,
+      msgCtx: 'You have already logined.',
+    })
   }
   else if (!req.body) {
-    res.send({msgCode:304, msgCtx: 'Please enter the entire form value.'});
+    res.send({
+      msgCode:304,
+      msgCtx: 'Please enter the entire form value.',
+    });
   }
   else {
 
@@ -194,24 +264,41 @@ router.post('/api/user/login', (req, res, next) => {
     const pass = req.body.pass
 
     // 查询数据库中发生错误或者用户名不存在、密码错误则进行相应的提示
-    user.findOne({name: name}, (err, val) => {
+    user.findOne({
+      name: name,
+    }, (err, val) => {
       if (err) {
-        res.send({msgCode:500, msgCtx: err})
+        res.send({
+          msgCode:500,
+          msgCtx: err,
+        })
       }
       else if (val === null) {
-        res.send({msgCode:404, msgCtx: 'User is not exist.'})
+        res.send({
+          msgCode:404,
+          msgCtx: 'User is not exist.',
+        })
       }
       else if(val.pass !== pass) {
-        res.send({msgCode:403, msgCtx: 'Pass is incorrect.'})
+        res.send({
+          msgCode:403,
+          msgCtx: 'Pass is incorrect.',
+        })
       }
       else {
         req.session.regenerate((err) => {
           if(err){
-            res.send({msgCode:500, msgCtx: `User login fail: ${err}`});
+            res.send({
+              msgCode:500,
+              msgCtx: `User login fail: ${err}`,
+            });
           }
           else {
             req.session.loginUser = name;  // 保存Session
-            res.send({msgCode:200, msgCtx: 'Login success.'})
+            res.send({
+              msgCode:200,
+              msgCtx: 'Login success.',
+            })
           }
         });
       }
@@ -227,16 +314,25 @@ router.post('/api/user/logout', (req, res, next) => {
   if (req.session.loginUser) {
     req.session.destroy((err) => {
       if(err){
-        res.send({msgCode:500, msgCtx: `User logout fail: ${err}`});
+        res.send({
+          msgCode:500,
+          msgCtx: `User logout fail: ${err}`,
+        });
       }
       else {
         res.clearCookie('key');  // 清除Session
-        res.send({msgCode:200, msgCtx: 'User logout success.'});
+        res.send({
+          msgCode:200,
+          msgCtx: 'User logout success.',
+        });
       }
     });
   }
   else {
-    res.send({msgCode:304, msgCtx: 'You have not login.'})
+    res.send({
+      msgCode:304,
+      msgCtx: 'You have not login.',
+    })
   }
 });
 
@@ -244,16 +340,26 @@ router.post('/api/user/logout', (req, res, next) => {
 router.get('/api/user/info/:id', (req, res, next) => {
 
   // 获取用户资料
-  info.findOne({user: req.params.id}, (err,val) => {
-
+  info.findOne({
+    user: req.params.id,
+  }, (err,val) => {
     if (err) {
-      res.send({msgCode:304, msgCtx: err})
+      res.send({
+        msgCode:304,
+        msgCtx: err,
+      })
     }
     else if (val === null) {
-      res.send({msgCode:404, msgCtx: 'User not exist.'})
+      res.send({
+        msgCode:404,
+        msgCtx: 'User not exist.',
+      })
     }
     else {
-      res.send({msgCode:200, msgCtx: val});
+      res.send({
+        msgCode:200,
+        msgCtx: val,
+      });
     }
   })
 });
@@ -273,33 +379,56 @@ router.put('/api/user/pass', (req, res, next) => {
       const passNew = req.body.passNew
 
       // 查询当前用户的账号
-      user.findOne({name: userName}, (err, val) => {
+      user.findOne({
+        name: userName,
+      }, (err, val) => {
 
         // 输入的旧密码等于原始密码则执行
         // 不相等则返回提示信息
         if (val.pass === passOld) {
 
           // 更新成新密码
-          user.update({name: userName}, {$set: {pass: passNew}}, (err) => {
+          user.update({
+            name: userName,
+          }, {
+            $set: {
+              pass: passNew,
+            },
+          }, (err) => {
             if (err) {
-              res.send({msgCode:304, msgCtx: err})
+              res.send({
+                msgCode:304,
+                msgCtx: err,
+              })
             }
             else {
-              res.send({msgCode:200, msgCtx: 'Pass is changed.'})
+              res.send({
+                msgCode:200,
+                msgCtx: 'Pass is changed.',
+              })
             }
           })
         }
         else {
-          res.send({msgCode:304, msgCtx: 'Old password is incorrect.'})
+          res.send({
+            msgCode:304,
+            msgCtx: 'Old password is incorrect.',
+          })
         }
       })
     }
     else {
-      res.send({msgCode:304, msgCtx: 'Please enter oldPass and newPass.'})
+      res.send({
+        msgCode:304,
+        msgCtx: 'Please enter oldPass and newPass.',
+      })
     }
   }
   else {
-    res.send({msgCode:401, msgCtx: 'Please login.'})
+    res.send({
+      msgCode:401,
+      msgCtx: 'Please login.',
+    })
   }
 })
 
@@ -321,19 +450,26 @@ router.put('/api/user/info', (req, res, next) => {
       const userHobbies = req.body.hobbies.split(',')
 
       // 查询当前用户的账号
-      info.findOne({user: userName}, (err, val) => {
+      info.findOne({
+        user: userName,
+      }, (err, val) => {
 
         // 更新资料
-        info.update({user: userName}, {$set: {
+        info.update({
+          user: userName,
+        }, {$set: {
           gender: userGender,
           img: userImg,
           city: userCity,
-          hobbies: userHobbies
+          hobbies: userHobbies,
         }}, (err) => {
 
           // 提示错误信息
           if (err) {
-            res.send({msgCode:304, msgCtx: err})
+            res.send({
+              msgCode:304,
+              msgCtx: err,
+            })
           }
 
           // 提示成功
@@ -342,7 +478,10 @@ router.put('/api/user/info', (req, res, next) => {
             console.log(userImg)
             console.log(userCity)
             console.log(userHobbies)
-            res.send({msgCode:200, msgCtx: 'User info is changed.'})
+            res.send({
+              msgCode:200,
+              msgCtx: 'User info is changed.',
+            })
           }
         })
       })
@@ -350,11 +489,17 @@ router.put('/api/user/info', (req, res, next) => {
 
     // 提示在请求中带参数
     else {
-      res.send({msgCode:304, msgCtx: 'Please enter user info.'})
+      res.send({
+        msgCode:304,
+        msgCtx: 'Please enter user info.',
+      })
     }
   }
   else {
-    res.send({msgCode:401, msgCtx: 'Please login.'})
+    res.send({
+      msgCode:401,
+      msgCtx: 'Please login.',
+    })
   }
 })
 

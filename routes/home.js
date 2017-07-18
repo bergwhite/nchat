@@ -1,14 +1,23 @@
-const basic = require('./basic');
-const express = basic.express;
-const router = basic.router;
-const databaseModel = require('../bin/database/model')
-const room = databaseModel.room;
+const {express, router} = require('./basic');
+const {room} = require('../bin/database/model')
 
 router.get('/', (req, res, next) => {
 
+  const infoTopTitle = 'NChat'
+  const headTitle = infoTopTitle
+  const nextButton = {
+    name: '✿',
+    href: `/user/${req.session.loginUser}`
+  }
+
   // 已登陆则显示首页
   if (req.session.loginUser) {
-    res.render('home', { title: 'NodeJS Chat', user: req.session.loginUser});
+    res.render('home', {
+      infoTopTitle,
+       headTitle,
+       nextButton,
+       user: req.session.loginUser,
+    });
   }
   
   // 否则跳转登陆页面
