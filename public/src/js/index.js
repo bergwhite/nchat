@@ -5,6 +5,9 @@
   const infoTab = document.getElementsByClassName('info-tab')[0]
   const chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
   const chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
+  const topTitleDOM = document.getElementsByClassName('top-title')[0]
+  const chatDOM = document.getElementsByClassName('chat')[0]
+  const chatCtrl = document.getElementsByClassName('chat-ctrl')[0]
 
   // 为socket.io设置别名
   const socketHostName = document.location.hostname
@@ -303,6 +306,15 @@
   }
 
   document.body.onload = () => {
+
+    // 通过计算获取聊天框的合适高度
+
+    const documentHeight = document.documentElement.clientHeight
+    const topTitleDOMHeight = topTitleDOM.offsetHeight
+    const chatCtrlHeight = chatCtrl.offsetHeight
+    const chatDOMHeight = documentHeight - topTitleDOMHeight - chatCtrlHeight
+    chatDOM.style.height = `${chatDOMHeight}px`
+
     // 页面加载完成后，初始化房间名字
     // 发送消息的时候会把当前房间的名字发送过去
     nChat.data.currentRoomName = nChat.method.getCurrentRoomName()
