@@ -37,7 +37,6 @@
 }
 .chat {
   width: @baseWidth;
-  height: @chatMainHeight;
   margin: auto;
   position: relative;
   font-size: @fontTitle;
@@ -140,10 +139,13 @@
 .chat-ctx-wrap {
   overflow: hidden;
 }
-.chat-more-wrap {
+.chat-ctrl {
   position: fixed;
   left: 0;
-  bottom: @chatSendBoxHeight;
+  bottom: 0;
+  height: @chatToolWidth + @chatSendBoxHeight;
+}
+.chat-more {
   height: @chatToolWidth;
   line-height: @chatToolHeight;
   border-bottom: 0.01rem solid white;
@@ -172,11 +174,6 @@
 }
 .chat-msg-list > li {
   word-break:break-all;
-}
-.chat-send {
-  position: fixed;
-  left: 0;
-  bottom: 0;
 }
 .chat-msg-send {
   overflow-y: auto;
