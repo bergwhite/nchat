@@ -17,11 +17,16 @@
 
 @chatSendButtonWidth: 1rem;
 
+// 布局宽度
+
+@chatMoreBoxWidth: 5.6rem;
+@chatMoreBoxChildWidth: @chatMoreBoxWidth / 14;
+
 // 布局高度
 
 @chatNameHeight: 1rem;
 @chatMainHeight: 12.34rem;
-@chatCtxHeight: 11.34rem;
+@chatCtxHeight: 11.14rem;
 
 .chat-name {
   height: @chatNameHeight;
@@ -154,14 +159,14 @@
   position: absolute;
   left: 0;
   top: -0.8rem;
-  width: 2.8rem;
+  width: @chatMoreBoxWidth;
   height: 0.8rem;
   text-align: left;
   visibility: hidden;
   background-color: #EFEFEF;
 }
 .chat-more-box > li {
-  width: 0.2rem;
+  width: @chatMoreBoxChildWidth;
   text-align: center;
   float: left;
 }
