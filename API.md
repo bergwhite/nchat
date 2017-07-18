@@ -7,11 +7,21 @@
 * 在线：http://47.93.252.247:8086
 * 本地：http://localhost:8086
 
-> API 示例
+### API 示例
+
+> 请求地址
 
 ```
 
 GET http://47.93.252.247:8086/api/user/info/admin
+
+```
+
+> 请求参数
+
+无
+
+> 返回结果
 
 {
   "msgCode": 200,
@@ -30,7 +40,7 @@ GET http://47.93.252.247:8086/api/user/info/admin
 
 ```
 
-> msgCode 通用定义
+### msgCode 通用定义
 
 状态码 | 说明
 ------|------------
@@ -44,21 +54,25 @@ GET http://47.93.252.247:8086/api/user/info/admin
 
 ## 用户 API
 
-> 用户注册（非登陆状态才能操作）
+### 用户注册（非登陆状态才能操作）
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+POST | /api/user/register
+
+> 请求参数
+
+参数 | 类型 | 必须 | 描述
+-----|------|------|-------
+name | String | √ | 昵称
+pass | String | √ | 密码
+
+> 返回结果
 
 ```
 
-POST   /api/user/register
-
-当前为登陆状态则不可注册
-------------------------
-{
-  "msgCode": 304,
-  "msgCtx": "You have logined."
-}
-
-注册成功时的提示
-----------------
 {
   "msgCode": 200,
   "msgCtx": "Reg success & logined."
@@ -66,39 +80,64 @@ POST   /api/user/register
 
 ```
 
+> 返回结果（失败）
+
+```
+
+你当前已经登录
+------------------------
+{
+  "msgCode": 304,
+  "msgCtx": "You have logined."
+}
+
+```
+
+### 用户登陆（非登陆状态才能操作）
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+POST | /api/user/login
+
+> 请求参数
+
 参数 | 类型 | 必须 | 描述
 -----|------|------|-------
 name | String | √ | 昵称
 pass | String | √ | 密码
 
-> 用户登陆（非登陆状态才能操作）
+> 返回结果
 
 ```
 
-POST   /api/user/login
+{
+  "msgCode": 200,
+  "msgCtx": "Login success."
+}
 
-用户名不存在则进行提示
+```
+
+> 返回结果（失败）
+
+```
+
+用户名不存在
 ----------------------
 {
   "msgCode": 404,
   "msgCtx": "User is not exist."
 }
 
-用户名存在但密码错误则进行提示
+用户名存在但密码错误
 ------------------------------
 {
   "msgCode": 403,
   "msgCtx": "Pass is incorrect."
 }
 
-登陆成功时的提示
------------------
-{
-  "msgCode": 200,
-  "msgCtx": "Login success."
-}
-
-当前已登录则不可继续登陆
+当前已登录
 ------------------------
 {
   "msgCode": 304,
@@ -107,26 +146,22 @@ POST   /api/user/login
 
 ```
 
-参数 | 类型 | 必须 | 描述
------|------|------|-------
-name | String | √ | 昵称
-pass | String | √ | 密码
+### 注销登陆（登陆状态才能操作）
 
-> 注销登陆（登陆状态才能操作）
+> 请求地址
+
+方法 | 地址
+-----|-----
+POST | /api/user/logout
+
+> 请求参数
+
+无
+
+> 返回结果
 
 ```
 
-POST   /api/user/logout
-
-未登录则提示未登录
-------------------
-{
-  "msgCode": 304,
-  "msgCtx": "You have not login."
-}
-
-已登录则注销
-------------
 {
   "msgCode": 200,
   "msgCtx": "User logout success."
@@ -134,11 +169,36 @@ POST   /api/user/logout
 
 ```
 
-> 用户资料
+> 返回结果（失败）
 
 ```
 
-GET /api/user/info/admin
+当前未登录，不需要注销
+------------------
+{
+  "msgCode": 304,
+  "msgCtx": "You have not login."
+}
+
+------------
+
+```
+
+### 用户资料
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+GET | /api/user/info/admin
+
+> 请求参数
+
+无
+
+> 返回结果
+
+```
 
 {
   "msgCode": 200,
@@ -155,15 +215,37 @@ GET /api/user/info/admin
   }
 }
 
-用户列表   √      GET    /api/user            无      空
+```
+
+> 返回结果（失败）
 
 ```
 
-> 用户列表
+用户不存在
+-----------
+{
+  "msgCode": 404,
+  "msgCtx": "User not exist."
+}
 
 ```
 
-GET /api/user
+### 用户列表
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+GET | /api/user
+
+> 请求参数
+
+无
+
+> 返回结果
+
+
+```
 
 {
   "msgCode": 200,
@@ -185,28 +267,25 @@ GET /api/user
 
 ```
 
-> 修改密码（登陆状态才能操作）
+### 修改密码（登陆状态才能操作）
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+PUT | /api/user/pass
+
+> 请求参数
+
+参数 | 类型 | 必须 | 描述
+-----|------|------|-------
+passOld | String | √ | 旧密码
+passNew | String | √ | 新密码
+
+> 返回结果
 
 ```
 
-PUT    /api/user/pass
-
-未登录则进行提示
------------------
-{
-  "msgCode": 401,
-  "msgCtx": "Please login."
-}
-
-旧密码错误则进行提示
---------------------
-{
-  "msgCode": 304,
-  "msgCtx": "Old password is incorrect."
-}
-
-旧密码输入正确则修改密码
-------------------------
 {
   "msgCode": 200,
   "msgCtx": "Pass is changed."
@@ -214,32 +293,35 @@ PUT    /api/user/pass
 
 ```
 
-参数 | 类型 | 必须 | 描述
------|------|------|-------
-passOld | String | √ | 旧密码
-passNew | String | √ | 新密码
-
-> 修改资料（登陆状态才能操作）
+> 返回结果（失败）
 
 ```
 
-PUT    /api/user/info
-
-未登录则进行提示
------------------
+未登录无权限访问当前API
+-----------------------
 {
   "msgCode": 401,
   "msgCtx": "Please login."
 }
 
-修改成功则进行提示
-------------------
+旧密码错误
+--------------------
 {
-  "msgCode": 200,
-  "msgCtx": "User info is changed."
+  "msgCode": 304,
+  "msgCtx": "Old password is incorrect."
 }
 
 ```
+
+### 修改资料（登陆状态才能操作）
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+PUT | /api/user/info
+
+> 请求参数
 
 参数 | 类型 | 必须 | 描述
 -----|------|------|-------
@@ -248,23 +330,51 @@ img | String | √ | 头像
 city | String | √ | 城市
 hobbies | String | √ | 爱好
 
-## 房间 API
-
-> 添加房间（登陆状态才能操作）
+> 返回结果
 
 ```
 
-POST  /api/room/add
-
-未登录则进行提示
-----------------
 {
-  "msgCode": 401,
-  "msgCtx": "You cannot access the api. Please login."
+  "msgCode": 200,
+  "msgCtx": "User info is changed."
 }
 
-添加成功则进行提示
-------------------
+```
+
+> 返回结果（失败）
+
+```
+
+未登录无权限访问当前API
+-----------------------
+{
+  "msgCode": 401,
+  "msgCtx": "Please login."
+}
+
+```
+
+## 房间 API
+
+### 添加房间（登陆状态才能操作）
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+POST | /api/room/add
+
+> 请求参数
+
+参数 | 类型 | 必须 | 描述
+-----|------|------|-------
+name | String | √ | 房间名
+desc | String | √ | 房间描述
+
+> 返回结果
+
+```
+
 {
   "msgCode": 200,
   "msgCtx": "Room add success."
@@ -272,16 +382,34 @@ POST  /api/room/add
 
 ```
 
-参数 | 类型 | 必须 | 描述
------|------|------|-------
-name | String | √ | 房间名
-desc | String | √ | 房间描述
-
-> 房间描述
+> 返回结果（失败）
 
 ```
 
-GET   /api/room/info/:id
+未登录无权限访问当前API
+-----------------------
+{
+  "msgCode": 401,
+  "msgCtx": "You cannot access the api. Please login."
+}
+
+```
+
+### 房间描述
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+GET | /api/room/info/:id
+
+> 请求参数
+
+无
+
+> 返回结果
+
+```
 
 {
   "msgCode": 200,
@@ -295,12 +423,32 @@ GET   /api/room/info/:id
 
 ```
 
-> 聊天记录
+> 返回结果（失败）
 
 ```
 
-GET   /api/room/mess/:id
+{
+  "msgCode": 404,
+  "msgCtx": "Room is not exist."
+}
 
+```
+
+### 聊天记录
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+GET | /api/room/mess/:id
+
+> 请求参数
+
+无
+
+> 请求结果
+
+```
 {
   "msgCode": 200,
   "msgCtx": [
@@ -327,11 +475,34 @@ GET   /api/room/mess/:id
 
 ```
 
-> 房间列表
+> 请求结果（失败）
 
 ```
 
-GET   /api/room
+当前房间不存在
+---------
+{
+  "msgCode": 404,
+  "msgCtx": "This room is not exist."
+}
+
+```
+
+### 房间列表
+
+> 请求地址
+
+方法 | 地址
+-----|-----
+GET | /api/room
+
+> 请求参数
+
+无
+
+> 返回结果
+
+```
 
 {
   "msgCode": 200,
