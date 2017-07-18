@@ -6,7 +6,7 @@
   const chatMsgList = document.getElementsByClassName('chat-msg-list')[0]
   const chatMoreBox = document.getElementsByClassName('chat-more-box')[0]
   const topTitleDOM = document.getElementsByClassName('top-title')[0]
-  const chatDOM = document.getElementsByClassName('chat')[0]
+  const chatDOM = document.getElementsByClassName('chat-ctx')[0]
   const chatCtrl = document.getElementsByClassName('chat-ctrl')[0]
 
   // 为socket.io设置别名
