@@ -305,15 +305,22 @@
     }
   }
 
-  document.body.onload = () => {
-
-    // 通过计算获取聊天框的合适高度
-
+  // 通过计算获取聊天框的合适高度
+  function changeChatHeight() {
     const documentHeight = document.documentElement.clientHeight
     const topTitleDOMHeight = topTitleDOM.offsetHeight
     const chatCtrlHeight = chatCtrl.offsetHeight
     const chatDOMHeight = documentHeight - topTitleDOMHeight - chatCtrlHeight
     chatDOM.style.height = `${chatDOMHeight}px`
+  }
+
+  // 视窗改变时重新计算高度
+  window.onresize = () => changeChatHeight()
+
+  document.body.onload = () => {
+
+    // 页面加载完成后改变高度
+    changeChatHeight()
 
     // 页面加载完成后，初始化房间名字
     // 发送消息的时候会把当前房间的名字发送过去
