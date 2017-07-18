@@ -315,7 +315,7 @@
   }
 
   // 视窗改变时重新计算高度
-  window.onresize = () => changeChatHeight()
+  window.addEventListener('resize', () => changeChatHeight(), false)
 
   document.body.onload = () => {
 
