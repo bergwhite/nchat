@@ -1,35 +1,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= title %> - NodeJS Chat</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-  <script type="text/javascript" src="/js/mobile.min.js"></script>
-  <link rel='stylesheet' href='/css/index.min.css' />
-  <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
+  <%- include common/head.ejs %>
 </head>
 <body>
   <div class="room-add">
-    <div class="top-title">
-      <span>
-        <a class="top-prev" href="/room">&lt;</a>
-      </span>
-      <span>
-        <a class="top-next room-add-submit">√</a>
-      </span>
-      <p><%= title %></p>
-    </div>
-    <div class="add-info animated fadeIn">
-      <div>
-        <input type="text" class="input-default add-info-name" placeholder="房间名字">
-      </div>
-      <div>
-        <input type="text" class="input-default add-info-desc" placeholder="房间简介">
-      </div>
-      <p class="add-info-tip"></p>
-    </div>
+    <%- include common/infoTop.ejs %>
+    <%- include room/roomAdd.ejs %>
   </div>
   <script type="text/javascript" src="/js/roomAdd.min.js"></script>
-  <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+  <%- include common/footerScriptAxios.ejs %>
 </body>
 </html>

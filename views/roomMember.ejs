@@ -1,23 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %> - NodeJS Chat</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-    <script type="text/javascript" src="/js/mobile.min.js"></script>
-    <link rel='stylesheet' href='/css/index.min.css' />
-    <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
+    <%- include common/head.ejs %>
   </head>
   <body>
-    <div class="chat-name top-title">
-      <span>
-        <a class="top-prev" href=<%= '/room/' + room %>>&lt;</a>
-      </span>
-      <!-- <span>
-        <a class="top-next" href="/rooms/member">&amp;</a>
-      </span> -->
-      <p><%= title %></p>
-    </div>
+    <%- include common/infoTop.ejs %>
     <h1>页面建造中</h1>
     <script type="text/javascript" src="/js/roomMember.min.js"></script>
   </body>

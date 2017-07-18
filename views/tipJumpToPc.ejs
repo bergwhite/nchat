@@ -1,16 +1,18 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>跳转到PC - NodeJS Chat</title>
+  <title><%= headTitle %></title>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-  <script type="text/javascript" src="/js/tipJumpToPc.min.js"></script>
+  <link rel='stylesheet' href='/css/index.min.css' />
   <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
 </head>
 <body>
+  <%- include common/infoTop.ejs %>
   <div class="animated fadeIn">
     <h1>当前项目不支持PC访问，PC端请访问<a class="pc-editon" href="#">PC版本</a>。</h1>
     <h2>开发者请打开浏览器的手机视图，并访问<a href="/">首页</a>，进入移动端访问。</h2>
   </div>
+  <script type="text/javascript" src="/js/tipJumpToPc.min.js"></script>
 </body>
 </html>

@@ -1,47 +1,12 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %> - NodeJS Chat</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-    <script type="text/javascript" src="/js/mobile.min.js"></script>
-    <link rel='stylesheet' href='/css/index.min.css' />
-    <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
+    <%- include common/head.ejs %>
   </head>
   <body>
-    <div class="top-title">
-      <p><%= title %></p>
-      <span>
-        <a class="top-prev" href=<%= '/user/' + user %>>&lt;</a>
-      </span>
-      <span>
-        <a class="top-next user-info-mod">√</a>
-      </span>
-    </div>
-    <div class="user-info-wrap animated fadeIn">
-      <div class="user-info-img-wrap">
-        <div>
-          <img class="user-info-img" src=<%= img %>>
-        </div>
-        <div>
-          <input placeholder="用户" class="input-default" type="text" disabled="disabled" value=<%= user %>>
-        </div>
-        <div>
-          <input placeholder="性别" class="input-default info-gender" type="text" value=<%= gender %>>
-        </div>
-        <div>
-          <input placeholder="城市" class="input-default info-city" type="text" value=<%= city %>>
-        </div>
-        <div>
-          <input placeholder="爱好" class="input-default info-hobbies" type="text" value=<%= hobbies %>>
-        </div>
-        <div>
-          <input placeholder="图片" class="input-default info-img" type="text" value=<%= img %>>
-        </div>
-        <span class="info-tip"></span>
-      </div>
-      </div>
+    <%- include common/infoTop.ejs %>
+    <%- include user/userInfoMod.ejs %>
     <script type="text/javascript" src="/js/userInfoMod.min.js"></script>
-    <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+    <%- include common/footerScriptAxios.ejs %>
   </body>
 </html>

@@ -1,46 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %> - NodeJS Chat</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-    <script type="text/javascript" src="/js/mobile.min.js"></script>
-    <link rel='stylesheet' href='/css/index.min.css' />
-    <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
+    <%- include common/head.ejs %>
   </head>
   <body>
-    <div class="chat-name top-title">
-      <span>
-        <a class="top-prev" href="/room">&lt;</a>
-      </span>
-      <span>
-        <a class="top-next" href=<%= '/room/' + roomId + '/member' %>>&amp;</a>
-      </span>
-      <p><%= title %></p>
-    </div>
-    <div class="chat animated fadeIn">
-      <div class="chat-ctx-wrap">
-        <div class="chat-ctx">
-          <ul class="chat-msg-list"></ul>
-        </div>
-      </div>
-    </div>
-    <div class="chat-ctrl">
-      <ul class="chat-more">
-        <li class="chat-emoji-list">
-          <ul class="chat-more-box">
-          </ul>
-          <span>😏</span>
-        </li>
-      </ul>
-      <div class="chat-send">
-        <textarea class="chat-msg-send" contenteditable></textarea>
-        <div class="chat-send-btn">
-          发送
-        </div>
-      </div>
-    </div>
+    <%- include common/infoTop.ejs %>
+    <%- include chat/chatCtx.ejs %>
+    <%- include chat/chatCtrl.ejs %>
     <script type="text/javascript" src="/js/room.min.js"></script>
-    <script type="text/javascript" src="//cdn.bootcss.com/axios/0.16.2/axios.min.js"></script>
+    <%- include common/footerScriptAxios.ejs %>
   </body>
 </html>

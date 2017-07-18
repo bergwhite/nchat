@@ -1,36 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title><%= title %> - NodeJS Chat</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-  <script type="text/javascript" src="/js/mobile.min.js"></script>
-  <link rel='stylesheet' href='/css/index.min.css' />
-  <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
+  <%- include common/head.ejs %>
 </head>
 <body>
   <div class="room-list">
-    <div class="top-title">
-      <span>
-        <a class="top-prev" href="/">&lt;</a>
-      </span>
-      <span>
-        <a class="top-next" href="/rooms/add">+</a>
-      </span>
-      <p><%= title %></p>
-    </div>
-    <ul class="box-list-wrap">
-      <% for(let x = 0; x < room.length; x++){ %>
-      <li class="box-list animated fadeInRight">
-        <a href=<%= '/room/' + room[x].name %> class="box-link">
-          <div>
-            <p class="box-name"><%= room[x].name %></p>
-            <p class="box-desc"><%= room[x].desc %></p>
-          </div>
-        </a>
-      </li>
-      <% } %>
-    </ul>
+    <%- include common/infoTop.ejs %>
+    <%- include room/roomList.ejs %>
   </div>
 </body>
 </html>

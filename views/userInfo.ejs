@@ -1,35 +1,10 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title><%= title %> - NodeJS Chat</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=no">
-    <script type="text/javascript" src="/js/mobile.min.js"></script>
-    <link rel='stylesheet' href='/css/index.min.css' />
-    <link rel='stylesheet' href="//cdn.bootcss.com/animate.css/3.5.2/animate.min.css" />
+    <%- include common/head.ejs %>
   </head>
   <body>
-    <div class="top-title">
-      <p><%= title %></p>
-      <span>
-        <a class="top-prev" href="/">&lt;</a>
-      </span>
-      <span>
-        <a class="top-next user-info-mod" href=<%= '/user/' + user + '/mod' %>>?</a>
-      </span>
-    </div>
-    <div class="user-info-wrap animated fadeIn">
-      <div class="user-info-img-wrap">
-        <img class="user-info-img" src=<%= img %>>
-      </div>
-      <ul>
-        <li class="user-info">用户 <%= user %></li>
-        <li class="user-info">性别 <%= gender %></li>
-        <li class="user-info">城市 <%= city %></li>
-        <li class="user-info">爱好 <%= hobbies === '' ? 未填写 : hobbies %></li>
-      </ul>
-      <!-- <a href="">注销登陆</a> -->
-      <span class="info-tip"></span>
-    </div>
+    <%- include common/infoTop.ejs %>
+    <%- include user/userInfo.ejs %>
   </body>
 </html>

@@ -1,0 +1,13 @@
+<div class="top-title">
+  <% if (typeof prevButton !== 'undefined') { %>
+    <span>
+      <a class="top-prev" href=<%= prevButton.href %>><%= prevButton.name %></a>
+    </span>
+  <% } %>
+  <% if (typeof nextButton !== 'undefined') { %>
+    <span>
+      <a class="top-next" href=<%= nextButton.href %>><%= nextButton.name %></a>
+    </span>
+  <% } %>
+  <p><%= infoTopTitle %></p>
+</div>

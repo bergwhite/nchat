@@ -1,0 +1,12 @@
+<ul class="box-list-wrap">
+  <% for(let x = 0; x < room.length; x++){ %>
+  <li class="box-list animated fadeInRight">
+    <a href=<%= '/room/' + room[x].name %> class="box-link">
+      <div>
+        <p class="box-name"><%= room[x].name %></p>
+        <p class="box-desc"><%= room[x].desc %></p>
+      </div>
+    </a>
+  </li>
+  <% } %>
+</ul>
