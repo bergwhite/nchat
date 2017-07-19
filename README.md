@@ -47,6 +47,7 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 * 基础
   - √ 代码压缩
+  - √ 密码使用MD5+SALT保存
 
 * 展示
   - √ 以前未设置头像的，显示默认头像
@@ -55,6 +56,7 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 * 开发
   - √ 模块化
+  - √ REST API
   - × 前后端分离
   - × 代码规范
   - × 测试用例
@@ -166,37 +168,23 @@ users
 ├─bin
 │    www  // 启动express
 │    database  // MongoDB
-│        index.js
-│        info.js
-│        mess.js
-│        room.js
-│        user.js
 │    socket  // socket服务（关键文件）
-│        index.js
-│        event.js
-│        data.js
-│        method.js
-│        io.js
-├─public  // 静态文件
-│    css
-│        index.css  // 首页CSS
-│        index.min.css  // 压缩后的代码
-│    js
-│        index.js  // 与socket服务进行通讯（关键文件）
-│        index.min.js  // 压缩后的代码
+├─public
+│    src  // 开发的代码
+│    dist  // 编译的代码
 ├─routers
 │    index.js  // 页面路由
 │    basic.js  // 公共配置
 │    home.js  // 首页
 │    room.js  // 房间
 │    user.js  // 用户
+├─sessions  // 存放用户登陆的session
 ├─view
-│    error.ejs  // 错误页
-│    index.ejs  // 首页
-│    userCenter.ejs  // 用户中心
-│    userInfo.ejs  // 用户信息
-│    userList.ejs  // 用户列表
-│    userLogin.ejs  // 登陆
+│    common  // 通用组件
+│    chat  // 聊天组件
+│    room  // 房间组件
+│    user  // 用户组件
+│    special  // 特俗组件
 ├─app.js  // express
 ├─gulpfile.js  // gulp
 ├─package.json

@@ -1,8 +1,16 @@
 const {express, router} = require('./basic');
 const {info, user} = require('../bin/database/model')
 const bodyParser = require('body-parser')
+const crypto = require('crypto')
+const md5 = crypto.createHash('md5');
 
 const siteName = 'NChat'
+
+function cryptoPass (user, pass) {
+  const uniquePassKey = '2333666'
+  const uniqueString = `${user}${uniquePassKey}${pass}`
+  return require('crypto').createHash('md5').update(uniqueString).digest('hex');
+}
 
 /*
  * 前端路由
@@ -104,6 +112,32 @@ router.get('/user/:id/mod', (req, res, next) => {
 // 登陆页面
 router.get('/login', (req, res, next) => {
 
+  user.find({}, (err, val) => {
+    if (err) {
+      console.log(err)
+    }
+    else if (val !== null) {
+      // 对未更新成加密密码的进行替换
+      for(let i = 0; i < val.length; i++){
+        const userName = val[i].name
+        const userPass = val[i].pass
+        const encPass = cryptoPass(userName, userPass)
+        console.log(`${userName} : ${userPass} : ${userPass.length} : ${encPass}`)
+        if (userPass.length < 30) {
+          user.update({name: userName}, {
+            $set: {
+              pass: encPass,
+            }
+          }, (err) => {
+            if (err) {
+              console.log(`updateCryptoedPass: ${err}`)
+            }
+          })
+        }
+      }
+    }
+  })
+
   const infoTopTitle = `登陆`
   const headTitle = `${infoTopTitle} - ${siteName}`
 
@@ -198,7 +232,7 @@ router.post('/api/user/register', (req, res, next) => {
 
         // 设置别名
         const name = req.body.name
-        const pass = req.body.pass
+        const pass = cryptoPass(name, req.body.pass)
 
         // 保存账号
         userSave = new user({
@@ -261,7 +295,8 @@ router.post('/api/user/login', (req, res, next) => {
 
     // 设置别名
     const name = req.body.name
-    const pass = req.body.pass
+    const pass = cryptoPass(name, req.body.pass)
+    console.log(`name: ${name} , pass: ${pass}`)
 
     // 查询数据库中发生错误或者用户名不存在、密码错误则进行相应的提示
     user.findOne({
@@ -282,7 +317,7 @@ router.post('/api/user/login', (req, res, next) => {
       else if(val.pass !== pass) {
         res.send({
           msgCode:403,
-          msgCtx: 'Pass is incorrect.',
+          msgCtx: `Pass is incorrect.`,
         })
       }
       else {
@@ -375,8 +410,8 @@ router.put('/api/user/pass', (req, res, next) => {
     // 未带参数则返回提示信息
     if (req.body) {
       const userName = req.session.loginUser
-      const passOld = req.body.passOld
-      const passNew = req.body.passNew
+      const passOld = cryptoPass(userName, req.body.passOld)
+      const passNew = cryptoPass(userName, req.body.passNew)
 
       // 查询当前用户的账号
       user.findOne({
