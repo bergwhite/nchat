@@ -157,6 +157,30 @@ router.get('/forget', (req, res, next) => res.send('<h1>Page is building.</h1>')
 // 修改密码页面
 router.get('/changepass', (req, res, next) => res.send('<h1>Page is building.</h1>') )
 
+// 关于页面
+
+router.get('/about', (req, res, next) => {
+
+  const infoTopTitle = `关于`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+  const prevButton = {
+    name: '<',
+    href: `/`,
+  }
+
+  if (req.session.loginUser) {
+    res.render('about', {
+      headTitle,
+      infoTopTitle,
+      prevButton,
+    })
+  }
+  else {
+    res.redirect('/login')
+  }
+
+})
+
 // PC端跳转提示页面
 router.get('/tip/pc', (req, res, next) => {
 
