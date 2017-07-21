@@ -84,16 +84,24 @@ router.get('/user/:id', (req, res, next) => {
         res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
       }
       else {
-        const renderObj = {
+        const renderObjBase = {
           headTitle,
           infoTopTitle,
           prevButton,
-          nextButton,
           user: val.user,
           gender: val.gender,
           img: val.img,
           city: val.city,
           hobbies: val.hobbies,
+        }
+        let renderObj = {}
+        if (req.session.loginUser === req.params.id) {
+          console.log(2333)
+          renderObj = Object.assign({}, renderObjBase, {nextButton})
+          console.log(renderObj)
+        }
+        else {
+          renderObj = Object.assign({}, renderObjBase)
         }
         res.render('userInfo', renderObj)
       }
