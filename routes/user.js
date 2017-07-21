@@ -16,6 +16,46 @@ function cryptoPass (user, pass) {
  * 前端路由
  */
 
+// 用户列表
+router.get('/user', (req, res, next) => {
+
+  const infoTopTitle = `用户列表`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+  const prevButton = {
+    name: '<',
+    href: '/',
+  }
+
+  // 已登录则继续
+  // 未登录则跳转到登陆页面
+  if (req.session.loginUser) {
+
+    // 把查询到的用户信息渲染到页面
+    // 如果查询过程中出现错误或用户不存在，则发送对应信息到前端页面
+    info.find({}, (err,val) => {
+      if (err) {
+        res.send(`<h1>err: ${err}</h1>`)
+      }
+      else if (val === null) {
+        res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
+      }
+      else {
+        const userList = val
+        const renderObj = {
+          headTitle,
+          infoTopTitle,
+          prevButton,
+          userList,
+        }
+        res.render('userList', renderObj)
+      }
+    })
+  }
+  else {
+    res.redirect('/login')
+  }
+})
+
 // 用户资料页面
 router.get('/user/:id', (req, res, next) => {
 

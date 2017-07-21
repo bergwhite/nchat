@@ -1,0 +1,20 @@
+<ul class="box-list-wrap">
+  <% for(let x = 0; x < userList.length; x++){ %>
+  <li class="box-list animated fadeInRight">
+    <% if (typeof userList[x].user !== 'undefined') { %>
+      <a href=<%= '/user/' + userList[x].user %> class="box-link">
+        <div>
+          <p class="box-name"><%= userList[x].user %></p>
+          <p class="box-desc">
+            <% if (typeof userList[x].desc !== 'undefined') { %>
+              <%=  userList[x].desc %>
+            <% } else { %>
+              对方还没有添加描述哦
+            <% } %>
+          </p>
+        </div>
+      </a>
+    <% } %>
+  </li>
+  <% } %>
+</ul>
