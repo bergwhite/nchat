@@ -5,7 +5,7 @@
    * How: 为了保持开发和部署的一直，使用JS动态输出script标签。
    */
   const socketScriptTag = document.createElement('script')
-  const socketScriptSrc = `http://${document.location.hostname}:8087/socket.io/socket.io.js`
+  const socketScriptSrc = `http://${document.location.hostname}:9998/socket.io/socket.io.js`
   socketScriptTag.src = socketScriptSrc
   document.head.appendChild(socketScriptTag)
   // index.min.js依赖socket.io.js

@@ -5,6 +5,7 @@
  */
 
 const app = require('../app');
+const {routerApp} = require('./router')
 const debug = require('debug')('nodejs-note:server');
 const http = require('http');
 require('./socket')

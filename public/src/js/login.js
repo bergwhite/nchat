@@ -5,14 +5,15 @@
   const userRegisterBtn = document.getElementsByClassName('register-confirm')[0]
   const userTip = document.getElementsByClassName('login-tip')[0]
 
-  const userHandleUrlOrigin = document.location.origin
-  const userHandleUrl = {
-    login: userHandleUrlOrigin + '/api/user/login',
-    register: userHandleUrlOrigin + '/api/user/register'
+  const siteOrigin = document.location.origin
+  const ajaxOrigin = document.location.origin.replace('8086', '9999')
+  const ajaxUrl = {
+    login: `${ajaxOrigin}/api/user/login`,
+    register: `${ajaxOrigin}/api/user/register`,
   }
 
   // 默认使用登陆请求
-  userHandleUrl.current = userHandleUrl.login
+  ajaxUrl.current = ajaxUrl.login
 
   document.body.onload = () => {
 
@@ -28,17 +29,17 @@
 
   // 跳转到首页函数
   function jumpToMainPage() {
-    document.location = userHandleUrlOrigin
+    document.location = siteOrigin
   }
 
   function userHandle (type) {
 
     // 根据传进来的类型，修改请求的Url
     if (type === 'login') {
-      userHandleUrl.current = userHandleUrl.login
+      ajaxUrl.current = ajaxUrl.login
     }
     else if (type === 'register') {
-      userHandleUrl.current = userHandleUrl.register
+      ajaxUrl.current = ajaxUrl.register
     }
 
     // 用户名为空则显示提示信息
@@ -55,7 +56,7 @@
 
     // 否则提交请求
     else {
-      axios.post(userHandleUrl.current, {
+      axios.post(ajaxUrl.current, {
         name: userName.value,
         pass: userPass.value
       })

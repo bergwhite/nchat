@@ -3,8 +3,10 @@
   const roomDesc = document.getElementsByClassName('add-info-desc')[0]
   const infoSubmitBtn = document.getElementsByClassName('top-next')[0]
   const infoSubmitTip = document.getElementsByClassName('add-info-tip')[0]
-  const prevPageHost = document.location.origin
-  const prevPageHostUrl = `${prevPageHost}/api/room/add`
+  const siteOrigin = document.location.origin
+  const prevPageHostUrl = `${siteOrigin}/api/room/add`
+  const ajaxOrigin = userHandleUrlOrigin.replace('8086', '9999')
+  const ajaxUrl = `${ajaxOrigin}/api/room/add`
 
   // 页面加载完成时，聚焦房间名字输入框
   document.body.onload = () => roomName.focus()
@@ -29,7 +31,7 @@
 
   // 新房间提交函数
   function submitNewRoomInfo() {
-    axios.post(prevPageHostUrl, {
+    axios.post(ajaxUrl, {
       name: roomName.value,
       desc: roomDesc.value
     }).then((res) => {

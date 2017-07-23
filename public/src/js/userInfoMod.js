@@ -5,6 +5,9 @@
   const userInfoHobbies = document.getElementsByClassName('info-hobbies')[0]
   const infoTip = document.getElementsByClassName('info-tip')[0]
   const infoModBtn = document.getElementsByClassName('top-next')[0]
+  const siteOrigin = document.location.origin
+  const ajaxOrigin = siteOrigin.replace('8086', '9999')
+  const ajaxUrl = `${ajaxUrl}/api/user/info`
   
   // 页面加载完成的时候，聚焦用户性别输入框
   document.body.onload = () => userInfoGender.focus();
@@ -22,7 +25,7 @@
 
   // 提交修改后的用户信息的函数
   function submitModUserInfo() {
-    axios.put('/api/user/info',{
+    axios.put(ajaxUrl,{
       gender: userInfoGender.value,
       img: userInfoImg.value,
       city: userInfoCity.value,
