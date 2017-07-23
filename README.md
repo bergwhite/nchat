@@ -195,7 +195,8 @@ users
 
 > 安装
 
-启动项目以前，请确保已经安装mongodb，并在package.json中修改MongoDB的安装路径（--dbpath）。
+* 启动项目以前，请确保已经安装mongodb，并在package.json中修改MongoDB的安装路径（--dbpath）。
+* 本地使用请打开浏览器的手机视图再输入地址，否则会自动跳转到8088端口
 
 [Windows安装教程](https://jockchou.gitbooks.io/getting-started-with-mongodb/content/book/install.html) | Linux安装教程
 

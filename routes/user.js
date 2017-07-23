@@ -229,18 +229,6 @@ router.get('/about', (req, res, next) => {
 
 })
 
-// PC端跳转提示页面
-router.get('/tip/pc', (req, res, next) => {
-
-  const infoTopTitle = `跳转提示`
-  const headTitle = `${infoTopTitle} - ${siteName}`
-
-  res.render('tipJumpToPc', {
-    infoTopTitle,
-    headTitle,
-  })
-})
-
 /*
  * 后端API
  */
