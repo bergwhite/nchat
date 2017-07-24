@@ -1,5 +1,5 @@
 (() => {
-  const roomListDOM = document.getElementsByClassName('box-list-wrap')[0]
+  const roomListDOM = document.getElementsByClassName('full-list')[0]
   const topTitleDOM = document.getElementsByClassName('top-title')[0]
 
   // 通过计算获取房间列表的合适高度
