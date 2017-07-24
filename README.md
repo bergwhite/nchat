@@ -1,22 +1,56 @@
-# NodeJS & SocketIO & Express & EJS & MongoDB & ES6 & Less & Gulp 打造多人在线聊天室
+# 全栈式的开发多人在线聊天室
 
-> 项目背景
+> 技术栈
 
-这个项目主要是为了玩玩NodeJS，项目的方向大概是做出类似QQ的在线聊天系统。
+觉得好的欢迎点个star ^_^。
 
-项目使用PM2进行部署和管理，功能在不断的迭代开发中。如果你觉得这个项目比较有趣，或者能对你有所帮助，欢迎给个Star。
+* 前端：Express & EJS & ES6 & Less & Gulp
+* 后端：Express & SocketIO & MongoDB & [REST API](API.md)
+* 部署：Linux & PM2
 
-PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue全家桶二次开发的V2EX社区](https://github.com/bergwhite/v2ex-vue)。
+> 演示
 
-> 项目链接
+* [全栈式的开发多人在线聊天室](http://47.93.252.247:8086/)
+	* 项目只适配了移动端，请使用浏览器的手机视图查看。
 
-* 第三版 源码 | 演示 | 图片 （定位移动端，提供REST API接口，预计2017/7/24发布）
+> 目录
 
-* 第二版 [源码](https://github.com/bergwhite/nodejs-chat2) | [演示](http://47.93.252.247:8088/) | 图片 （定位PC端）
+```
 
-* 第一版 [源码](https://github.com/bergwhite/nodejs-chat1) | [演示](http://47.93.252.247:8082/) | [图片](DEMO.md) （只做基本维护）
+├─bin
+│    www       // 后端 服务器
+│    database  // 后端 数据库
+│    socket    // 后端 socket
+|    router    // 后端 路由
+├─sessions     // 后端 session
+├─public
+│    src       // 前端 开发目录
+│    dist      // 前端 线上目录
+├─routes       // 前端 路由
+├─view         // 前端 页面
+├─app.js       // 前端 服务器
+├─gulpfile.js  // 前端 Gulp
+├─package.json
 
-* 测试版 源码 | 演示 | 图片
+```
+
+> 安装
+
+* 项目基于MIT协议开源
+* 启动项目以前，请确保已经安装mongodb，并在package.json中修改MongoDB的安装路径（--dbpath）
+
+[Windows安装教程](https://jockchou.gitbooks.io/getting-started-with-mongodb/content/book/install.html) | Linux安装教程
+
+```
+
+git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目
+cd nodejs-chat  // 进入目录
+npm install  // 安装依赖
+npm run build  // 构建 线上代码
+npm run mongod // 开启 数据库
+npm run start // 开启 聊天室
+
+```
 
 > 功能
 
@@ -46,8 +80,6 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
 
 * 基础
   - √ 代码压缩
-  - √ 密码使用MD5+SALT保存
-  - √ 聊天内容过滤`< >`等特殊标签
 
 * 展示
   - √ 以前未设置头像的，显示默认头像
@@ -63,9 +95,20 @@ PS: 最近找工作，北京的欢迎联系。另外之前做过一个[基于Vue
   - × 代码规范
   - × 测试用例
 
+* 安全
+  - √ 密码使用MD5+SALT保存
+  - √ 聊天内容过滤`< >`等特殊标签
+
+* 认证
+  - √ Session
+
+* 部署
+
+  - Linux & PM2
+
 > 踩坑
 
-跨域调用图灵机器人API
+图灵机器人不支持跨域，通过代理中间件把请求代理到本地。
 
 ```
 
@@ -78,135 +121,47 @@ app.use('/api/robot', proxy({
 
 ```
 
-> 前端路由
+Gulp使用通配符对多个文件处理，会压缩到一个文件中。以下是分别进行压缩的方式。
 
 ```
 
-类型    状态    地址
+const gulp = require('gulp'),
+      minifyJS = require('gulp-uglifyjs'),
+      babel = require('gulp-babel'),
+      rename = require('gulp-rename');
 
-首页    √       /        
-房间    √       /room/:id
-用户    √       /user/:id
-注册    √       /register
-登陆    √       /login   
+const compileDir = {
+  css: {
+    src: 'public/src/css/index.less',
+    dest: 'public/dist/css'
+  },
+  js: {
+    src: 'public/src/js/',
+    dest: 'public/dist/js'
+  }
+};
 
-```
-
-> 后端接口
-
-完整的API文档，请见[REST API](API.md)。
-
-```
-
-用户
-
-接口       状态   请求   地址                 必须    参数
-
-用户注册   √      POST   /api/user/register   无      {name: String, pass: String}
-用户登陆   √      POST   /api/user/login      无      {name: String, pass: String}
-注销登陆   √      POST   /api/user/logout     已登录  空
-删除用户   ×      DELETE /api/user/del        已登录  {passOld: String}
-用户资料   √      GET    /api/user/info/:id   无      空
-用户列表   √      GET    /api/user            无      空
-修改密码   √      PUT    /api/user/pass       已登录  {passOld: String, passNew: String}
-修改资料   √      PUT    /api/user/info       已登录  {gender: String, img: String, city: String, hobbies: String}
-上传头像   ×      POST   /api/user/img        已登录  {img: String}
-
-房间
-
-接口       状态   请求  地址                 必须    参数
-
-添加房间   √      POST  /api/room/add        已登录  {name: String, desc: String}
-房间描述   √      GET   /api/room/info/:id   无      空
-聊天记录   √      GET   /api/room/mess/:id   无      空
-房间列表   √      GET   /api/room            无      空
+gulp.task('compile-js', () => {
+  const JSTaskList = ['index', 'login', 'mobile', 'room', 'roomAdd', 'userInfoMod', 'roomMember']
+  return JSTaskList.map((e) => {
+    gulp.src(`${compileDir.js.src}${e}.js`)
+      .pipe(babel({
+        presets: ['es2015']
+      }))
+      .pipe(minifyJS())
+      .pipe(rename((path) => {
+        path.basename += '.min'
+      }))
+      .pipe(gulp.dest(compileDir.js.dest))
+  })
+});
 
 ```
 
-> 数据库
+gulp-uglifyjs - No files given; aborting minification
 
 ```
 
-infos
-
-{
-  user: String,
-  gender: String,
-  img: String,
-  city: String,
-  hobbies: Array
-}
-
-messes
-
-{
-  room: String,
-  user: String,
-  mess: String,
-  time: Number,
-  img: String
-}
-
-rooms
-
-{
-  name: String,
-  desc: String
-}
-
-users
-
-{
-  name: String,
-  pass: String
-}
-
-```
-
-> 目录
-
-```
-
-├─bin
-│    www  // 启动express
-│    database  // MongoDB
-│    socket  // socket服务（关键文件）
-├─public
-│    src  // 开发的代码
-│    dist  // 编译的代码
-├─routers
-│    index.js  // 页面路由
-│    basic.js  // 公共配置
-│    home.js  // 首页
-│    room.js  // 房间
-│    user.js  // 用户
-├─sessions  // 存放用户登陆的session
-├─view
-│    common  // 通用组件
-│    chat  // 聊天组件
-│    room  // 房间组件
-│    user  // 用户组件
-│    special  // 特俗组件
-├─app.js  // express
-├─gulpfile.js  // gulp
-├─package.json
-
-```
-
-> 安装
-
-* 启动项目以前，请确保已经安装mongodb，并在package.json中修改MongoDB的安装路径（--dbpath）。
-* 本地使用请打开浏览器的手机视图再输入地址，否则会自动跳转到8088端口
-
-[Windows安装教程](https://jockchou.gitbooks.io/getting-started-with-mongodb/content/book/install.html) | Linux安装教程
-
-```
-
-git clone https://github.com/bergwhite/nodejs-chat  // 克隆项目
-cd nodejs-chat  // 进入目录
-npm install  // 安装依赖
-npm run build  // 构建代码
-npm run mongod // 开启MongoDB
-npm run start // 开启聊天室（在线部署）
+之前删除了一个JS文件，但是没有删除JSTaskList中的对应值。编译时会报上面的错误。删除对应的值就编译成功了。
 
 ```

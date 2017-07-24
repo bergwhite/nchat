@@ -1,11 +1,9 @@
 {
   "name": "nodejs-chat",
-  "version": "0.0.1",
+  "version": "3.0.0",
   "private": true,
   "scripts": {
     "build": "gulp build",
-    "dev": " gulp watch",
-    "backend": "node ./bin/router",
     "start": "node ./bin/www",
     "mongod": "start X:/MongoDB/bin/mongod --dbpath=X:\\MongoDB\\data\\db"
   },

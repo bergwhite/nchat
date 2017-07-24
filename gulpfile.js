@@ -5,7 +5,8 @@ const gulp = require('gulp'),
       babel = require('gulp-babel'),
       rename = require('gulp-rename');
 
-// JS和CSS的输入文件和输出文件
+// 配置信息
+// 文件所在目录和输出目录
 const compileDir = {
   css: {
     src: 'public/src/css/index.less',
@@ -17,18 +18,20 @@ const compileDir = {
   }
 };
 
-// 编译CSS
+// 打包任务
+// 打包成一个CSS并压缩
 gulp.task('compile-css', () => {
   return gulp.src(compileDir.css.src)
           .pipe(lessToCSS())
           .pipe(minifyCSS())
-          .pipe(rename(function(path) {
+          .pipe(rename((path) => {
             path.basename += '.min'
           }))
           .pipe(gulp.dest(compileDir.css.dest))
 });
 
-// 编译JS
+// 打包任务
+// 逐个文件ES6转ES5并压缩
 gulp.task('compile-js', () => {
   const JSTaskList = ['index', 'login', 'mobile', 'room', 'roomAdd', 'userInfoMod', 'roomMember']
   return JSTaskList.map((e) => {
@@ -37,18 +40,13 @@ gulp.task('compile-js', () => {
         presets: ['es2015']
       }))
       .pipe(minifyJS())
-      .pipe(rename(function(path) {
+      .pipe(rename((path) => {
         path.basename += '.min'
       }))
       .pipe(gulp.dest(compileDir.js.dest))
   })
 });
 
-// 监听文件改变，自动编译
-gulp.task('watch', ()=> {
-  gulp.watch(`compileDir.css.src`, ['compile-css'])
-  gulp.watch(`${compileDir.js.src}*.js`, ['compile-js'])
-})
-
-// 一键构建线上代码
+// 构建任务
+// 构建线上代码
 gulp.task('build', ['compile-css', 'compile-js'])

@@ -11,10 +11,10 @@
   }
 
   // 非移动端跳转至PC页
-  if (!isMobile()) {
+  /*if (!isMobile()) {
     const PCPage = document.location.origin.replace('8086', '8088')
     document.location = PCPage
-  }
+  }*/
 
   // 适配不同的高精度屏幕
   function compatibleDifferentDPI() {
