@@ -224,4 +224,15 @@ router.get('/about', (req, res, next) => {
 
 })
 
+router.get('/tip/pc', (req, res, next) => {
+
+  const infoTopTitle = `跳转提示`
+  const headTitle = `${infoTopTitle} - ${siteName}`
+
+  res.render('tipGoToMobile', {
+    infoTopTitle,
+    headTitle,
+  })
+})
+
 module.exports = router

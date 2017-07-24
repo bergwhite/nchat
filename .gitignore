@@ -3,3 +3,4 @@ node_modules
 *.sock
 sessions
 public/dist
+npm-debug.log

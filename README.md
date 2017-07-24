@@ -10,6 +10,9 @@
 
 > 演示
 
+![NChat-qrcode](http://nchat.oss-cn-beijing.aliyuncs.com/img/NChat-qrcode.png
+)
+
 * [全栈式的开发多人在线聊天室](http://47.93.252.247:8086/)
 	* 项目只适配了移动端，请使用浏览器的手机视图查看。
 
