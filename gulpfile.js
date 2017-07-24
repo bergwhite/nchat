@@ -33,7 +33,7 @@ gulp.task('compile-css', () => {
 // 打包任务
 // 逐个文件ES6转ES5并压缩
 gulp.task('compile-js', () => {
-  const JSTaskList = ['index', 'login', 'mobile', 'room', 'roomAdd', 'userInfoMod', 'roomMember']
+  const JSTaskList = ['index', 'login', 'mobile', 'room', 'roomAdd', 'userInfoMod', 'roomMember', 'roomList']
   return JSTaskList.map((e) => {
     gulp.src(`${compileDir.js.src}${e}.js`)
       .pipe(babel({
