@@ -1,15 +1,23 @@
 (() => {
   const userInfoGender = document.getElementsByClassName('info-gender')[0]
   const userInfoImg = document.getElementsByClassName('info-img')[0]
+  const userDisImg = document.getElementsByClassName('user-info-img')[0]
   const userInfoCity = document.getElementsByClassName('info-city')[0]
   const userInfoHobbies = document.getElementsByClassName('info-hobbies')[0]
   const infoTip = document.getElementsByClassName('info-tip')[0]
   const infoModBtn = document.getElementsByClassName('top-next')[0]
   const siteOrigin = document.location.origin
   const ajaxUrl = `${siteOrigin}/api/user/info`
-  
+  let currentImg = ''
+
   // 页面加载完成的时候，聚焦用户性别输入框
   document.body.onload = () => userInfoGender.focus();
+
+  // 监听点击头像换图片
+  userInfoImg.addEventListener('click', (e) => {
+    currentImg = getRandomImg('men')
+    userDisImg.src = currentImg
+  }, false)
 
   // 监听信息修改按钮的点击事件
   infoModBtn.addEventListener('click', (e) => {
@@ -26,7 +34,7 @@
   function submitModUserInfo() {
     axios.put(ajaxUrl,{
       gender: userInfoGender.value,
-      img: userInfoImg.value,
+      img: currentImg,
       city: userInfoCity.value,
       hobbies: userInfoHobbies.value
     }).then((res) => {
