@@ -40,7 +40,7 @@
       sex: 'men'
     },
     robot: {
-      api: `${document.location.origin}:9999/api/robot/openapi/api`,
+      api: `${document.location.origin}/api/robot/openapi/api`,
       key: '57a5b6849e2b4d47ae0badadf849c261',
       nick: '小美',
       img: 'https://randomuser.me/api/portraits/women/60.jpg'

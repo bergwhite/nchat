@@ -4,9 +4,7 @@
   const infoSubmitBtn = document.getElementsByClassName('top-next')[0]
   const infoSubmitTip = document.getElementsByClassName('add-info-tip')[0]
   const siteOrigin = document.location.origin
-  const prevPageHostUrl = `${siteOrigin}/api/room/add`
-  const ajaxOrigin = userHandleUrlOrigin.replace('8086', '9999')
-  const ajaxUrl = `${ajaxOrigin}/api/room/add`
+  const ajaxUrl = `${siteOrigin}/api/room/add`
 
   // 页面加载完成时，聚焦房间名字输入框
   document.body.onload = () => roomName.focus()

@@ -6,10 +6,9 @@
   const userTip = document.getElementsByClassName('login-tip')[0]
 
   const siteOrigin = document.location.origin
-  const ajaxOrigin = document.location.origin.replace('8086', '9999')
   const ajaxUrl = {
-    login: `${ajaxOrigin}/api/user/login`,
-    register: `${ajaxOrigin}/api/user/register`,
+    login: `${siteOrigin}/api/user/login`,
+    register: `${siteOrigin}/api/user/register`,
   }
 
   // 默认使用登陆请求
@@ -56,6 +55,7 @@
 
     // 否则提交请求
     else {
+      console.log(ajaxUrl.current)
       axios.post(ajaxUrl.current, {
         name: userName.value,
         pass: userPass.value

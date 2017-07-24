@@ -23,8 +23,8 @@
 
 在线服务器提供支持CORS的REST API，请合理使用在线API。API的测试数据来自Postman。
 
-* 在线：http://47.93.252.247:9999
-* 本地：http://localhost:9999
+* 在线：http://47.93.252.247:8086
+* 本地：http://localhost:8086
 
 ### API 示例
 
@@ -32,7 +32,7 @@
 
 ```
 
-GET http://47.93.252.247:9999/api/user/info/admin
+GET http://47.93.252.247:8086/api/user/info/admin
 
 ```
 

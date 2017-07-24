@@ -38,6 +38,4 @@ app.use('/api/robot', proxy({
   changeOrigin: true
 }));
 
-// 监听端口
-app.listen(9999)
-console.log('routerApp Listenning on 9999.')
+module.exports = app

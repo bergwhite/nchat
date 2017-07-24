@@ -1,5 +1,6 @@
 const express = require('express');
 const path = require('path');
+const proxy = require('http-proxy-middleware');
 const favicon = require('serve-favicon');
 const logger = require('morgan');
 const cookieParser = require('cookie-parser');
@@ -39,31 +40,7 @@ app.use('/', router.home);
 app.use('/room', router.room);
 app.use('/user', router.user);
 
-// catch 404 and forward to error handler
-app.use((req, res, next) => {
-  const err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use((err, req, res, next) => {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  const prevButton = {
-    name: '<',
-    href: '/',
-  }
-  const baseTitle = '访问的页面不存在'
-  res.render('error', {
-    headTitle: `${baseTitle} - NChat`,
-    infoTopTitle: baseTitle,
-    prevButton,
-  });
-});
-
-module.exports = app;
+module.exports = {
+  express,
+  app,
+};
