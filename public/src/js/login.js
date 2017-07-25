@@ -46,11 +46,22 @@
       userName.focus()
       userTip.innerHTML = '请输入用户名'
     }
+    // 账号只允许1-15个中文、字母、数字或下划线
+    else if (userName.value.match(/^[\u4E00-\u9FA50-9a-zA-z_]{1,15}$/) === null) {
+      userName.focus()
+      userTip.innerHTML = '账号只允许1-15个中文、字母、数字或下划线'
+    }
 
     // 密码为空则显示提示信息
     else if (userPass.value === '') {
       userPass.focus()
       userTip.innerHTML = '请输入密码'
+    }
+
+    // 密码只允许1-15个非空白字符
+    else if (userPass.value.match(/\s/) !== null || userPass.value.match(/^\S{1,15}$/) === null) {
+      userPass.focus()
+      userTip.innerHTML = '密码只允许1-15个非空白字符'
     }
 
     // 否则提交请求
