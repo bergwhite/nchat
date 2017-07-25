@@ -88,19 +88,17 @@ const event = function (chatData, chatMethod, port) {
 
     // 处理发送消息事件
     socket.on('send message req', (time, id, msg) => {
-      const newUser = msg.user || loginedUserName
-      const newImg = msg.img || loginedUserImg
-      msg.user = loginedUserName
-      msg.img = loginedUserImg
+      msg.user = msg.user || loginedUserName
+      msg.img = msg.img || loginedUserImg
       // 把消息广播到相同房间
       socket.broadcast.to(id).emit('send message res', msg)
       // 存储消息到数据库
       const messEntity = new mess({
         room: id,
-        user: newUser,
+        user: msg.user,
         mess: msg.msg,
         time: time,
-        img: newImg
+        img: msg.img
       })
       messEntity.save()
     })

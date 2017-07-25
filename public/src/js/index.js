@@ -204,7 +204,10 @@
         // 添加内容到当前界面
         const rightBubble = nChat.method.renderBubbleMsg('right', name, '',  parsedMessage, nChat.data.user.img)
         // 添加内容到当前房间的其他用户界面
-        socket.emit('send message req', time, nChat.data.currentRoomName , {time: time, msg: parsedMessage})
+        socket.emit('send message req', time, nChat.data.currentRoomName , {
+          time: time,
+          msg: parsedMessage,
+        })
         nChat.method.insertToList(chatMsgList, 'li', rightBubble)
         // 发送完消息清空内容
         chatMsgSend.value = ''
@@ -224,7 +227,12 @@
             const tm = nChat.method.getTime(new Date())
             const leftBubble = nChat.method.renderBubbleMsg('left', nChat.data.robot.nick, tm,  res.data.text, nChat.data.robot.img)
             nChat.method.insertToList(chatMsgList, 'li', leftBubble)
-            socket.emit('send message req', time, nChat.data.currentRoomName , {user: nChat.data.robot.nick,tm: time, msg: res.data.text, img: nChat.data.robot.img})
+            socket.emit('send message req', time, nChat.data.currentRoomName , {
+              user: nChat.data.robot.nick,
+              time: tm,
+              msg: res.data.text,
+              img: nChat.data.robot.img
+            })
             nChat.method.scrollToBottom()
           }).catch((err) => console.log(err))
         }
