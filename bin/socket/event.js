@@ -35,6 +35,9 @@ const event = function (chatData, chatMethod, port) {
         else if (val !== null) {
           loginedUserImg = val.img
           
+
+          console.log(`${loginedUserName} joined ${currentRoomName}`)
+
           // 发送请求当前房间号事件
           socket.emit('room id req', {name: loginedUserName, img: loginedUserImg})
 
@@ -46,7 +49,6 @@ const event = function (chatData, chatMethod, port) {
 
           // 发送用于调试的状态信息
           socket.emit('current status', chatData)
-          socket.emit('user list res', chatData.roomTest[currentRoomName])
           console.log('currentRoomName: ' + currentRoomName)
           console.log('findInfoFromDB / loginedUserName: ' + loginedUserName)
           console.log('findInfoFromDB / loginedUserImg: ' + loginedUserImg)
@@ -60,6 +62,12 @@ const event = function (chatData, chatMethod, port) {
 
     // 初始化房间
     chatData.currentRoomName = chatMethod.getCurrentRoomID(socket)
+
+    // 获取房间成员列表
+
+    socket.on('user list req', () => {
+      socket.emit('user list res', chatData.roomTest[currentRoomName])
+    })
 
     // 监听到相应后，存储当前的房间号
     socket.on('room id res', (currentRoomName) => {
