@@ -7,7 +7,33 @@
       <input placeholder="用户" class="input-default" type="text" disabled="disabled" value=<%= user %>>
     </div>
     <div>
-      <input placeholder="性别" class="input-default info-gender" type="text" value=<%= gender %>>
+      <select class="input-default info-gender-wrap">
+        <% if(gender === 'secure'){ %>
+          <option class="info-gender" value="0">男</option>
+          <option class="info-gender" value="1">女</option>
+          <option class="info-gender" value="2" selected>保密</option>
+        <% } %>
+        <% if(gender === '男'){ %>
+          <option class="info-gender" value="0" selected>男</option>
+          <option class="info-gender" value="1">女</option>
+          <option class="info-gender" value="2">保密</option>
+        <% } %>
+        <% if(gender === '女'){ %>
+          <option class="info-gender" value="0">男</option>
+          <option class="info-gender" value="1" selected>女</option>
+          <option class="info-gender" value="2">保密</option>
+        <% } %>
+        <% if(gender === 'male'){ %>
+          <option class="info-gender" value="0">男</option>
+          <option class="info-gender" value="1" selected>女</option>
+          <option class="info-gender" value="2">保密</option>
+        <% } %>
+        <% if(gender === '保密'){ %>
+          <option class="info-gender" value="0">男</option>
+          <option class="info-gender" value="1">女</option>
+          <option class="info-gender" value="2" selected>保密</option>
+        <% } %>
+      </select>
     </div>
     <div>
       <input placeholder="城市" class="input-default info-city" type="text" value=<%= city %>>

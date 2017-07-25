@@ -1,5 +1,5 @@
 (() => {
-  const userInfoGender = document.getElementsByClassName('info-gender')[0]
+  const userInfoGenderWrap = document.getElementsByClassName('info-gender-wrap')[0]
   const userInfoImg = document.getElementsByClassName('info-img')[0]
   const userDisImg = document.getElementsByClassName('user-info-img')[0]
   const userInfoCity = document.getElementsByClassName('info-city')[0]
@@ -8,15 +8,12 @@
   const infoModBtn = document.getElementsByClassName('top-next')[0]
   const siteOrigin = document.location.origin
   const ajaxUrl = `${siteOrigin}/api/user/info`
-  let currentImg = ''
-
-  // 页面加载完成的时候，聚焦用户性别输入框
-  document.body.onload = () => userInfoGender.focus();
+  const currentGender = ['男', '女', '保密']
+  const changImgArr = ['men', 'women', 'random']
 
   // 监听点击头像换图片
   userInfoImg.addEventListener('click', (e) => {
-    currentImg = getRandomImg('men')
-    userDisImg.src = currentImg
+    userDisImg.src = getRandomImg(changImgArr[userInfoGenderWrap.value])
   }, false)
 
   // 监听信息修改按钮的点击事件
@@ -26,6 +23,9 @@
   }, false)
 
   function getRandomImg(gender) {
+    if (gender === 'random' ) {
+      gender = Math.random() > 0.5 ? changImgArr[0] : changImgArr[1]
+    }
     const randomNumber = parseInt(Math.random() * 100)
     return 'https://randomuser.me/api/portraits/' + gender + '/' + randomNumber + '.jpg'
   }
@@ -33,8 +33,8 @@
   // 提交修改后的用户信息的函数
   function submitModUserInfo() {
     axios.put(ajaxUrl,{
-      gender: userInfoGender.value,
-      img: currentImg,
+      gender: currentGender[userInfoGenderWrap.value],
+      img: userDisImg.src,
       city: userInfoCity.value,
       hobbies: userInfoHobbies.value
     }).then((res) => {
