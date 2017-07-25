@@ -168,6 +168,7 @@
          img = nChat.method.parseMsgVal(img)
       }
       img = nChat.method.parseMsgVal(img)
+      img = img.replace(/on[a-zA-z]+=/, '')
       const ctx = `<div class="bubble bubble-${type}">
         <div class="bubble-head">
           <img src=${img} class="user-img">
