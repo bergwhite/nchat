@@ -230,7 +230,8 @@
             }
           }).then((res) => {
             const tm = nChat.method.getTime(new Date())
-            const leftBubble = nChat.method.renderBubbleMsg('left', nChat.data.robot.nick, tm,  res.data.text, nChat.data.robot.img)
+            const tmParsed = nChat.method.parseTime(tm)
+            const leftBubble = nChat.method.renderBubbleMsg('left', nChat.data.robot.nick, tmParsed,  res.data.text, nChat.data.robot.img)
             nChat.method.insertToList(chatMsgList, 'li', leftBubble)
             socket.emit('send message req', time, nChat.data.currentRoomName , {
               user: nChat.data.robot.nick,
