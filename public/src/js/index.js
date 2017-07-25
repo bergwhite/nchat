@@ -184,6 +184,8 @@
     parseMsgVal (v) {
       let val = v.replace(/</g,'&lt;')
       val = val.replace(/>/g,'&gt;')
+      val = val.replace(/"/g,'\"')
+      val = val.replace(/'/g,'\'')
       return val
     },
     // 获取时间戳
