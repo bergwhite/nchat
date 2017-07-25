@@ -152,7 +152,6 @@
       user = nChat.method.parseMsgVal(user)
       time = nChat.method.parseMsgVal(time)
       msg = nChat.method.parseMsgVal(msg)
-      img = nChat.method.parseMsgVal(img)
       let bubbleInfoEl = ''
       if (time !== '') {
         bubbleInfoEl = `
@@ -166,7 +165,9 @@
       }
       if (typeof img === 'undefined' || img === null) {
          img = nChat.data.defaultUserImg
+         img = nChat.method.parseMsgVal(img)
       }
+      img = nChat.method.parseMsgVal(img)
       const ctx = `<div class="bubble bubble-${type}">
         <div class="bubble-head">
           <img src=${img} class="user-img">
