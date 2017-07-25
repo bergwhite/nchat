@@ -150,7 +150,7 @@
     // 左右泡泡组件模板
     renderBubbleMsg (type, user, time, msg, img) {
       user = nChat.method.parseMsgVal(user)
-      time = nChat.method.parseMsgVal(user)
+      time = nChat.method.parseMsgVal(time)
       msg = nChat.method.parseMsgVal(msg)
       img = nChat.method.parseMsgVal(img)
       let bubbleInfoEl = ''
