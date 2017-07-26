@@ -84,7 +84,7 @@
       socket.on('mess show res', (data) => {
         console.log(data)
         const len = data.length
-        for(let i = 0; i < len; i++){
+        for(let i = len - 1; i >= 0; i--){
           const leftBubble = nChat.method.renderBubbleMsg('left', data[i].user, nChat.method.parseTime(data[i].time), nChat.method.parseMsgVal(data[i].mess), data[i].img)
           nChat.method.insertToList(chatMsgList, 'li', leftBubble)
         }
