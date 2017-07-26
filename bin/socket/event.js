@@ -73,7 +73,7 @@ const event = function (chatData, chatMethod, port) {
     socket.on('room id res', (currentRoomName) => {
 
       // 读取当前房间的聊天信息
-      mess.find({'room': currentRoomName}, (err, data) =>  {
+      mess.find({'room': currentRoomName}).limit(100).exec((err, data) =>  {
         console.log('room data ready / ' + (data.lenth !== 0))
         socket.emit('mess show res', data)
       })
