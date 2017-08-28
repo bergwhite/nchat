@@ -1,13 +1,13 @@
 const roomMember = document.getElementsByClassName('room-member-list-wrap')[0]
 const currentUrlOrigin = document.location.origin
 const socketScriptTag = document.createElement('script')
-const socketScriptSrc = `http://${document.location.hostname}:9998/socket.io/socket.io.js`
+const socketScriptSrc = `//${document.location.hostname}:9998/socket.io/socket.io.js`
 socketScriptTag.src = socketScriptSrc
 document.head.appendChild(socketScriptTag)
 
 socketScriptTag.onload = () => {
   const socketHostName = document.location.hostname
-  const socketURI = `http://${socketHostName}:9998/`
+  const socketURI = `//${socketHostName}:9998/`
   const socket = io(socketURI)
   // 发送更新求
   socket.emit('user list req')

@@ -11,7 +11,7 @@
 
   // 为socket.io设置别名
   const socketHostName = document.location.hostname
-  const socketURI = `http://${socketHostName}:9998/`
+  const socketURI = `//${socketHostName}:9998/`
   const socket = io(socketURI)
 
   // 把聊天室所有的操作封装在命名空间内
