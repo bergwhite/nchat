@@ -91,9 +91,7 @@ router.get('/user/:id', (req, res, next) => {
         }
         let renderObj = {}
         if (req.session.loginUser === req.params.id) {
-          console.log(2333)
           renderObj = Object.assign({}, renderObjBase, {nextButton})
-          console.log(renderObj)
         }
         else {
           renderObj = Object.assign({}, renderObjBase)
@@ -165,7 +163,6 @@ router.get('/login', (req, res, next) => {
         const userName = val[i].name
         const userPass = val[i].pass
         const encPass = cryptoPass(userName, userPass)
-        console.log(`${userName} : ${userPass} : ${userPass.length} : ${encPass}`)
         if (userPass.length < 30) {
           user.update({name: userName}, {
             $set: {
