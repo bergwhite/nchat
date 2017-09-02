@@ -12,51 +12,43 @@ const event = function (chatData, chatMethod, port) {
   io.on('connection', (socket) =>  {
     const cookieData = cookie.parse(socket.handshake.headers.cookie);
     const token = cookieData.token
-    console.log(cookieData.token)
     jwtDec(token).then(function(tokenObj) {
       const currentRoomName = chatMethod.getCurrentRoomID(socket)
       let loginedUserName = ''
       let loginedUserImg = ''
       socket.join(currentRoomName)  // 进入房间
-      try {
         loginedUserName = tokenObj.user
 
         // 通过session中的用户名在数据库中查询用户信息
         info.findOne({user: loginedUserName}, (err, val) => {
 
-          // 如果出错则打印出来
-          if (err) {
-            console.log('findInfoFromDB / err : ' + err)
-          }
+        // 如果出错则打印出来
+        if (err) {
+          console.log('findInfoFromDB / err : ' + err)
+        }
 
-          // 如果查询到用户数据则保持图片Url到loginedUserImg变量里
-          else if (val !== null) {
-            loginedUserImg = val.img
-            
+        // 如果查询到用户数据则保持图片Url到loginedUserImg变量里
+        else if (val !== null) {
+          loginedUserImg = val.img
+          
+          console.log(`${loginedUserName} joined ${currentRoomName}`)
 
-            console.log(`${loginedUserName} joined ${currentRoomName}`)
+          // 发送请求当前房间号事件
+          socket.emit('room id req', {name: loginedUserName, img: loginedUserImg})
 
-            // 发送请求当前房间号事件
-            socket.emit('room id req', {name: loginedUserName, img: loginedUserImg})
+          // 添加用户到当前房间
+          chatMethod.addUserToTheRoom(currentRoomName, {
+            name: loginedUserName,
+            img: loginedUserImg
+          })
 
-            // 添加用户到当前房间
-            chatMethod.addUserToTheRoom(currentRoomName, {
-              name: loginedUserName,
-              img: loginedUserImg
-            })
-
-            // 发送用于调试的状态信息
-            socket.emit('current status', chatData)
-            console.log('currentRoomName: ' + currentRoomName)
-            console.log('findInfoFromDB / loginedUserName: ' + loginedUserName)
-            console.log('findInfoFromDB / loginedUserImg: ' + loginedUserImg)
-          }
-        })
-
-        // 如果捕获到错误则报错
-      } catch(err) {
-        console.log('sessionFile / err: ' + err);
-      }
+          // 发送用于调试的状态信息
+          socket.emit('current status', chatData)
+          console.log('currentRoomName: ' + currentRoomName)
+          console.log('findInfoFromDB / loginedUserName: ' + loginedUserName)
+          console.log('findInfoFromDB / loginedUserImg: ' + loginedUserImg)
+        }
+      })
 
       // 初始化房间
       chatData.currentRoomName = chatMethod.getCurrentRoomID(socket)

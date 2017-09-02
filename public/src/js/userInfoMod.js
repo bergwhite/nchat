@@ -32,7 +32,8 @@
 
   // 提交修改后的用户信息的函数
   function submitModUserInfo() {
-    axios.put(ajaxUrl,{
+    const token = localStorage.getItem('token')
+    axios.put(`${ajaxUrl}?token=${token}`,{
       gender: currentGender[userInfoGenderWrap.value],
       img: userDisImg.src,
       city: userInfoCity.value,

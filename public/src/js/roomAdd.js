@@ -29,7 +29,8 @@
 
   // 新房间提交函数
   function submitNewRoomInfo() {
-    axios.post(ajaxUrl, {
+    const token = localStorage.getItem('token')
+    axios.post(`${ajaxUrl}?token=${token}`, {
       name: roomName.value,
       desc: roomDesc.value
     }).then((res) => {

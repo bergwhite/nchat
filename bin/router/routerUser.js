@@ -83,7 +83,7 @@ router.post('/api/user/register', (req, res, next) => {
 
         // 生成token
         const token = jwtEnc(name, pass)
-        res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true });
+        res.cookie('token', token, { expires: new Date(Date.now() + 60*60*24*1*1000), httpOnly: true });
         res.send({
           msgCode:200,
           msgCtx: 'Reg success & logined.',
@@ -137,7 +137,7 @@ router.post('/api/user/login', (req, res, next) => {
       else {
         // 生成token
         const token = jwtEnc(name, pass)
-        res.cookie('token', token, { expires: new Date(Date.now() + 900000), httpOnly: true });
+        res.cookie('token', token, { expires: new Date(Date.now() + 60*60*24*1*1000), httpOnly: true });
         res.send({
           msgCode:200,
           msgCtx: 'Login success.',
