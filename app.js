@@ -24,17 +24,20 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public/dist')));
 
-// 支持Session
-app.use(session({
-  name: 'key',
-  secret: 'whocarewhatisthepass',  // 用来对session id相关的cookie进行签名
-  store: new FileStore(),  // 本地存储session（文本文件，也可以选择其他store，比如redis的）
-  saveUninitialized: false,  // 是否自动保存未初始化的会话，建议false
-  resave: false,  // 是否每次都重新保存会话，建议false
-  cookie: {
-    maxAge: 7 * 24 * 60 * 60 * 1000  // 有效期，单位是毫秒
+// 对未登录的页面进行重定向
+app.use((req, res, next) => {
+  console.log(req.originalUrl)
+  const redrictWihteList = ['/login', '/api/']
+  var pageWillRedirct = redrictWihteList.every((e) => {
+    return req.originalUrl.indexOf(e) === -1
+  })
+  if (pageWillRedirct && !req.cookies.token) {
+    res.redirect('/login')
   }
-}));
+  else {
+    next()
+  }
+})
 
 app.use('/', router.home);
 app.use('/room', router.room);

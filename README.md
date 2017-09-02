@@ -1,5 +1,7 @@
 # 全栈式的开发多人在线聊天室
 
+3.1已发布，项目已从Session认证改为Token认证，更好的支持跨域用户认证。
+
 > 技术栈
 
 觉得好的欢迎点个star ^_^。
@@ -10,13 +12,12 @@
 
 > 演示
 
-![NChat-qrcode](http://nchat.oss-cn-beijing.aliyuncs.com/img/NChat-qrcode.png
-)
+![NChat-qrcode](http://nchat.oss-cn-beijing.aliyuncs.com/img/NChat-qrcode3.1.png)
 
 * 全栈式的开发多人在线聊天室
 	* 项目只适配了移动端，请使用浏览器的手机视图查看。
   * 项目源码：[https://github.com/bergwhite/nchat](https://github.com/bergwhite/nchat)
-  * 在线演示：[http://47.93.252.247:8086/](http://47.93.252.247:8086/)
+  * 在线演示：[http://y.bw2.me:8086](http://y.bw2.me:8086)
 
 > 目录
 
