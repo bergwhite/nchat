@@ -1,13 +1,14 @@
 # 全栈式的开发多人在线聊天室
 
-3.1已发布，项目已从Session认证改为Token认证，更好的支持跨域用户认证。
+* 3.1.0 / 项目已从Session认证改为Token认证，更好的支持跨域用户认证。
+* 3.1.1 / 修复PC页面访问的重定向问题。
 
 > 技术栈
 
 觉得好的欢迎点个star ^_^。
 
 * 前端：Express & EJS & ES6 & Less & Gulp
-* 后端：Express & SocketIO & MongoDB & [REST API](API.md)
+* 后端：Express & SocketIO & MongoDB & [REST API](API.md) & Token
 * 部署：Linux & PM2
 
 > 演示
