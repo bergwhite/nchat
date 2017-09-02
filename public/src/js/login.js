@@ -74,6 +74,10 @@
       .then((res) => {
         // 处理成功则跳转到首页
         if (res.data.msgCode === 200) {
+          const token = res.data.token
+          if (localStorage.getItem('token') === null) {
+            localStorage.setItem('token', token)
+          }
           jumpToMainPage()
         }
         // 否则显示错误信息

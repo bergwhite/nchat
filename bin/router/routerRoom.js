@@ -1,3 +1,4 @@
+const {jwtEnc, jwtDec} = require('../jwt');
 const {router} = require('./base')
 const {room, mess} = require('../database/model')
 
@@ -49,49 +50,38 @@ router.get('/api/room/info/:id', (req, res, next) => {
 // 请求添加房间
 router.post('/api/room/add', (req, res, next) => {
 
-  // 已登录则继续请求添加房间
-  // 未登录则提示请登陆
-  if (req.session.loginUser) {
-
-    // 如果当前房间存在则添加
-    // 否则提示当前房间已存在
-    // 操作数据库的过程中遇到错误则返回错误信息给前端
-    room.findOne({
-      name: req.body.name,
-    }, (err, val) => {
-      if (err) {
-        res.send({
-          msgCode: 500,
-          msgCtx: err,
-        })
-      }
-      else if (val !== null) {
-        res.send({
-          msgCode: 304,
-          msgCtx: 'Room is exist.',
-        })
-      }
-      else {
-        name = req.body.name
-        desc = req.body.desc || '暂时没有简介。'
-        roomSave = new room({
-          name: name,
-          desc: desc,
-        })
-        roomSave.save()
-        res.send({
-          msgCode:200,
-          msgCtx: 'Room add success.',
-        })
-      }
-    })
-  }
-  else {
-    res.send({
-      msgCode:401,
-      msgCtx: 'You cannot access the api. Please login.',
-    })
-  }
+  // 如果当前房间存在则添加
+  // 否则提示当前房间已存在
+  // 操作数据库的过程中遇到错误则返回错误信息给前端
+  room.findOne({
+    name: req.body.name,
+  }, (err, val) => {
+    if (err) {
+      res.send({
+        msgCode: 500,
+        msgCtx: err,
+      })
+    }
+    else if (val !== null) {
+      res.send({
+        msgCode: 304,
+        msgCtx: 'Room is exist.',
+      })
+    }
+    else {
+      name = req.body.name
+      desc = req.body.desc || '暂时没有简介。'
+      roomSave = new room({
+        name: name,
+        desc: desc,
+      })
+      roomSave.save()
+      res.send({
+        msgCode:200,
+        msgCtx: 'Room add success.',
+      })
+    }
+  })
 })
 
 // 请求房间聊天记录

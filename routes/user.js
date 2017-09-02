@@ -1,4 +1,4 @@
-const {router} = require('./basic');
+const {router, jwtDec} = require('./basic');
 const {info, user} = require('../bin/database/model')
 const crypto = require('crypto')
 const md5 = crypto.createHash('md5');
@@ -21,34 +21,26 @@ router.get('/user', (req, res, next) => {
     href: '/',
   }
 
-  // 已登录则继续
-  // 未登录则跳转到登陆页面
-  if (req.session.loginUser) {
-
-    // 把查询到的用户信息渲染到页面
-    // 如果查询过程中出现错误或用户不存在，则发送对应信息到前端页面
-    info.find({}, (err,val) => {
-      if (err) {
-        res.send(`<h1>err: ${err}</h1>`)
+  // 把查询到的用户信息渲染到页面
+  // 如果查询过程中出现错误或用户不存在，则发送对应信息到前端页面
+  info.find({}, (err,val) => {
+    if (err) {
+      res.send(`<h1>err: ${err}</h1>`)
+    }
+    else if (val === null) {
+      res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
+    }
+    else {
+      const userList = val
+      const renderObj = {
+        headTitle,
+        infoTopTitle,
+        prevButton,
+        userList,
       }
-      else if (val === null) {
-        res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
-      }
-      else {
-        const userList = val
-        const renderObj = {
-          headTitle,
-          infoTopTitle,
-          prevButton,
-          userList,
-        }
-        res.render('userList', renderObj)
-      }
-    })
-  }
-  else {
-    res.redirect('/login')
-  }
+      res.render('userList', renderObj)
+    }
+  })
 })
 
 // 用户资料页面
@@ -56,18 +48,15 @@ router.get('/user/:id', (req, res, next) => {
 
   const infoTopTitle = `${req.params.id}的主页`
   const headTitle = `${infoTopTitle} - ${siteName}`
-  const prevButton = {
-    name: '<',
-    href: '/',
-  }
-  const nextButton = {
-    name: '?',
-    href: `/user/${req.session.loginUser}/mod`,
-  }
-
-  // 已登录则继续
-  // 未登录则跳转到登陆页面
-  if (req.session.loginUser) {
+  jwtDec(req.cookies.token).then((val) => {
+    const prevButton = {
+      name: '<',
+      href: '/',
+    }
+    const nextButton = {
+      name: '?',
+      href: `/user/${val.user}/mod`,
+    }
 
     // 把查询到的用户信息渲染到页面
     // 如果查询过程中出现错误或用户不存在，则发送对应信息到前端页面
@@ -90,7 +79,7 @@ router.get('/user/:id', (req, res, next) => {
           hobbies: val.hobbies,
         }
         let renderObj = {}
-        if (req.session.loginUser === req.params.id) {
+        if (req.cookies.loginUser === req.params.id) {
           renderObj = Object.assign({}, renderObjBase, {nextButton})
         }
         else {
@@ -99,10 +88,7 @@ router.get('/user/:id', (req, res, next) => {
         res.render('userInfo', renderObj)
       }
     })
-  }
-  else {
-    res.redirect('/login')
-  }
+  })
 })
 
 // 用户资料修改页面
@@ -121,8 +107,8 @@ router.get('/user/:id/mod', (req, res, next) => {
 
   // 如果用户已登录，并且登陆的用户和需要修改资料的用户一致则继续
   // 否则跳转到登陆页面
-  if (req.session.loginUser && req.session.loginUser === req.params.id) {
-    if (req.session.loginUser !== req.params.id) {
+  jwtDec(req.cookies.token).then((val) => {
+    if (val.user !== req.params.id) {
       res.redirect('/')
     }
     info.findOne({user: req.params.id}, (err,val) => {
@@ -144,10 +130,7 @@ router.get('/user/:id/mod', (req, res, next) => {
         res.render('userInfoMod', renderObj)
       }
     })
-  }
-  else {
-    res.redirect('/login')
-  }
+  })
 })
 
 // 登陆页面
@@ -181,14 +164,7 @@ router.get('/login', (req, res, next) => {
   const infoTopTitle = `登陆`
   const headTitle = `${infoTopTitle} - ${siteName}`
 
-  // 如果已登录则跳转到首页
-  // 否则显示登陆页面
-  if (req.session.loginUser) {
-    res.redirect('/')
-  }
-  else {
-    res.render('userLogin', {headTitle,})
-  }
+  res.render('userLogin', {headTitle,})
 })
 
 // 忘记密码页面
@@ -207,17 +183,11 @@ router.get('/about', (req, res, next) => {
     name: '<',
     href: `/`,
   }
-
-  if (req.session.loginUser) {
-    res.render('about', {
-      headTitle,
-      infoTopTitle,
-      prevButton,
-    })
-  }
-  else {
-    res.redirect('/login')
-  }
+  res.render('about', {
+    headTitle,
+    infoTopTitle,
+    prevButton,
+  })
 
 })
 
