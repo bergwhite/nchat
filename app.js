@@ -27,7 +27,11 @@ app.use(express.static(path.join(__dirname, 'public/dist')));
 // 对未登录的页面进行重定向
 app.use((req, res, next) => {
   console.log(req.originalUrl)
-  if (req.originalUrl.indexOf('/login') === -1 && !req.cookies.token) {
+  const redrictWihteList = ['/login', '/api/']
+  var pageWillRedirct = redrictWihteList.every((e) => {
+    return req.originalUrl.indexOf(e) === -1
+  })
+  if (pageWillRedirct && !req.cookies.token) {
     res.redirect('/login')
   }
   else {

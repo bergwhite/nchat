@@ -23,7 +23,7 @@
 
 在线服务器提供支持CORS的REST API，请合理使用在线API。API的测试数据来自Postman。
 
-* 在线：http://47.93.252.247:8086
+* 在线：http://y.bw2.me:8086
 * 本地：http://localhost:8086
 
 ### API 示例
@@ -32,7 +32,7 @@
 
 ```
 
-GET http://47.93.252.247:8086/api/user/info/admin
+GET http://47.93.252.247:8086/api/user/info/admin?token=xxx
 
 ```
 
@@ -97,7 +97,8 @@ pass | String | √ | 密码
 
 {
   "msgCode": 200,
-  "msgCtx": "Reg success & logined."
+  "msgCtx": "Reg success.",
+  "token": "xxx"
 }
 
 ```
@@ -138,7 +139,8 @@ pass | String | √ | 密码
 
 {
   "msgCode": 200,
-  "msgCtx": "Login success."
+  "msgCtx": "Login success.",
+  "token": "xxx"
 }
 
 ```
@@ -190,7 +192,7 @@ POST | /api/user/logout
 
 {
   "msgCode": 200,
-  "msgCtx": "User logout success."
+  "msgCtx": "Logout success."
 }
 
 ```

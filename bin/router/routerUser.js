@@ -31,135 +31,135 @@ router.get('/api/user', (req, res, next) => {
 // 用户注册
 router.post('/api/user/register', (req, res, next) => {
 
-  if (!req.body) {
-    res.send({
-      msgCode:304,
-      msgCtx: 'Please enter the entire form value.',
-    });
-  }
-  else {
-    user.findOne({
-      name: req.body.name,
-    }, (err, val) => {
+  user.findOne({
+    name: req.body.name,
+  }, (err, val) => {
 
-      // 用户已存在则返回已存在信息
-      // 数据库操作过程中发生错误则进行相关提示
-      // 否则继续执行
-      if (err) {
-        res.send({
-          msgCode:500,
-          msgCtx: err,
-        })
-      }
-      else if (val !== null) {
-        res.send({
-          msgCode:304,
-          msgCtx: 'User is exist.',
-        })
-      }
-      else {
-        const defaultUserImg = 'https://randomuser.me/api/portraits/men/1.jpg'
+    // 用户已存在则返回已存在信息
+    // 数据库操作过程中发生错误则进行相关提示
+    // 否则继续执行
+    if (err) {
+      res.send({
+        msgCode:500,
+        msgCtx: err,
+      })
+    }
+    else if (val !== null) {
+      res.send({
+        msgCode:304,
+        msgCtx: 'User is exist.',
+      })
+    }
+    else {
+      const defaultUserImg = 'https://randomuser.me/api/portraits/men/1.jpg'
 
-        // 设置别名
-        const name = req.body.name
-        const pass = cryptoPass(name, req.body.pass)
+      // 设置别名
+      const name = req.body.name
+      const pass = cryptoPass(name, req.body.pass)
 
-        // 保存账号
-        userSave = new user({
-          name: name,
-          pass: pass,
-        })
-        userSave.save()
+      // 保存账号
+      userSave = new user({
+        name: name,
+        pass: pass,
+      })
+      userSave.save()
 
-        // 保存资料
-        infoSava = new info({
-          user: name,
-          gender: 'secure',
-          img: defaultUserImg,
-          city: 'beijing',
-          hobbies: [],
-        })
-        infoSava.save()
+      // 保存资料
+      infoSava = new info({
+        user: name,
+        gender: 'secure',
+        img: defaultUserImg,
+        city: 'beijing',
+        hobbies: [],
+      })
+      infoSava.save()
 
-        // 生成token
-        const token = jwtEnc(name, pass)
-        res.cookie('token', token, { expires: new Date(Date.now() + 60*60*24*1*1000), httpOnly: true });
-        res.send({
-          msgCode:200,
-          msgCtx: 'Reg success & logined.',
-          token: token
-        })
-      }
-    })
-  }
+      // 生成token
+      const token = jwtEnc(name, pass)
+      res.cookie('token', token, { expires: new Date(Date.now() + 60*60*24*1*1000), httpOnly: true });
+      res.send({
+        msgCode:200,
+        msgCtx: 'Reg success.',
+        token: token
+      })
+    }
+  })
 });
 
 // 用户登陆
 router.post('/api/user/login', (req, res, next) => {
 
-  // POST中没有数据则进行提示
+  // 设置别名
+  const name = req.body.name
+  const pass = cryptoPass(name, req.body.pass)
+  console.log(`name: ${name} , pass: ${pass}`)
 
-  if (!req.body) {
+  // 查询数据库中发生错误或者用户名不存在、密码错误则进行相应的提示
+  user.findOne({
+    name: name,
+  }, (err, val) => {
+    if (err) {
+      res.send({
+        msgCode:500,
+        msgCtx: err,
+      })
+    }
+    else if (val === null) {
+      res.send({
+        msgCode:404,
+        msgCtx: 'User is not exist.',
+      })
+    }
+    else if(val.pass !== pass) {
+      res.send({
+        msgCode:403,
+        msgCtx: `Pass is incorrect.`,
+      })
+    }
+    else {
+      // 生成token
+      const token = jwtEnc(name, pass)
+      res.cookie('token', token, { expires: new Date(Date.now() + 60*60*24*1*1000), httpOnly: true });
+      res.send({
+        msgCode:200,
+        msgCtx: 'Login success.',
+        token: token
+      })
+    }
+  })
+});
+
+// 用户注销
+
+router.post('/api/user/logout', (req, res, next) => {
+  const isCookieExist = req.cookies.token
+  if (isCookieExist) {
+    res.clearCookie('token')
     res.send({
-      msgCode:304,
-      msgCtx: 'Please enter the entire form value.',
-    });
-  }
-  else {
-
-    // 设置别名
-    const name = req.body.name
-    const pass = cryptoPass(name, req.body.pass)
-    console.log(`name: ${name} , pass: ${pass}`)
-
-    // 查询数据库中发生错误或者用户名不存在、密码错误则进行相应的提示
-    user.findOne({
-      name: name,
-    }, (err, val) => {
-      if (err) {
-        res.send({
-          msgCode:500,
-          msgCtx: err,
-        })
-      }
-      else if (val === null) {
-        res.send({
-          msgCode:404,
-          msgCtx: 'User is not exist.',
-        })
-      }
-      else if(val.pass !== pass) {
-        res.send({
-          msgCode:403,
-          msgCtx: `Pass is incorrect.`,
-        })
-      }
-      else {
-        // 生成token
-        const token = jwtEnc(name, pass)
-        res.cookie('token', token, { expires: new Date(Date.now() + 60*60*24*1*1000), httpOnly: true });
-        res.send({
-          msgCode:200,
-          msgCtx: 'Login success.',
-          token: token
-        })
-      }
+      msgCode:200,
+      msgCtx: 'Logout success.'
     })
   }
-});
+  else {
+    res.send({
+      msgCode:304,
+      msgCtx: 'You have not login.'
+    })
+  }
+})
 
 // 用户资料
 router.get('/api/user/info/:id', (req, res, next) => {
 
   const token = req.query.token
-  jwtDec(token).then((val) => {
+  jwtDec(token).then((tokenObj) => {
     // 获取用户资料
     info.findOne({
       user: req.params.id,
     }, (err,val) => {
       if (err) {
         res.send({
-          msgCode:304,
+          msgCode:500,
           msgCtx: err,
         })
       }
@@ -183,9 +183,9 @@ router.get('/api/user/info/:id', (req, res, next) => {
 router.put('/api/user/pass', (req, res, next) => {
 
   const token = req.query.token
-  jwtDec(token).then((val) => {
-    const userName = val.user
-    const passOld = cryptoPass(userName, val.pass)
+  jwtDec(token).then((tokenObj) => {
+    const userName = tokenObj.user
+    const passOld = cryptoPass(userName, req.body.passOld)
     const passNew = cryptoPass(userName, req.body.passNew)
 
     // 查询当前用户的账号
@@ -207,7 +207,7 @@ router.put('/api/user/pass', (req, res, next) => {
         }, (err) => {
           if (err) {
             res.send({
-              msgCode:304,
+              msgCode:500,
               msgCtx: err,
             })
           }
@@ -259,7 +259,7 @@ router.put('/api/user/info', (req, res, next) => {
         // 提示错误信息
         if (err) {
           res.send({
-            msgCode:304,
+            msgCode:500,
             msgCtx: err,
           })
         }
