@@ -48,14 +48,15 @@ router.get('/user/:id', (req, res, next) => {
 
   const infoTopTitle = `${req.params.id}的主页`
   const headTitle = `${infoTopTitle} - ${siteName}`
-  jwtDec(req.cookies.token).then((val) => {
+  jwtDec(req.cookies.token).then((tokenObj) => {
+    const tokenObjUser = tokenObj.user
     const prevButton = {
       name: '<',
       href: '/',
     }
     const nextButton = {
       name: '?',
-      href: `/user/${val.user}/mod`,
+      href: `/user/${tokenObjUser}/mod`,
     }
 
     // 把查询到的用户信息渲染到页面
@@ -79,7 +80,7 @@ router.get('/user/:id', (req, res, next) => {
           hobbies: val.hobbies,
         }
         let renderObj = {}
-        if (req.cookies.loginUser === req.params.id) {
+        if (tokenObjUser === req.params.id) {
           renderObj = Object.assign({}, renderObjBase, {nextButton})
         }
         else {
@@ -94,24 +95,22 @@ router.get('/user/:id', (req, res, next) => {
 // 用户资料修改页面
 router.get('/user/:id/mod', (req, res, next) => {
 
-  const infoTopTitle = `修改资料`
-  const headTitle = `${infoTopTitle} - ${siteName}`
-  const prevButton = {
-    name: '<',
-    href: `/user/${req.session.loginUser}`,
-  }
-  const nextButton = {
-    name: '√',
-    href: '',
-  }
-
-  // 如果用户已登录，并且登陆的用户和需要修改资料的用户一致则继续
-  // 否则跳转到登陆页面
-  jwtDec(req.cookies.token).then((val) => {
-    if (val.user !== req.params.id) {
+  jwtDec(req.cookies.token).then((tokenObj) => {
+    const tokenObjUser = tokenObj.user
+    const infoTopTitle = `修改资料`
+    const headTitle = `${infoTopTitle} - ${siteName}`
+    const prevButton = {
+      name: '<',
+      href: `/user/${tokenObjUser}`,
+    }
+    const nextButton = {
+      name: '√',
+      href: '',
+    }
+    if (tokenObjUser !== req.params.id) {
       res.redirect('/')
     }
-    info.findOne({user: req.params.id}, (err,val) => {
+    info.findOne({user: tokenObjUser}, (err,val) => {
       if (val === null) {
         res.send('<h1>用户不存在，请<a href="/register">注册</a></h1>')
       }

@@ -155,7 +155,7 @@ router.get('/api/user/info/:id', (req, res, next) => {
   jwtDec(token).then((val) => {
     // 获取用户资料
     info.findOne({
-      user: val.user,
+      user: req.params.id,
     }, (err,val) => {
       if (err) {
         res.send({

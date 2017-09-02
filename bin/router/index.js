@@ -41,7 +41,7 @@ app.use((req, res, next) => {
   }
   else if (req.query.token) {
     const token = req.query.token
-    jwtDec(token).then((val) => {
+    jwtDec(token).then((tokenObjUser) => {
       next();
     })
     .catch((err) => {
